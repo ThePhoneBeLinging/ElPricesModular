@@ -3,4 +3,6 @@ project(ElPricesModular)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(ElPricesModular main.cpp)
+add_executable(ElPricesModular main.cpp
+        ElPricesModular.cpp
+        ElPricesModular.h)

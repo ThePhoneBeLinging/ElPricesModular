@@ -3,11 +3,11 @@
 
 #include <thread>
 
-#include "ElPricesCollector/ElPricesCollector.h"
+#include "ElPricesModular.h"
 
 int main()
 {
-    auto collector = std::make_unique<ElPricesCollector>();
+    auto elPricesModular = std::make_unique<ElPricesModular>();
     std::this_thread::sleep_for(std::chrono::seconds(5));
     return 0;
 }
