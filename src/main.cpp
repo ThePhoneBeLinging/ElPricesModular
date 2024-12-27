@@ -8,6 +8,6 @@
 int main()
 {
     auto elPricesModular = std::make_unique<ElPricesModular>();
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    elPricesModular->launch();
     return 0;
 }

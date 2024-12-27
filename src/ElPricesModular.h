@@ -11,6 +11,7 @@ class ElPricesModular
 {
 public:
     ElPricesModular();
+    void launch();
 private:
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
 };
