@@ -10,18 +10,18 @@
 
 ElPricesModular::ElPricesModular() : elPricesCollector_(std::make_shared<ElPricesCollector>())
 {
-    std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
 void ElPricesModular::launch()
 {
     InitWindow(1280, 720, "ElPricesModular");
     SetTargetFPS(10);
+    std::string currentUsageAsPrice;
     while (not WindowShouldClose())
     {
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText(std::to_string(elPricesCollector_->getCurrentPrice()->getPriceWithoutFees()).c_str(), 500, 360, 120, BLUE);
+        ClearBackground(BLACK);
+        DrawText(currentUsageAsPrice.c_str(), 560, 310, 50, BLUE);
         EndDrawing();
     }
 }
