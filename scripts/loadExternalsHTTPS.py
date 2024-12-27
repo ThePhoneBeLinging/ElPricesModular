@@ -30,6 +30,7 @@ def main():
     repo_urls = [
         'https://github.com/ThePhoneBeLinging/Utility.git',
         'https://github.com/ThePhoneBeLinging/ElPricesCollector.git',
+        'https://github.com/ThePhoneBeLinging/ElPricesUsageController.git',
         # Add more repository URLs as needed
     ]
 
