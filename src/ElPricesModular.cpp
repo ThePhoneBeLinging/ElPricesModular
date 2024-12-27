@@ -10,7 +10,7 @@
 
 ElPricesModular::ElPricesModular() : elPricesCollector_(std::make_shared<ElPricesCollector>())
 {
-    std::cout << elPricesCollector_->getCurrentPrice()->getPriceWithoutFees() << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
 void ElPricesModular::launch()
