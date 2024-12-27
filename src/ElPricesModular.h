@@ -4,6 +4,8 @@
 
 #ifndef ELPRICESMODULAR_H
 #define ELPRICESMODULAR_H
+#include <ElPricesUsageController/ElPricesUsageController.h>
+
 #include "ElPricesCollector/ElPricesCollector.h"
 
 
@@ -14,6 +16,7 @@ public:
     void launch();
 private:
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
+    std::shared_ptr<ElPricesUsageController> elPriceUsageController_;
 };
 
 
