@@ -20,10 +20,10 @@ void ElPricesModular::launch()
     std::string currentUsageAsPrice;
     while (not WindowShouldClose())
     {
-        double currentPrice = elPricesCollector_->getCurrentPrice()->getPriceWithoutFees();
-        double pulses = elPriceUsageController_->getPulses();
-        double kwhUsed = pulses / 1000;
-        double currentIntervalPrice = currentPrice * kwhUsed;
+        const double currentPrice = elPricesCollector_->getCurrentPrice()->getPriceWithoutFees();
+        const double pulses = elPriceUsageController_->getPulses();
+        const double kwhUsed = pulses / 1000;
+        const double currentIntervalPrice = currentPrice * kwhUsed;
 
         currentUsageAsPrice = std::to_string(currentIntervalPrice);
         BeginDrawing();
