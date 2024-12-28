@@ -25,7 +25,13 @@ void ElPricesModular::launch()
         const double currentIntervalPrice = currentPrice * kwhUsed;
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawText(TextFormat("%.2f",currentIntervalPrice), 560, 310, 50, BLUE);
+        drawCurrentIntervalPrice(640,15,40,currentIntervalPrice);
         EndDrawing();
     }
+}
+
+void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const int fontSize, const double currentIntervalPrice)
+{
+    DrawText("Current Interval Price:", x - 270, y, fontSize,WHITE);
+    DrawText(TextFormat("%.2f",currentIntervalPrice), x - 30, y + 50, fontSize, WHITE);
 }

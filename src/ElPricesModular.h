@@ -15,6 +15,7 @@ public:
     ElPricesModular();
     void launch();
 private:
+    static void drawCurrentIntervalPrice(int x, int y, int fontSize, double currentIntervalPrice);
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
     std::shared_ptr<ElPricesUsageController> elPriceUsageController_;
 };
