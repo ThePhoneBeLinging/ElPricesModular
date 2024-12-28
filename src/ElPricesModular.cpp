@@ -20,22 +20,23 @@ void ElPricesModular::launch()
     InitWindow(1280, 720, "ElPricesModular");
     while (not WindowShouldClose())
     {
-        const double currentPrice = elPricesCollector_->getCurrentPrice()->getPriceWithoutFees();
-        const double pulses = elPriceUsageController_->getPulses();
-        const double kwhUsed = pulses / 1000;
-        const double currentIntervalPrice = currentPrice * kwhUsed;
+
         BeginDrawing();
         ClearBackground(BLACK);
 
-        drawCurrentIntervalPrice(640,15,40,currentIntervalPrice);
+        drawCurrentIntervalPrice(640,15,40);
         drawPriceGraph(80,400,80);
 
         EndDrawing();
     }
 }
 
-void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const int fontSize, const double currentIntervalPrice)
+void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const int fontSize)
 {
+    const double currentPrice = elPricesCollector_->getCurrentPrice()->getPriceWithoutFees();
+    const double pulses = elPriceUsageController_->getPulses();
+    const double kwhUsed = pulses / 1000;
+    const double currentIntervalPrice = currentPrice * kwhUsed;
     DrawText("Current Interval Price:", x - 270, y, fontSize,WHITE);
     DrawText(TextFormat("%.2f",currentIntervalPrice), x - 40, y + 50, fontSize, WHITE);
 }
