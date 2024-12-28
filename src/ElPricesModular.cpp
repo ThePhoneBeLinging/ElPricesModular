@@ -15,7 +15,7 @@ elPriceUsageController_(std::make_shared<ElPricesUsageController>())
 
 void ElPricesModular::launch()
 {
-    //SetConfigFlags(FLAG_MSAA_4X_HINT);
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetTargetFPS(10);
     InitWindow(1280, 720, "ElPricesModular");
     while (not WindowShouldClose())
