@@ -33,5 +33,5 @@ void ElPricesModular::launch()
 void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const int fontSize, const double currentIntervalPrice)
 {
     DrawText("Current Interval Price:", x - 270, y, fontSize,WHITE);
-    DrawText(TextFormat("%.2f",currentIntervalPrice), x - 30, y + 50, fontSize, WHITE);
+    DrawText(TextFormat("%.2f",currentIntervalPrice), x - 40, y + 50, fontSize, WHITE);
 }
