@@ -33,6 +33,7 @@ void ElPricesModular::launch()
 
 void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const int fontSize)
 {
+    // TODO FIX FORMULA BELOW
     const double currentPrice = elPricesCollector_->getCurrentPrice()->getPriceWithoutFees();
     const double timeBetweenPulses = elPriceUsageController_->getTimeBetweenPulses();
     const double wattage = 1 / timeBetweenPulses;
@@ -45,11 +46,8 @@ void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const i
 void ElPricesModular::drawPriceGraph(int x, int y, int spacing)
 {
     auto elPrices = elPricesCollector_->getPricesAroundCurrentTime();
-
     auto lastPrice = elPrices.front();
-
     bool first = true;
-
     for (const auto& elPrice : elPrices)
     {
         if (first)
