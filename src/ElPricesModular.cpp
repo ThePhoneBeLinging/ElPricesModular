@@ -20,12 +20,12 @@ void ElPricesModular::launch()
     InitWindow(1280, 720, "ElPricesModular");
     while (not WindowShouldClose())
     {
-
         BeginDrawing();
         ClearBackground(BLACK);
-
-        drawCurrentIntervalPrice(640,15,40);
-
+        DrawText(TextFormat("Price RN: %d", elPricesCollector_->getCurrentPrice()->getPriceWithoutFees()),350,15,40,WHITE);
+        drawPriceLastSeconds(500,15,40,5);
+        drawPriceLastSeconds(500,100,40,20);
+        drawPriceLastSeconds(500,200,40,60);
         EndDrawing();
     }
 }
@@ -34,10 +34,16 @@ void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const i
 {
     // TODO FIX FORMULA BELOW
     const double currentPrice = elPricesCollector_->getCurrentPrice()->getPriceWithoutFees();
-    const double timeBetweenPulses = elPriceUsageController_->getTimeBetweenPulses();
+    const double timeBetweenPulses = 0;
     const double wattage = 1 / timeBetweenPulses;
     const double kwhUsed = (wattage * timeBetweenPulses) / 1000;
     const double currentIntervalPrice = currentPrice * kwhUsed;
     DrawText("Current Interval Price:", x - 270, y, fontSize, WHITE);
     DrawText(TextFormat("%.2f",currentIntervalPrice), x - 40, y + 50, fontSize, WHITE);
+}
+
+void ElPricesModular::drawPriceLastSeconds(int x, int y, int fontSize, int seconds)
+{
+    const int amountOfPulses = elPriceUsageController_->getAmountOfPulsesBasedOnSeconds(seconds);
+    DrawText(TextFormat("Amount Of Pulses last %d: %d", seconds,amountOfPulses), x - 40, y + 50, fontSize, WHITE);
 }
