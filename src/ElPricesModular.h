@@ -16,7 +16,6 @@ public:
     void launch();
 private:
     void drawCurrentIntervalPrice(int x, int y, int fontSize);
-    void drawPriceGraph(int x, int y, int spacing);
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
     std::shared_ptr<ElPricesUsageController> elPriceUsageController_;
 };
