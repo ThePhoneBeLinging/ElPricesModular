@@ -1,5 +1,5 @@
 {
-  "ElPricesCollectorUsualDelay": 3600,
-  "ElPricesUsageControllerDumpDelay": 3600,
+  "ElPricesCollectorUsualSecondsDelay": 3600,
+  "ElPricesUsageControllerSecondsDumpDelay": 3600,
   "ElPricesUsageControllerSecondsToKeepInMemory": 60
 }
