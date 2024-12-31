@@ -7,9 +7,10 @@
 #include <iostream>
 
 #include "raylib.h"
+#include "Utility/TimeUtil.h"
 
 ElPricesModular::ElPricesModular() : elPricesCollector_(std::make_shared<ElPricesCollector>()),
-elPriceUsageController_(std::make_shared<ElPricesUsageController>())
+                                     elPriceUsageController_(std::make_shared<ElPricesUsageController>())
 {
 }
 
@@ -46,6 +47,49 @@ void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const i
 
 void ElPricesModular::drawPriceLastSeconds(int x, int y, int fontSize, int seconds)
 {
-    const int amountOfPulses = elPriceUsageController_->getAmountOfPulsesBasedOnSeconds(seconds);
-    DrawText(TextFormat("Amount Of Pulses last %d: %d", seconds,amountOfPulses), x - 40, y + 50, fontSize, WHITE);
+    const double dkkPrice = getUsageInDKKFromInterval(seconds);
+    DrawText(TextFormat("DKK Used last: %d seconds: %.2f", seconds,dkkPrice), x - 40, y + 50, fontSize, WHITE);
+}
+
+double ElPricesModular::getUsageInDKKFromInterval(const int seconds)
+{
+    double totalPrice = 0;
+    int tempPulses = 0;
+    double KwhToWhFactor = 1000;
+    int pulsesFoundSoFar = 0;
+    int secondsCounter = 0;
+
+    const auto& currentTime = TimeUtil::getCurrentTime();
+
+
+    if (seconds <= currentTime.tm_sec)
+    {
+        tempPulses = elPriceUsageController_->getAmountOfPulsesBasedOnSeconds(seconds);
+        return tempPulses / KwhToWhFactor * static_cast<double>(elPricesCollector_->getCurrentPrice()->getTotalPrice());
+    }
+
+
+    tempPulses = elPriceUsageController_->getAmountOfPulsesBasedOnSeconds(currentTime.tm_sec);
+    pulsesFoundSoFar += tempPulses;
+    totalPrice += tempPulses / KwhToWhFactor * static_cast<double>(elPricesCollector_->getCurrentPrice()->getTotalPrice());
+    secondsCounter += currentTime.tm_sec;
+
+    while (secondsCounter < seconds)
+    {
+        if (seconds - secondsCounter > 60)
+        {
+            secondsCounter += 60;
+        }
+        else
+        {
+            secondsCounter = seconds;
+        }
+
+        tempPulses = elPriceUsageController_->getAmountOfPulsesBasedOnSeconds(secondsCounter);
+        tempPulses -= pulsesFoundSoFar;
+        pulsesFoundSoFar = tempPulses;
+        totalPrice += tempPulses / KwhToWhFactor * static_cast<double>(elPricesCollector_->getCurrentPrice()->getTotalPrice());
+    }
+
+    return totalPrice;
 }
