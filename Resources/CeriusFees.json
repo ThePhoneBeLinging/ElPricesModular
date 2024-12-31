@@ -1,0 +1,67 @@
+{
+  "Prices":
+    {
+      "LowLoad":
+      {
+        "WinterTariff": 1388,
+        "SummerTariff": 1388,
+        "ElTax": 9513
+      },
+      "HighLoad":
+      {
+        "WinterTariff": 4168,
+        "SummerTariff": 2082,
+        "ElTax": 9513
+      },
+      "PeakLoad":
+      {
+        "WinterTariff": 12491,
+        "SummerTariff": 5413,
+        "ElTax": 9513
+      }
+    },
+  "WinterPeriod":
+  {
+    "ActiveMonths":
+    [
+      1,2,3,10,11,12
+    ],
+    "HoursLoadLevel":
+    {
+      "LowLoad":
+      [
+        0,1,2,3,4,5
+      ],
+      "HighLoad":
+      [
+        6,7,8,9,10,11,12,13,14,15,16,21,22,23
+      ],
+      "PeakLoad":
+      [
+        17,18,19,20
+      ]
+    }
+  },
+  "SummerPeriod":
+  {
+    "ActiveMonths":
+    [
+      4,5,6,7,8,9
+    ],
+    "HoursLoadLevel":
+    {
+      "LowLoad":
+      [
+        0,1,2,3,4,5
+      ],
+      "HighLoad":
+      [
+        6,7,8,9,10,11,12,13,14,15,16,21,22,23
+      ],
+      "PeakLoad":
+      [
+        17,18,19,20
+      ]
+    }
+  }
+}
