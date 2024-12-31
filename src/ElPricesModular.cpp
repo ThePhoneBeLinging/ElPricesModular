@@ -23,10 +23,11 @@ void ElPricesModular::launch()
     {
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawText(TextFormat("Price RN: %d", elPricesCollector_->getCurrentPrice()->getPriceWithoutFees()),350,15,40,WHITE);
-        drawPriceLastSeconds(500,15,40,5);
-        drawPriceLastSeconds(500,100,40,20);
-        drawPriceLastSeconds(500,200,40,60);
+        DrawText(TextFormat("Current Raw Price: %d", elPricesCollector_->getCurrentPrice()->getPriceWithoutFees()),350,15,40,WHITE);
+        DrawText(TextFormat("Current Fees: %d", elPricesCollector_->getCurrentPrice()->getFees()),350,55,40,WHITE);
+        drawPriceLastSeconds(500,50,40,5);
+        drawPriceLastSeconds(500,150,40,20);
+        drawPriceLastSeconds(500,250,40,60);
         EndDrawing();
     }
 }
