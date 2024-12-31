@@ -1,8 +1,4 @@
 #include <iostream>
-
-
-#include <thread>
-
 #include "ElPricesModular.h"
 
 int main()
