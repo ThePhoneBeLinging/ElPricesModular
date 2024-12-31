@@ -18,7 +18,7 @@ void ElPricesModular::launch()
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetTargetFPS(10);
     InitWindow(1280, 720, "ElPricesModular");
-    ToggleFullscreen();
+    //ToggleFullscreen();
     while (not WindowShouldClose())
     {
         BeginDrawing();
