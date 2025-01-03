@@ -15,7 +15,6 @@ public:
     ElPricesModular();
     void launch();
 private:
-    void drawCurrentIntervalPrice(int x, int y, int fontSize);
     void drawPriceLastSeconds(int x, int y, int fontSize, int seconds);
     double getUsageInDKKFromInterval(int seconds);
     std::shared_ptr<ElPricesCollector> elPricesCollector_;

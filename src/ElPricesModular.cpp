@@ -33,18 +33,6 @@ void ElPricesModular::launch()
     }
 }
 
-void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const int fontSize)
-{
-    // TODO FIX FORMULA BELOW
-    const double currentPrice = elPricesCollector_->getCurrentPrice()->getPriceWithoutFees();
-    const double timeBetweenPulses = 0;
-    const double wattage = 1 / timeBetweenPulses;
-    const double kwhUsed = (wattage * timeBetweenPulses) / 1000;
-    const double currentIntervalPrice = currentPrice * kwhUsed;
-    DrawText("Current Interval Price:", x - 270, y, fontSize, WHITE);
-    DrawText(TextFormat("%.2f",currentIntervalPrice), x - 40, y + 50, fontSize, WHITE);
-}
-
 void ElPricesModular::drawPriceLastSeconds(int x, int y, int fontSize, int seconds)
 {
     const double dkkPrice = getUsageInDKKFromInterval(seconds);
