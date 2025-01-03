@@ -48,7 +48,7 @@ void ElPricesModular::drawCurrentIntervalPrice(const int x, const int y, const i
 void ElPricesModular::drawPriceLastSeconds(int x, int y, int fontSize, int seconds)
 {
     const double dkkPrice = getUsageInDKKFromInterval(seconds);
-    DrawText(TextFormat("DKK Used last: %d seconds: %.2f", seconds,dkkPrice), x - 40, y + 50, fontSize, WHITE);
+    DrawText(TextFormat("DKK-CENT Used last: %d seconds: %.2f", seconds,dkkPrice/100), x - 40, y + 50, fontSize, WHITE);
 }
 
 double ElPricesModular::getUsageInDKKFromInterval(const int seconds)
