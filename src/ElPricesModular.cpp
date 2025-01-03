@@ -27,14 +27,14 @@ void ElPricesModular::launch()
 
         if (IsGestureDetected(GESTURE_SWIPE_LEFT))
         {
-            if (-1280 <= offsetX && offsetX <= 1280)
+            if (-1280 < offsetX && offsetX <= 1280)
             {
                 offsetX -= 1280;
             }
         }
         if (IsGestureDetected(GESTURE_SWIPE_RIGHT))
         {
-            if (-1280 <= offsetX && offsetX <= 1280)
+            if (-1280 <= offsetX && offsetX < 1280)
             {
                 offsetX += 1280;
             }
