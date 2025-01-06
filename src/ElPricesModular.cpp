@@ -5,8 +5,10 @@
 #include "ElPricesModular.h"
 
 #include <iostream>
+#include <LeGUILib/GUIElements/Text.h>
 
-#include "raylib.h"
+
+#include "LeGUILib/LeGUILib.h"
 #include "Utility/TimeUtil.h"
 
 ElPricesModular::ElPricesModular() : elPricesCollector_(std::make_shared<ElPricesCollector>()),
@@ -16,7 +18,11 @@ ElPricesModular::ElPricesModular() : elPricesCollector_(std::make_shared<ElPrice
 
 void ElPricesModular::launch()
 {
+    auto lib = std::make_shared<LeGUILib>();
+    auto text = lib->createElement<Text>();
+    text->setText("ElPricesModular");
 
+    lib->launchGUI();
 }
 
 std::string ElPricesModular::getCurrentTime()
