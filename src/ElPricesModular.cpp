@@ -16,40 +16,7 @@ ElPricesModular::ElPricesModular() : elPricesCollector_(std::make_shared<ElPrice
 
 void ElPricesModular::launch()
 {
-    SetConfigFlags(FLAG_MSAA_4X_HINT);
-    SetTargetFPS(10);
-    InitWindow(1280, 720, "ElPricesModular");
-    int offsetX = 0;
-    int offsetY = 0;
-    //ToggleFullscreen();
-    while (not WindowShouldClose())
-    {
 
-        if (IsGestureDetected(GESTURE_SWIPE_LEFT))
-        {
-            if (-1280 < offsetX && offsetX <= 1280)
-            {
-                offsetX -= 1280;
-            }
-        }
-        if (IsGestureDetected(GESTURE_SWIPE_RIGHT))
-        {
-            if (-1280 <= offsetX && offsetX < 1280)
-            {
-                offsetX += 1280;
-            }
-        }
-
-
-
-        BeginDrawing();
-        ClearBackground(BLACK);
-        drawMainScreen(offsetX,offsetY,40);
-        drawConfigScreen(offsetX,offsetY,40);
-        drawFeesOverview(offsetX,offsetY,40);
-        DrawText(getCurrentTime().c_str(),50,50,40,WHITE);
-        EndDrawing();
-    }
 }
 
 std::string ElPricesModular::getCurrentTime()
@@ -68,31 +35,6 @@ std::string ElPricesModular::getCurrentTime()
     }
     time.append(std::to_string(timeNow.tm_min));
     return time;
-}
-
-void ElPricesModular::drawMainScreen(int offsetX, int offsetY, int fontSize)
-{
-    DrawText(TextFormat("Current Raw Price: %d", elPricesCollector_->getCurrentPrice()->getPriceWithoutFees()),offsetX + 350,offsetY + 15,40,WHITE);
-    DrawText(TextFormat("Current Fees: %d", elPricesCollector_->getCurrentPrice()->getFees()),offsetX + 350,offsetY + 55,40,WHITE);
-    drawPriceLastSeconds(offsetX + 500,offsetY + 50,40,5);
-    drawPriceLastSeconds(offsetX + 500,offsetY + 150,40,20);
-    drawPriceLastSeconds(offsetX + 500, offsetY + 250,40,60);
-}
-
-void ElPricesModular::drawConfigScreen(int offsetX, int offsetY, int fontSize)
-{
-    DrawText("Config Variables:",offsetX + -780,offsetY + 15,fontSize,WHITE);
-}
-
-void ElPricesModular::drawFeesOverview(int offsetX, int offsetY, int fontSize)
-{
-    DrawText("Fees:",offsetX + 1700,offsetY + 15,fontSize,WHITE);
-}
-
-void ElPricesModular::drawPriceLastSeconds(int x, int y, int fontSize, int seconds)
-{
-    const double dkkPrice = getUsageInDKKFromInterval(seconds);
-    DrawText(TextFormat("DKK-CENT Used last: %d seconds: %.2f", seconds,dkkPrice/100), x - 40, y + 50, fontSize, WHITE);
 }
 
 double ElPricesModular::getUsageInDKKFromInterval(const int seconds)

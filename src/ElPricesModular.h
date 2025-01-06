@@ -16,10 +16,6 @@ public:
     void launch();
 private:
     std::string getCurrentTime();
-    void drawMainScreen(int offsetX, int offsetY, int fontSize);
-    void drawConfigScreen(int offsetX, int offsetY, int fontSize);
-    void drawFeesOverview(int offsetX, int offsetY, int fontSize);
-    void drawPriceLastSeconds(int x, int y, int fontSize, int seconds);
     double getUsageInDKKFromInterval(int seconds);
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
     std::shared_ptr<ElPricesUsageController> elPriceUsageController_;
