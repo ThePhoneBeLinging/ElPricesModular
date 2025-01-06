@@ -15,6 +15,7 @@ public:
     ElPricesModular();
     void launch();
 private:
+    std::string getCurrentTime();
     void drawMainScreen(int offsetX, int offsetY, int fontSize);
     void drawConfigScreen(int offsetX, int offsetY, int fontSize);
     void drawFeesOverview(int offsetX, int offsetY, int fontSize);

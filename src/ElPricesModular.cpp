@@ -47,8 +47,27 @@ void ElPricesModular::launch()
         drawMainScreen(offsetX,offsetY,40);
         drawConfigScreen(offsetX,offsetY,40);
         drawFeesOverview(offsetX,offsetY,40);
+        DrawText(getCurrentTime().c_str(),50,50,40,WHITE);
         EndDrawing();
     }
+}
+
+std::string ElPricesModular::getCurrentTime()
+{
+    std::string time;
+    auto timeNow = TimeUtil::getCurrentTime();
+    if (timeNow.tm_hour < 10)
+    {
+        time.append("0");
+    }
+    time.append(std::to_string(timeNow.tm_hour));
+    time.append(":");
+    if (timeNow.tm_min < 10)
+    {
+        time.append("0");
+    }
+    time.append(std::to_string(timeNow.tm_min));
+    return time;
 }
 
 void ElPricesModular::drawMainScreen(int offsetX, int offsetY, int fontSize)
