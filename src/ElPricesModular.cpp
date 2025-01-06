@@ -21,6 +21,10 @@ void ElPricesModular::launch()
     auto lib = std::make_shared<LeGUILib>();
     auto text = lib->createElement<Text>();
     text->setText("ElPricesModular");
+    text->setFontSize(40);
+    text->setX(50);
+    text->setY(50);
+    text->setColor(255,0,0);
 
     lib->launchGUI();
 }
