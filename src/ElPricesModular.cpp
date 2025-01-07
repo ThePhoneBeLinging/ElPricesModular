@@ -9,6 +9,7 @@
 #include <LeGUILib/GUIElements/Text.h>
 
 
+#include "../dependencies/LeGUILib/src/GUIElements/ImageElement.h"
 #include "LeGUILib/LeGUILib.h"
 #include "Utility/TimeUtil.h"
 
@@ -27,10 +28,11 @@ void ElPricesModular::launch()
     text->setY(50);
     text->setColor(255,0,0);
 
-    auto rectangle = lib->createElement<RectangleElement>();
+    auto rectangle = lib->createElement<ImageElement>();
     rectangle->setColor(255,0,0);
-    rectangle->setWidth(50);
-    rectangle->setHeight(50);
+    rectangle->setWidth(200);
+    rectangle->setHeight(200);
+    rectangle->loadImage("../../Resources/pic.png");
 
     lib->launchGUI();
 }
