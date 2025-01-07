@@ -28,11 +28,10 @@ void ElPricesModular::launch()
     text->setY(50);
     text->setColor(255,0,0);
 
-    auto rectangle = lib->createElement<ImageElement>();
+    auto rectangle = lib->createElement<RectangleElement>();
     rectangle->setColor(255,0,0);
     rectangle->setWidth(200);
     rectangle->setHeight(200);
-    rectangle->loadImage("../../Resources/pic.png");
 
     lib->launchGUI();
 }
