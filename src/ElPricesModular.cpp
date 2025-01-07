@@ -5,6 +5,7 @@
 #include "ElPricesModular.h"
 
 #include <iostream>
+#include <LeGUILib/GUIElements/RectangleElement.h>
 #include <LeGUILib/GUIElements/Text.h>
 
 
@@ -25,6 +26,11 @@ void ElPricesModular::launch()
     text->setX(50);
     text->setY(50);
     text->setColor(255,0,0);
+
+    auto rectangle = lib->createElement<RectangleElement>();
+    rectangle->setColor(255,0,0);
+    rectangle->setWidth(50);
+    rectangle->setHeight(50);
 
     lib->launchGUI();
 }
