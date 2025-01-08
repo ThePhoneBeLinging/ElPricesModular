@@ -9,7 +9,7 @@
 #include <LeGUILib/GUIElements/Text.h>
 
 
-#include "../dependencies/LeGUILib/src/GUIElements/ImageElement.h"
+#include "LeGUILib/GUIElements/ImageElement.h"
 #include "LeGUILib/LeGUILib.h"
 #include "Utility/TimeUtil.h"
 
