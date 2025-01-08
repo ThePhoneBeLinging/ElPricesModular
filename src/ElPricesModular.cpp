@@ -7,14 +7,11 @@
 #include <iostream>
 #include <LeGUILib/GUIElements/RectangleElement.h>
 #include <LeGUILib/GUIElements/Text.h>
-
-
-#include "LeGUILib/GUIElements/ImageElement.h"
 #include "LeGUILib/LeGUILib.h"
 #include "Utility/TimeUtil.h"
 
-ElPricesModular::ElPricesModular() : elPricesCollector_(std::make_shared<ElPricesCollector>()),
-                                     elPriceUsageController_(std::make_shared<ElPricesUsageController>())
+ElPricesModular::ElPricesModular() //: elPricesCollector_(std::make_shared<ElPricesCollector>()),
+                                     //elPriceUsageController_(std::make_shared<ElPricesUsageController>())
 {
 }
 
