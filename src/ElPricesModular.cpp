@@ -24,8 +24,12 @@ void ElPricesModular::launch()
     text->setX(50);
     text->setY(50);
     text->setColor(255,0,0);
-
+    auto lamdba = [] ()
+    {
+        std::cout << "HELLO WORLD" << std::endl;
+    };
     auto rectangle = lib->createElement<RectangleElement>();
+    rectangle->setOnClick(lamdba);
     rectangle->setColor(255,0,0);
     rectangle->setWidth(200);
     rectangle->setHeight(200);
