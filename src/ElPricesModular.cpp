@@ -18,9 +18,14 @@ ElPricesModular::ElPricesModular() //: elPricesCollector_(std::make_shared<ElPri
 void ElPricesModular::launch()
 {
     auto lib = std::make_shared<LeGUILib>();
-    auto slide = lib->getSlide();
-    auto text = slide->createElement<Text>();
-    text->setText("ElPricesModular");
+    auto slideLeft = std::make_shared<Slide>();
+    auto slideRight = std::make_shared<Slide>();
+    auto slideMiddle = std::make_shared<Slide>();
+    lib->addSlide(slideLeft);
+    lib->addSlide(slideMiddle);
+    lib->addSlide(slideRight);
+    auto text = slideLeft->createElement<Text>();
+    text->setText("Left-Slide");
     text->setFontSize(40);
     text->setX(50);
     text->setY(50);
@@ -29,12 +34,18 @@ void ElPricesModular::launch()
     {
         std::cout << "HELLO WORLD" << std::endl;
     };
-    auto rectangle = slide->createElement<RectangleElement>();
+    auto rectangle = slideMiddle->createElement<RectangleElement>();
     rectangle->setOnClick(lamdba);
     rectangle->setColor(255,0,0);
     rectangle->setWidth(200);
     rectangle->setHeight(200);
     rectangle->setZ(1);
+    auto otherText = slideRight->createElement<Text>();
+    otherText->setText("Right-Slide");
+    otherText->setFontSize(40);
+    otherText->setX(50);
+    otherText->setY(50);
+    otherText->setColor(255,0,0);
 
     lib->launchGUI();
 }
