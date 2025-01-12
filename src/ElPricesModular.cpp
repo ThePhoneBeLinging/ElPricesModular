@@ -8,46 +8,51 @@
 #include <LeGUILib/GUIElements/RectangleElement.h>
 #include <LeGUILib/GUIElements/Text.h>
 #include "LeGUILib/LeGUILib.h"
+#include "Utility/ConfigController.h"
 #include "Utility/TimeUtil.h"
 
-ElPricesModular::ElPricesModular() //: elPricesCollector_(std::make_shared<ElPricesCollector>()),
+ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>())// elPricesCollector_(std::make_shared<ElPricesCollector>()),
                                      //elPriceUsageController_(std::make_shared<ElPricesUsageController>())
 {
 }
 
 void ElPricesModular::launch()
 {
-    auto lib = std::make_shared<LeGUILib>();
-    auto slideLeft = std::make_shared<Slide>();
-    auto slideRight = std::make_shared<Slide>();
-    auto slideMiddle = std::make_shared<Slide>();
-    lib->addSlide(slideLeft);
-    lib->addSlide(slideMiddle);
-    lib->addSlide(slideRight);
-    auto text = slideLeft->createElement<Text>();
-    text->setText("Left-Slide");
-    text->setFontSize(40);
-    text->setX(50);
-    text->setY(50);
-    text->setColor(255,0,0);
-    auto lamdba = [] ()
-    {
-        std::cout << "HELLO WORLD" << std::endl;
-    };
-    auto rectangle = slideMiddle->createElement<RectangleElement>();
-    rectangle->setOnClick(lamdba);
-    rectangle->setColor(255,0,0);
-    rectangle->setWidth(200);
-    rectangle->setHeight(200);
-    rectangle->setZ(1);
-    auto otherText = slideRight->createElement<Text>();
-    otherText->setText("Right-Slide");
-    otherText->setFontSize(40);
-    otherText->setX(50);
-    otherText->setY(50);
-    otherText->setColor(255,0,0);
+    int screenWidth = 1280;
+    int screenHeight = 720;
 
-    lib->launchGUI();
+    //
+    // Creating config slide:
+    //
+    auto configSlide = std::make_shared<Slide>();
+    leGUILib_->addSlide(configSlide);
+    auto reloadConfigLambda =  []
+    {
+        ConfigController::loadConfig("../../Resources/config.json");
+    };
+    auto reloadConfigButton = configSlide->createElement<RectangleElement>();
+    reloadConfigButton->setHeight(75);
+    reloadConfigButton->setWidth(250);
+    reloadConfigButton->setX((screenWidth - reloadConfigButton->getWidth()) / 2);
+    int margin = 15;
+    reloadConfigButton->setY(screenHeight - reloadConfigButton->getHeight() - margin);
+    reloadConfigButton->setOnClick(reloadConfigLambda);
+    reloadConfigButton->setRoundedEdge(0.25);
+    auto reloadConfigButtonText = configSlide->createElement<Text>();
+    reloadConfigButtonText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 15);
+    reloadConfigButtonText->setY(screenHeight - (reloadConfigButton->getHeight()/2) - margin - 13);
+    reloadConfigButtonText->setText("Reload Config File");
+    reloadConfigButtonText->setFontSize(25);
+    reloadConfigButtonText->setColor(255,255,255);
+    reloadConfigButton->setColor(0, 0, 0);
+    auto titleText = configSlide->createElement<Text>();
+    titleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 10);
+    titleText->setText("Config Tab");
+    titleText->setY(15);
+    titleText->setColor(0,0,0);
+    titleText->setFontSize(40);
+
+    leGUILib_->launchGUI();
 }
 
 std::string ElPricesModular::getCurrentTime()

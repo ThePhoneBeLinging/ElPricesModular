@@ -5,6 +5,7 @@
 #ifndef ELPRICESMODULAR_H
 #define ELPRICESMODULAR_H
 #include <ElPricesUsageController/ElPricesUsageController.h>
+#include <LeGUILib/LeGUILib.h>
 
 #include "ElPricesCollector/ElPricesCollector.h"
 
@@ -17,6 +18,7 @@ public:
 private:
     std::string getCurrentTime();
     double getUsageInDKKFromInterval(int seconds);
+    std::unique_ptr<LeGUILib> leGUILib_;
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
     std::shared_ptr<ElPricesUsageController> elPriceUsageController_;
 };
