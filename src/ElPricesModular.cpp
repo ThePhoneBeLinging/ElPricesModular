@@ -11,7 +11,7 @@
 #include "Utility/ConfigController.h"
 #include "Utility/TimeUtil.h"
 
-ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>())// elPricesCollector_(std::make_shared<ElPricesCollector>()),
+ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>()), elPricesCollector_(std::make_shared<ElPricesCollector>())
                                      //elPriceUsageController_(std::make_shared<ElPricesUsageController>())
 {
 }
@@ -98,21 +98,28 @@ void ElPricesModular::launch()
     auto mainSlide = std::make_shared<Slide>();
     leGUILib_->addSlide(mainSlide);
     auto mainTitleText = mainSlide->createElement<Text>();
-    mainTitleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 80);
+    mainTitleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 75);
     mainTitleText->setText(getCurrentTime());
     mainTitleText->setY(15);
     mainTitleText->setColor(0,0,0); // SET COLOR
     mainTitleText->setFontSize(40);
 
+    auto currentPriceText = mainSlide->createElement<Text>();
+    currentPriceText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 - 170);
+    currentPriceText->setY(75);
+    currentPriceText->setColor(0,0,0); // SET COLOR
+    currentPriceText->setFontSize(40);
+
     //
     // END OF MAIN SLIDE
     //
     std::atomic_bool keepRunning = true;
-    auto updateFunction = [mainTitleText, this, &keepRunning] ()
+    auto updateFunction = [mainTitleText, currentPriceText, this, &keepRunning] ()
     {
         while (keepRunning)
         {
             mainTitleText->setText(getCurrentTime());
+            currentPriceText->setText(TextFormat("Current Price: %.2f KR/KWH",static_cast<double>(elPricesCollector_->getCurrentPrice()->getTotalPrice()) / 10000));
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     };
