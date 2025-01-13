@@ -23,7 +23,7 @@ void ElPricesModular::launch()
     int margin = 15;
 
     //
-    // Creating config slide:
+    // START OF CONFIG SLIDE
     //
 
     auto configSlide = std::make_shared<Slide>();
@@ -81,18 +81,47 @@ void ElPricesModular::launch()
     reloadConfigButtonText->setColor(255,255,255); // SET COLOR
     reloadConfigButton->setColor(0, 0, 0);
 
-    auto titleText = configSlide->createElement<Text>();
-    titleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 10);
-    titleText->setText("Config Tab");
-    titleText->setY(15);
-    titleText->setColor(0,0,0); // SET COLOR
-    titleText->setFontSize(40);
+    auto configTitleText = configSlide->createElement<Text>();
+    configTitleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 10);
+    configTitleText->setText("Config Tab");
+    configTitleText->setY(15);
+    configTitleText->setColor(0,0,0); // SET COLOR
+    configTitleText->setFontSize(40);
 
     //
     // END OF CONFIG SLIDE
     //
 
+    //
+    // START OF MAIN SLIDE
+    //
+    auto mainSlide = std::make_shared<Slide>();
+    leGUILib_->addSlide(mainSlide);
+    auto mainTitleText = mainSlide->createElement<Text>();
+    mainTitleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 80);
+    mainTitleText->setText(getCurrentTime());
+    mainTitleText->setY(15);
+    mainTitleText->setColor(0,0,0); // SET COLOR
+    mainTitleText->setFontSize(40);
+
+    //
+    // END OF MAIN SLIDE
+    //
+    std::atomic_bool keepRunning = true;
+    auto updateFunction = [mainTitleText, this, &keepRunning] ()
+    {
+        while (keepRunning)
+        {
+            mainTitleText->setText(getCurrentTime());
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        }
+    };
+    auto updateThread = std::thread(updateFunction);
+
+
     leGUILib_->launchGUI();
+    keepRunning = false;
+    updateThread.join();
 }
 
 std::string ElPricesModular::getCurrentTime()
@@ -110,6 +139,12 @@ std::string ElPricesModular::getCurrentTime()
         time.append("0");
     }
     time.append(std::to_string(timeNow.tm_min));
+    time.append(":");
+    if (timeNow.tm_sec < 10)
+    {
+        time.append("0");
+    }
+    time.append(std::to_string(timeNow.tm_sec));
     return time;
 }
 
