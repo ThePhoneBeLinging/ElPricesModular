@@ -20,36 +20,70 @@ void ElPricesModular::launch()
 {
     int screenWidth = 1280;
     int screenHeight = 720;
-
+    int margin = 15;
     //
     // Creating config slide:
     //
     auto configSlide = std::make_shared<Slide>();
     leGUILib_->addSlide(configSlide);
-    auto reloadConfigLambda =  []
+
+    std::vector<std::shared_ptr<Text>> configKeys;
+    std::vector<std::shared_ptr<Text>> configValues;
+
+    int y = 65;
+    for (const auto& element : ConfigController::getConfigList())
+    {
+        auto keyText = configSlide->createElement<Text>();
+        keyText->setX(margin);
+        keyText->setY(y);
+        keyText->setFontSize(40);
+        keyText->setColor(0,0,0); // SET COLOR
+        keyText->setText(element.first + ":");
+
+        auto valueText = configSlide->createElement<Text>();
+        valueText->setX(screenWidth - margin - 100);
+        valueText->setY(y);
+        valueText->setFontSize(40);
+        valueText->setColor(0,0,0); // SET COLOR
+        valueText->setText(element.second);
+
+        configKeys.push_back(keyText);
+        configValues.push_back(valueText);
+        y += 50;
+    }
+
+    auto reloadConfigLambda =  [configValues]
     {
         ConfigController::loadConfig("../../Resources/config.json");
+        const auto configList = ConfigController::getConfigList();
+        for (int i = 0; i < configValues.size(); i++)
+        {
+            configValues[i]->setText(configList[i].second);
+        }
     };
     auto reloadConfigButton = configSlide->createElement<RectangleElement>();
     reloadConfigButton->setHeight(75);
     reloadConfigButton->setWidth(250);
     reloadConfigButton->setX((screenWidth - reloadConfigButton->getWidth()) / 2);
-    int margin = 15;
+
+
     reloadConfigButton->setY(screenHeight - reloadConfigButton->getHeight() - margin);
     reloadConfigButton->setOnClick(reloadConfigLambda);
     reloadConfigButton->setRoundedEdge(0.25);
+
     auto reloadConfigButtonText = configSlide->createElement<Text>();
     reloadConfigButtonText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 15);
     reloadConfigButtonText->setY(screenHeight - (reloadConfigButton->getHeight()/2) - margin - 13);
     reloadConfigButtonText->setText("Reload Config File");
     reloadConfigButtonText->setFontSize(25);
-    reloadConfigButtonText->setColor(255,255,255);
+    reloadConfigButtonText->setColor(255,255,255); // SET COLOR
     reloadConfigButton->setColor(0, 0, 0);
+
     auto titleText = configSlide->createElement<Text>();
     titleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 10);
     titleText->setText("Config Tab");
     titleText->setY(15);
-    titleText->setColor(0,0,0);
+    titleText->setColor(0,0,0); // SET COLOR
     titleText->setFontSize(40);
 
     leGUILib_->launchGUI();
