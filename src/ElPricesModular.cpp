@@ -21,9 +21,11 @@ void ElPricesModular::launch()
     int screenWidth = 1280;
     int screenHeight = 720;
     int margin = 15;
+
     //
     // Creating config slide:
     //
+
     auto configSlide = std::make_shared<Slide>();
     leGUILib_->addSlide(configSlide);
 
@@ -85,6 +87,10 @@ void ElPricesModular::launch()
     titleText->setY(15);
     titleText->setColor(0,0,0); // SET COLOR
     titleText->setFontSize(40);
+
+    //
+    // END OF CONFIG SLIDE
+    //
 
     leGUILib_->launchGUI();
 }
