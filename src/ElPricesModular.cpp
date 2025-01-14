@@ -5,6 +5,7 @@
 #include "ElPricesModular.h"
 
 #include <iostream>
+#include <LeGUILib/GUIElements/ImageElement.h>
 #include <LeGUILib/GUIElements/RectangleElement.h>
 #include <LeGUILib/GUIElements/Text.h>
 #include "LeGUILib/LeGUILib.h"
@@ -97,6 +98,13 @@ void ElPricesModular::launch()
     //
     auto mainSlide = std::make_shared<Slide>();
     leGUILib_->addSlide(mainSlide);
+
+    auto mainBackgroundImage = mainSlide->createElement<ImageElement>();
+    mainBackgroundImage->setWidth(screenWidth);
+    mainBackgroundImage->setHeight(screenHeight);
+    mainBackgroundImage->setColor(0,0,0);
+    mainBackgroundImage->loadImage("../../Resources/bliss.png");
+
     auto mainTitleText = mainSlide->createElement<Text>();
     mainTitleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 75);
     mainTitleText->setText(getCurrentTime());
@@ -119,6 +127,9 @@ void ElPricesModular::launch()
     //
     // END OF MAIN SLIDE
     //
+
+
+
     std::atomic_bool keepRunning = true;
     auto updateFunction = [mainTitleText, currentPriceText, currentUsageText, this, &keepRunning] ()
     {
