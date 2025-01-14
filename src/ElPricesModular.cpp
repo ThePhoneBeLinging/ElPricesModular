@@ -11,8 +11,8 @@
 #include "Utility/ConfigController.h"
 #include "Utility/TimeUtil.h"
 
-ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>()), elPricesCollector_(std::make_shared<ElPricesCollector>())
-                                     //elPriceUsageController_(std::make_shared<ElPricesUsageController>())
+ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>()), elPricesCollector_(std::make_shared<ElPricesCollector>()),
+                                     elPriceUsageController_(std::make_shared<ElPricesUsageController>())
 {
 }
 
@@ -110,16 +110,23 @@ void ElPricesModular::launch()
     currentPriceText->setColor(0,0,0); // SET COLOR
     currentPriceText->setFontSize(40);
 
+    auto currentUsageText = mainSlide->createElement<Text>();
+    currentUsageText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 - 170);
+    currentUsageText->setY(125);
+    currentUsageText->setColor(0,0,0); // SET COLOR
+    currentUsageText->setFontSize(40);
+
     //
     // END OF MAIN SLIDE
     //
     std::atomic_bool keepRunning = true;
-    auto updateFunction = [mainTitleText, currentPriceText, this, &keepRunning] ()
+    auto updateFunction = [mainTitleText, currentPriceText, currentUsageText, this, &keepRunning] ()
     {
         while (keepRunning)
         {
             mainTitleText->setText(getCurrentTime());
             currentPriceText->setText(TextFormat("Current Price: %.2f KR/KWH",static_cast<double>(elPricesCollector_->getCurrentPrice()->getTotalPrice()) / 10000));
+            currentUsageText->setText(TextFormat("Current Usage: %.3f KW",elPriceUsageController_->getWattage()));
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     };
