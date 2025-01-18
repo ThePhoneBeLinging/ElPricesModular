@@ -12,14 +12,20 @@ BoxWith3Texts::BoxWith3Texts(Slide* slide)
     topText_->setText("Title Text");
     topText_->setColor(255,255,255);
     topText_->setFontSize(64);
+    topText_->setAlignment(1);
+    topText_->setWidth(400);
     middleText_ = slide->createElement<Text>();
     middleText_->setText("Middle Text");
     middleText_->setColor(255,255,255);
     middleText_->setFontSize(170);
+    middleText_->setAlignment(1);
+    middleText_->setWidth(400);
     bottomText_ = slide->createElement<Text>();
     bottomText_->setText("Bottom Text");
     bottomText_->setColor(255,255,255);
     bottomText_->setFontSize(64);
+    bottomText_->setAlignment(1);
+    bottomText_->setWidth(400);
 }
 
 void BoxWith3Texts::setX(int x) const
