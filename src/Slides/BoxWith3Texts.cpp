@@ -30,7 +30,6 @@ BoxWith3Texts::BoxWith3Texts(Slide* slide)
 
 void BoxWith3Texts::setX(int x) const
 {
-    //TODO Do some offsetthig here
     boxBackground_->setX(x);
     topText_->setX(x);
     middleText_->setX(x);
