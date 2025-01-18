@@ -9,6 +9,7 @@
 #include <LeGUILib/GUIElements/RectangleElement.h>
 #include <LeGUILib/GUIElements/Text.h>
 #include "LeGUILib/LeGUILib.h"
+#include "Slides/MainSlide.h"
 #include "Utility/ConfigController.h"
 #include "Utility/TimeUtil.h"
 
@@ -23,130 +24,10 @@ void ElPricesModular::launch()
     int screenHeight = 720;
     int margin = 15;
 
-    //
-    // START OF CONFIG SLIDE
-    //
-
-    auto configSlide = std::make_shared<Slide>();
-    leGUILib_->addSlide(configSlide);
-
-    std::vector<std::shared_ptr<Text>> configKeys;
-    std::vector<std::shared_ptr<Text>> configValues;
-
-    int y = 65;
-    for (const auto& element : ConfigController::getConfigList())
-    {
-        auto keyText = configSlide->createElement<Text>();
-        keyText->setX(margin);
-        keyText->setY(y);
-        keyText->setFontSize(40);
-        keyText->setColor(0,0,0); // SET COLOR
-        keyText->setText(element.first + ":");
-
-        auto valueText = configSlide->createElement<Text>();
-        valueText->setX(screenWidth - margin - 100);
-        valueText->setY(y);
-        valueText->setFontSize(40);
-        valueText->setColor(0,0,0); // SET COLOR
-        valueText->setText(element.second);
-
-        configKeys.push_back(keyText);
-        configValues.push_back(valueText);
-        y += 50;
-    }
-
-    auto reloadConfigLambda =  [configValues]
-    {
-        ConfigController::loadConfig("../../Resources/config.json");
-        const auto configList = ConfigController::getConfigList();
-        for (int i = 0; i < configValues.size(); i++)
-        {
-            configValues[i]->setText(configList[i].second);
-        }
-    };
-    auto reloadConfigButton = configSlide->createElement<RectangleElement>();
-    reloadConfigButton->setHeight(75);
-    reloadConfigButton->setWidth(250);
-    reloadConfigButton->setX((screenWidth - reloadConfigButton->getWidth()) / 2);
-
-
-    reloadConfigButton->setY(screenHeight - reloadConfigButton->getHeight() - margin);
-    reloadConfigButton->setOnClick(reloadConfigLambda);
-    reloadConfigButton->setRoundedEdge(0.25);
-
-    auto reloadConfigButtonText = configSlide->createElement<Text>();
-    reloadConfigButtonText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 15);
-    reloadConfigButtonText->setY(screenHeight - (reloadConfigButton->getHeight()/2) - margin - 13);
-    reloadConfigButtonText->setText("Reload Config File");
-    reloadConfigButtonText->setFontSize(25);
-    reloadConfigButtonText->setColor(255,255,255); // SET COLOR
-    reloadConfigButton->setColor(0, 0, 0);
-
-    auto configTitleText = configSlide->createElement<Text>();
-    configTitleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 10);
-    configTitleText->setText("Config Tab");
-    configTitleText->setY(15);
-    configTitleText->setColor(0,0,0); // SET COLOR
-    configTitleText->setFontSize(40);
-
-    //
-    // END OF CONFIG SLIDE
-    //
-
-    //
-    // START OF MAIN SLIDE
-    //
-    auto mainSlide = std::make_shared<Slide>();
+    auto mainSlide = std::make_shared<MainSlide>();
     leGUILib_->addSlide(mainSlide);
-
-    auto mainBackgroundImage = mainSlide->createElement<ImageElement>();
-    mainBackgroundImage->setWidth(screenWidth);
-    mainBackgroundImage->setHeight(screenHeight);
-    mainBackgroundImage->setColor(0,0,0);
-    mainBackgroundImage->loadImage("../../Resources/bliss.png");
-
-    auto mainTitleText = mainSlide->createElement<Text>();
-    mainTitleText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 + 75);
-    mainTitleText->setText(getCurrentTime());
-    mainTitleText->setY(15);
-    mainTitleText->setColor(0,0,0); // SET COLOR
-    mainTitleText->setFontSize(40);
-
-    auto currentPriceText = mainSlide->createElement<Text>();
-    currentPriceText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 - 170);
-    currentPriceText->setY(75);
-    currentPriceText->setColor(0,0,0); // SET COLOR
-    currentPriceText->setFontSize(40);
-
-    auto currentUsageText = mainSlide->createElement<Text>();
-    currentUsageText->setX((screenWidth - reloadConfigButton->getWidth()) / 2 - 170);
-    currentUsageText->setY(125);
-    currentUsageText->setColor(0,0,0); // SET COLOR
-    currentUsageText->setFontSize(40);
-
-    //
-    // END OF MAIN SLIDE
-    //
-
-
-
-    std::atomic_bool keepRunning = true;
-    auto updateFunction = [mainTitleText, currentPriceText, currentUsageText, this, &keepRunning] ()
-    {
-        while (keepRunning)
-        {
-            mainTitleText->setText(getCurrentTime());
-            currentPriceText->setText(TextFormat("Current Price: %.2f KR/KWH",static_cast<double>(elPricesCollector_->getCurrentPrice()->getTotalPrice()) / 10000));
-            currentUsageText->setText(TextFormat("Current Usage: %.3f KW",elPriceUsageController_->getWattage()));
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        }
-    };
-    auto updateThread = std::thread(updateFunction);
-
-
+    mainSlide->compose();
     leGUILib_->launchGUI();
-    keepRunning = false;
-    updateThread.join();
 }
 
 std::string ElPricesModular::getCurrentTime()
