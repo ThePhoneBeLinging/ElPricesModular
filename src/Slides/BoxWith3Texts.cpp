@@ -42,7 +42,7 @@ void BoxWith3Texts::setY(int y) const
     boxBackground_->setY(y);
     topText_->setY(y + 15);
     middleText_->setY(y + 100);
-    bottomText_->setY(y + 270);
+    bottomText_->setY(y + 250);
 }
 
 void BoxWith3Texts::setTopText(const std::string& text)
