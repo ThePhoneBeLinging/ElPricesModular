@@ -11,6 +11,5 @@ add_executable(ElPricesModular main.cpp
 target_link_libraries(ElPricesModular PUBLIC ElPricesCollector)
 target_link_libraries(ElPricesModular PUBLIC ElPricesUsageController)
 target_link_libraries(ElPricesModular PUBLIC Utility)
-target_link_libraries(ElPricesModular PUBLIC raylib)
 target_link_libraries(ElPricesModular PUBLIC SQLiteCpp)
 target_link_libraries(ElPricesModular PUBLIC LeGUILib)
