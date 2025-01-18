@@ -4,6 +4,8 @@
 
 #ifndef MAINSLIDE_H
 #define MAINSLIDE_H
+#include <LeGUILib/GUIElements/ImageElement.h>
+
 #include "BoxWith3Texts.h"
 #include "SlideTemplate.h"
 
@@ -14,6 +16,7 @@ public:
     MainSlide();
     void compose();
 private:
+    std::shared_ptr<ImageElement> background_;
     std::shared_ptr<BoxWith3Texts> topLeftBox_;
     std::shared_ptr<BoxWith3Texts> topRigthBox_;
 

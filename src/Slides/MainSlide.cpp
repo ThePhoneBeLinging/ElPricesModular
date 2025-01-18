@@ -17,6 +17,11 @@ MainSlide::MainSlide()
     topLeftBox_->setTopText("Pris");
     topLeftBox_->setMiddleText("15.01");
     topLeftBox_->setBottomText("KR | KwH");
+    background_ = createElement<ImageElement>();
+    background_->setWidth(1280);
+    background_->setHeight(720);
+    background_->loadImage("../../Resources/bliss.png");
+    background_->setZ(-100);
 }
 
 void MainSlide::compose()
