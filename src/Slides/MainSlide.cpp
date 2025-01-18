@@ -3,10 +3,7 @@
 //
 
 #include "MainSlide.h"
-
 #include <LeGUILib/GUIElements/Text.h>
-
-#include "BoxBackground.h"
 #include "BoxWith3Texts.h"
 
 MainSlide::MainSlide()
@@ -17,10 +14,9 @@ MainSlide::MainSlide()
     topRigthBox_->setY(21);
     topLeftBox_->setX(20);
     topLeftBox_->setY(20);
-    topLeftBox_->setTopText("Title");
+    topLeftBox_->setTopText("Pris");
     topLeftBox_->setMiddleText("15.01");
     topLeftBox_->setBottomText("KR | KwH");
-
 }
 
 void MainSlide::compose()

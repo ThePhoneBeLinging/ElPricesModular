@@ -10,7 +10,6 @@
 #include <LeGUILib/GUIElements/Text.h>
 #include "LeGUILib/LeGUILib.h"
 #include "Slides/MainSlide.h"
-#include "Utility/ConfigController.h"
 #include "Utility/TimeUtil.h"
 
 ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>()), elPricesCollector_(std::make_shared<ElPricesCollector>()),
