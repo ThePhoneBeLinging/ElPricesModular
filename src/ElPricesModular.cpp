@@ -29,29 +29,7 @@ void ElPricesModular::launch()
     leGUILib_->launchGUI();
 }
 
-std::string ElPricesModular::getCurrentTime()
-{
-    std::string time;
-    auto timeNow = TimeUtil::getCurrentTime();
-    if (timeNow.tm_hour < 10)
-    {
-        time.append("0");
-    }
-    time.append(std::to_string(timeNow.tm_hour));
-    time.append(":");
-    if (timeNow.tm_min < 10)
-    {
-        time.append("0");
-    }
-    time.append(std::to_string(timeNow.tm_min));
-    time.append(":");
-    if (timeNow.tm_sec < 10)
-    {
-        time.append("0");
-    }
-    time.append(std::to_string(timeNow.tm_sec));
-    return time;
-}
+
 
 double ElPricesModular::getUsageInDKKFromInterval(const int seconds)
 {

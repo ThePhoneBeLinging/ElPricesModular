@@ -14,11 +14,15 @@ MainSlide::MainSlide()
     background_->loadImage("../../Resources/bliss.png");
     background_->setZ(-100);
 
+    timeBox_ = std::make_shared<TimeBox>(this);
 
     topLeftBox_ = std::make_shared<BoxWith3Texts>(this);
     topRigthBox_ = std::make_shared<BoxWith3Texts>(this);
     bottomLeftBox_ = std::make_shared<BoxWith4Texts>(this);
     bottomRigthBox_ = std::make_shared<BoxWith4Texts>(this);
+
+    timeBox_->setX(440);
+    timeBox_->setY(20);
 
     topLeftBox_->setX(20);
     topLeftBox_->setY(20);
