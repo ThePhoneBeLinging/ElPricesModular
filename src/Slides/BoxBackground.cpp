@@ -4,10 +4,6 @@
 
 #include "BoxBackground.h"
 
-BoxBackground::BoxBackground()
-{
-}
-
 BoxBackground* BoxBackground::clone() const
 {
     return new BoxBackground(*this);
