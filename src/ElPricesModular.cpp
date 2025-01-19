@@ -22,11 +22,23 @@ void ElPricesModular::launch()
     int screenWidth = 1280;
     int screenHeight = 720;
     int margin = 15;
-
+    bool keepRunning_ = true;
     auto mainSlide = std::make_shared<MainSlide>();
     leGUILib_->addSlide(mainSlide);
-    mainSlide->compose();
+
+    auto update = [&keepRunning_, &mainSlide] () -> void
+    {
+        while (keepRunning_)
+        {
+            mainSlide->compose();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+    };
+    std::thread updateThread = std::thread(update);
+
     leGUILib_->launchGUI();
+    keepRunning_ = false;
+    updateThread.join();
 }
 
 

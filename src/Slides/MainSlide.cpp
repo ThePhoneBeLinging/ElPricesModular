@@ -27,32 +27,34 @@ MainSlide::MainSlide()
     topLeftBox_->setX(20);
     topLeftBox_->setY(20);
     topLeftBox_->setTopText("Pris");
-    topLeftBox_->setMiddleText("15.01");
     topLeftBox_->setBottomText("KR | KwH");
 
     topRigthBox_->setX(860);
     topRigthBox_->setY(20);
     topRigthBox_->setTopText("Forbrug");
-    topRigthBox_->setMiddleText("8.13");
     topRigthBox_->setBottomText("KW");
 
     bottomLeftBox_->setX(20);
     bottomLeftBox_->setY(370);
     bottomLeftBox_->setTopText("Forbrug");
     bottomLeftBox_->setText5("Sidste Time");
-    bottomLeftBox_->setMiddleText("8.13");
     bottomLeftBox_->setBottomText("KW");
 
     bottomRigthBox_->setX(860);
     bottomRigthBox_->setY(370);
     bottomRigthBox_->setTopText("Forbrug");
     bottomRigthBox_->setText5("Sidste Døgn");
-    bottomRigthBox_->setMiddleText("8.131");
+
     bottomRigthBox_->setBottomText("KW");
 
 
 }
 
-void MainSlide::compose()
+void MainSlide::compose() const
 {
+    topLeftBox_->setMiddleText("15.01");
+    topRigthBox_->setMiddleText("8.13");
+    bottomLeftBox_->setMiddleText("8.13");
+    bottomRigthBox_->setMiddleText("8.131");
+    timeBox_->compose();
 }

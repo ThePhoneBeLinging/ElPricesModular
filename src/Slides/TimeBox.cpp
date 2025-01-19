@@ -12,12 +12,16 @@ TimeBox::TimeBox(Slide* slide)
     background_->compose();
 
     text_ = slide->createElement<Text>();
-    text_->setText(getCurrentTime());
     text_->setColor(255,255,255);
     text_->setFontSize(170);
     text_->setAlignment(1);
     text_->setWidth(400);
 
+}
+
+void TimeBox::compose()
+{
+    text_->setText(getCurrentTime());
 }
 
 void TimeBox::setX(int x)

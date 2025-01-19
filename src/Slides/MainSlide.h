@@ -16,7 +16,7 @@ class MainSlide : public Slide
 {
 public:
     MainSlide();
-    void compose();
+    void compose() const;
 private:
     std::shared_ptr<ImageElement> background_;
     std::shared_ptr<BoxWith3Texts> topLeftBox_;

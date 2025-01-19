@@ -14,6 +14,7 @@ class TimeBox
 {
 public:
     explicit TimeBox(Slide* slide);
+    void compose();
     void setX(int x);
     void setY(int y);
     std::string getCurrentTime();
