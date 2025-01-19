@@ -26,11 +26,11 @@ void ElPricesModular::launch()
     auto mainSlide = std::make_shared<MainSlide>();
     leGUILib_->addSlide(mainSlide);
 
-    auto update = [&keepRunning_, &mainSlide] () -> void
+    auto update = [&keepRunning_, &mainSlide,this] () -> void
     {
         while (keepRunning_)
         {
-            mainSlide->compose();
+            mainSlide->compose(elPricesCollector_,elPriceUsageController_);
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     };

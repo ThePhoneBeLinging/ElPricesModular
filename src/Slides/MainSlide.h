@@ -4,6 +4,8 @@
 
 #ifndef MAINSLIDE_H
 #define MAINSLIDE_H
+#include <ElPricesCollector/ElPricesCollector.h>
+#include <ElPricesUsageController/ElPricesUsageController.h>
 #include <LeGUILib/GUIElements/ImageElement.h>
 
 #include "Elements/BoxWith3Texts.h"
@@ -16,7 +18,7 @@ class MainSlide : public Slide
 {
 public:
     MainSlide();
-    void compose() const;
+    void compose(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController) const;
 private:
     std::shared_ptr<ImageElement> background_;
     std::shared_ptr<BoxWith3Texts> topLeftBox_;
