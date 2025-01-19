@@ -17,7 +17,7 @@ BoxWith3Texts::BoxWith3Texts(Slide* slide)
     middleText_ = slide->createElement<Text>();
     middleText_->setText("Middle Text");
     middleText_->setColor(255,255,255);
-    middleText_->setFontSize(170);
+    middleText_->setFontSize(120);
     middleText_->setAlignment(1);
     middleText_->setWidth(400);
     bottomText_ = slide->createElement<Text>();
@@ -40,7 +40,7 @@ void BoxWith3Texts::setY(int y) const
 {
     boxBackground_->setY(y);
     topText_->setY(y + 15);
-    middleText_->setY(y + 80);
+    middleText_->setY(y + 105);
     bottomText_->setY(y + 250);
 }
 

@@ -60,7 +60,9 @@ void MainSlide::compose(const std::shared_ptr<ElPricesCollector>& collectorContr
 
     topLeftBox_->setMiddleText(priceRNString);
 
-    topRigthBox_->setMiddleText("8.13");
+    double usageRN = usageController->getWattage();
+    std::string usageRNString = std::format("{:.3f}",usageRN);
+    topRigthBox_->setMiddleText(usageRNString);
     bottomLeftBox_->setMiddleText("8.13");
     bottomRigthBox_->setMiddleText("8.131");
     timeBox_->compose();
