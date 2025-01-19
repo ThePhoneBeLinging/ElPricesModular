@@ -7,6 +7,7 @@
 #include <iostream>
 #include <LeGUILib/GUIElements/Text.h>
 #include "Elements/BoxWith3Texts.h"
+#include "Utility/TimeUtil.h"
 
 MainSlide::MainSlide()
 {
@@ -40,14 +41,14 @@ MainSlide::MainSlide()
     bottomLeftBox_->setY(370);
     bottomLeftBox_->setTopText("Forbrug");
     bottomLeftBox_->setText5("Sidste Time");
-    bottomLeftBox_->setBottomText("KW");
+    bottomLeftBox_->setBottomText("Kr");
 
     bottomRigthBox_->setX(860);
     bottomRigthBox_->setY(370);
     bottomRigthBox_->setTopText("Forbrug");
     bottomRigthBox_->setText5("Sidste Døgn");
 
-    bottomRigthBox_->setBottomText("KW");
+    bottomRigthBox_->setBottomText("Kr");
 
 
 }
@@ -63,7 +64,57 @@ void MainSlide::compose(const std::shared_ptr<ElPricesCollector>& collectorContr
     double usageRN = usageController->getWattage();
     std::string usageRNString = std::format("{:.3f}",usageRN);
     topRigthBox_->setMiddleText(usageRNString);
-    bottomLeftBox_->setMiddleText("8.13");
-    bottomRigthBox_->setMiddleText("8.131");
+
+    double usageLastHour = getUsageInDKKFromInterval(3600,collectorController,usageController) / 10000;
+    std::string usageLastHourString = std::format("{:.2f}",usageLastHour);
+    bottomLeftBox_->setMiddleText(usageLastHourString);
+
+    double usageLastDay = getUsageInDKKFromInterval(86400,collectorController,usageController) / 10000;
+    std::string usageLastDayString = std::format("{:.2f}",usageLastDay);
+    bottomRigthBox_->setMiddleText(usageLastDayString);
     timeBox_->compose();
+}
+
+
+double MainSlide::getUsageInDKKFromInterval(const int seconds,const std::shared_ptr<ElPricesCollector>& elPricesCollector, const std::shared_ptr<ElPricesUsageController>& elPricesUsageController) const
+{
+    double totalPrice = 0;
+    int tempPulses = 0;
+    double KwhToWhFactor = 1000;
+    int pulsesFoundSoFar = 0;
+    int secondsCounter = 0;
+
+    const auto& currentTime = TimeUtil::getCurrentTime();
+
+
+    if (seconds <= currentTime.tm_sec)
+    {
+        tempPulses = elPricesUsageController->getAmountOfPulsesBasedOnSeconds(seconds);
+        return tempPulses / KwhToWhFactor * static_cast<double>(elPricesCollector->getCurrentPrice()->getTotalPrice());
+    }
+
+
+    tempPulses = elPricesUsageController->getAmountOfPulsesBasedOnSeconds(currentTime.tm_sec);
+    pulsesFoundSoFar += tempPulses;
+    totalPrice += tempPulses / KwhToWhFactor * static_cast<double>(elPricesCollector->getCurrentPrice()->getTotalPrice());
+    secondsCounter += currentTime.tm_sec;
+
+    while (secondsCounter < seconds)
+    {
+        if (seconds - secondsCounter > 60)
+        {
+            secondsCounter += 60;
+        }
+        else
+        {
+            secondsCounter = seconds;
+        }
+
+        tempPulses = elPricesUsageController->getAmountOfPulsesBasedOnSeconds(secondsCounter);
+        tempPulses -= pulsesFoundSoFar;
+        pulsesFoundSoFar = tempPulses + pulsesFoundSoFar;
+        totalPrice += tempPulses / KwhToWhFactor * static_cast<double>(elPricesCollector->getCurrentPrice()->getTotalPrice());
+    }
+
+    return totalPrice;
 }

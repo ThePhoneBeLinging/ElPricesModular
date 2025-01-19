@@ -16,8 +16,6 @@ public:
     ElPricesModular();
     void launch();
 private:
-    std::string getCurrentTime();
-    double getUsageInDKKFromInterval(int seconds);
     std::unique_ptr<LeGUILib> leGUILib_;
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
     std::shared_ptr<ElPricesUsageController> elPriceUsageController_;
