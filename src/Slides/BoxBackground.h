@@ -12,7 +12,9 @@ class BoxBackground : public RectangleElement
 {
 public:
     BoxBackground();
+    BoxBackground* clone() const override;
     void compose();
+    bool isPointInside(int x, int y) const override;
 };
 
 

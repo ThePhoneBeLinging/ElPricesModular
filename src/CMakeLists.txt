@@ -13,6 +13,8 @@ add_executable(ElPricesModular main.cpp
         Slides/BoxBackground.h
         Slides/BoxWith3Texts.cpp
         Slides/BoxWith3Texts.h
+        Slides/BoxWith4Texts.cpp
+        Slides/BoxWith4Texts.h
 )
 
 

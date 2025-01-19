@@ -8,6 +8,11 @@ BoxBackground::BoxBackground()
 {
 }
 
+BoxBackground* BoxBackground::clone() const
+{
+    return new BoxBackground(*this);
+}
+
 void BoxBackground::compose()
 {
     setX(0);
@@ -17,4 +22,9 @@ void BoxBackground::compose()
     setHeight(330);
     setWidth(400);
     setRoundedEdge(0.2);
+}
+
+bool BoxBackground::isPointInside(int x, int y) const
+{
+    return false;
 }

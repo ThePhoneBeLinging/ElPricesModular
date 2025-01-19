@@ -40,7 +40,7 @@ void BoxWith3Texts::setY(int y) const
 {
     boxBackground_->setY(y);
     topText_->setY(y + 15);
-    middleText_->setY(y + 100);
+    middleText_->setY(y + 80);
     bottomText_->setY(y + 250);
 }
 

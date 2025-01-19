@@ -15,12 +15,12 @@ class BoxWith3Texts
 {
 public:
     explicit BoxWith3Texts(Slide* slide);
-    void setX(int x) const;
-    void setY(int y) const;
+    virtual void setX(int x) const;
+    virtual void setY(int y) const;
     void setTopText(const std::string& text);
     void setMiddleText(const std::string& text);
     void setBottomText(const std::string& text);
-private:
+protected:
     std::shared_ptr<BoxBackground> boxBackground_;
     std::shared_ptr<Text> topText_;
     std::shared_ptr<Text> middleText_;

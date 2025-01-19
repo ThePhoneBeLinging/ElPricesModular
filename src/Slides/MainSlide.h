@@ -7,6 +7,7 @@
 #include <LeGUILib/GUIElements/ImageElement.h>
 
 #include "BoxWith3Texts.h"
+#include "BoxWith4Texts.h"
 #include "SlideTemplate.h"
 
 
@@ -19,6 +20,8 @@ private:
     std::shared_ptr<ImageElement> background_;
     std::shared_ptr<BoxWith3Texts> topLeftBox_;
     std::shared_ptr<BoxWith3Texts> topRigthBox_;
+    std::shared_ptr<BoxWith4Texts> bottomLeftBox_;
+    std::shared_ptr<BoxWith4Texts> bottomRigthBox_;
 
 };
 
