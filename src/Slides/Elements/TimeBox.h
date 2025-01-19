@@ -4,8 +4,8 @@
 
 #ifndef TIMEBOX_H
 #define TIMEBOX_H
-#include <LeGUILib/GUIElements/Slide.h>
-#include <LeGUILib/GUIElements/Text.h>
+#include <../../../dependencies/LeGUILib/src/include/LeGUILib/GUIElements/Slide.h>
+#include <../../../dependencies/LeGUILib/src/include/LeGUILib/GUIElements/Text.h>
 
 #include "BoxBackground.h"
 

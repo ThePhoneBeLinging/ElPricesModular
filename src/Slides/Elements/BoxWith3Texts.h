@@ -8,7 +8,7 @@
 #include <LeGUILib/GUIElements/Text.h>
 
 #include "BoxBackground.h"
-#include "SlideTemplate.h"
+#include "LeGUILib/GUIElements/Slide.h"
 
 
 class BoxWith3Texts

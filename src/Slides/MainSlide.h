@@ -6,10 +6,10 @@
 #define MAINSLIDE_H
 #include <LeGUILib/GUIElements/ImageElement.h>
 
-#include "BoxWith3Texts.h"
-#include "BoxWith4Texts.h"
+#include "Elements/BoxWith3Texts.h"
+#include "Elements/BoxWith4Texts.h"
 #include "SlideTemplate.h"
-#include "TimeBox.h"
+#include "Elements/TimeBox.h"
 
 
 class MainSlide : public Slide

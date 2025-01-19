@@ -9,14 +9,10 @@ add_executable(ElPricesModular main.cpp
         Slides/SlideTemplate.h
         Slides/MainSlide.cpp
         Slides/MainSlide.h
-        Slides/BoxBackground.cpp
-        Slides/BoxBackground.h
-        Slides/BoxWith3Texts.cpp
-        Slides/BoxWith3Texts.h
-        Slides/BoxWith4Texts.cpp
-        Slides/BoxWith4Texts.h
-        Slides/TimeBox.cpp
-        Slides/TimeBox.h
+        Slides/Elements/BoxBackground.cpp
+        Slides/Elements/BoxWith3Texts.cpp
+        Slides/Elements/BoxWith4Texts.cpp
+        Slides/Elements/TimeBox.cpp
 )
 
 

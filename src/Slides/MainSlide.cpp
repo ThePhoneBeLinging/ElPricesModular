@@ -4,7 +4,7 @@
 
 #include "MainSlide.h"
 #include <LeGUILib/GUIElements/Text.h>
-#include "BoxWith3Texts.h"
+#include "Elements/BoxWith3Texts.h"
 
 MainSlide::MainSlide()
 {
