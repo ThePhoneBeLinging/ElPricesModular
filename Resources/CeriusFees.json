@@ -5,19 +5,19 @@
       {
         "WinterTariff": 1388,
         "SummerTariff": 1388,
-        "ElTax": 9513
+        "ElTax": 9000
       },
       "HighLoad":
       {
         "WinterTariff": 4168,
         "SummerTariff": 2082,
-        "ElTax": 9513
+        "ElTax": 9000
       },
       "PeakLoad":
       {
         "WinterTariff": 12491,
         "SummerTariff": 5413,
-        "ElTax": 9513
+        "ElTax": 9000
       }
     },
   "WinterPeriod":
