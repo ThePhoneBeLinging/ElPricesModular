@@ -4,10 +4,6 @@
 
 #include "ElPricesModular.h"
 
-#include <iostream>
-#include <LeGUILib/GUIElements/ImageElement.h>
-#include <LeGUILib/GUIElements/RectangleElement.h>
-#include <LeGUILib/GUIElements/Text.h>
 #include "LeGUILib/LeGUILib.h"
 #include "Slides/MainSlide.h"
 #include "Utility/TimeUtil.h"
