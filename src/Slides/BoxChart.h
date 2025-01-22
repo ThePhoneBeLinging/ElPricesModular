@@ -6,6 +6,7 @@
 #define BOXCHART_H
 #include <LeGUILib/GUIElements/RectangleElement.h>
 #include <LeGUILib/GUIElements/Slide.h>
+#include <LeGUILib/GUIElements/Text.h>
 
 
 class BoxChart
@@ -21,8 +22,11 @@ public:
 private:
     void recreateColumns();
     void markColumn(int column);
+    std::vector<double> prices_;
+    int firstHour_;
     std::vector<std::shared_ptr<RectangleElement>> columns_;
     std::vector<std::shared_ptr<RectangleElement>> columnClickHandler_;
+    std::vector<std::shared_ptr<Text>> columnTimeTexts_;
     int x_;
     int y_;
     int spacing_;

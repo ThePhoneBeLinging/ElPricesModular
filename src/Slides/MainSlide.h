@@ -21,10 +21,6 @@ public:
     MainSlide();
     void compose(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController) const;
 private:
-    [[nodiscard]] double getUsageInDKKFromInterval(int seconds, const std::shared_ptr<ElPricesCollector>& elPricesCollector_, const std::shared_ptr<ElPricesUsageController>& elPricesUsageController) const;
-    std::shared_ptr<BoxWith3Texts> topLeftBox_;
-    std::shared_ptr<TimeBox> timeBox_;
-    std::shared_ptr<BoxWith3Texts> topRigthBox_;
     std::shared_ptr<BoxChart> boxChart_;
 
 };
