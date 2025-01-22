@@ -18,6 +18,7 @@ MainSlide::MainSlide()
     boxChart_->setY(400);
     boxChart_->setHeight(250);
     std::vector<double> tempPrices;
+    tempPrices.reserve(34);
     for (int i = 0; i < 34; i++)
     {
         tempPrices.push_back(i);
