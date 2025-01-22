@@ -13,7 +13,7 @@ class BoxChart
 {
 public:
     BoxChart(Slide* slide);
-    void setPrices(std::vector<double>&& prices);
+    void setPrices(std::vector<double>& prices);
     void setX(int x);
     void setY(int y);
     void setBoxWidth(int width);
@@ -27,6 +27,7 @@ private:
     std::vector<std::shared_ptr<RectangleElement>> columns_;
     std::vector<std::shared_ptr<RectangleElement>> columnClickHandler_;
     std::vector<std::shared_ptr<Text>> columnTimeTexts_;
+    std::shared_ptr<Text> selectedPriceText_;
     int x_;
     int y_;
     int spacing_;

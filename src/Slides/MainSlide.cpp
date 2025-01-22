@@ -17,6 +17,12 @@ MainSlide::MainSlide()
     boxChart_->setX(125);
     boxChart_->setY(400);
     boxChart_->setHeight(250);
+    std::vector<double> tempPrices;
+    for (int i = 0; i < 34; i++)
+    {
+        tempPrices.push_back(i);
+    }
+    boxChart_->setPrices(tempPrices);
 }
 
 void MainSlide::compose(const std::shared_ptr<ElPricesCollector>& collectorController,
