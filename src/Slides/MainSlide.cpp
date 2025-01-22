@@ -11,18 +11,11 @@
 
 MainSlide::MainSlide()
 {
-    background_ = createElement<ImageElement>();
-    background_->setWidth(1280);
-    background_->setHeight(720);
-    background_->loadImage("../../Resources/bliss.png");
-    background_->setZ(-100);
-
     timeBox_ = std::make_shared<TimeBox>(this);
 
     topLeftBox_ = std::make_shared<BoxWith3Texts>(this);
     topRigthBox_ = std::make_shared<BoxWith3Texts>(this);
-    bottomLeftBox_ = std::make_shared<BoxWith4Texts>(this);
-    bottomRigthBox_ = std::make_shared<BoxWith4Texts>(this);
+
 
     timeBox_->setX(440);
     timeBox_->setY(20);
@@ -37,19 +30,12 @@ MainSlide::MainSlide()
     topRigthBox_->setTopText("Forbrug");
     topRigthBox_->setBottomText("KW");
 
-    bottomLeftBox_->setX(20);
-    bottomLeftBox_->setY(370);
-    bottomLeftBox_->setTopText("Forbrug");
-    bottomLeftBox_->setText5("Sidste Time");
-    bottomLeftBox_->setBottomText("Kr");
-
-    bottomRigthBox_->setX(860);
-    bottomRigthBox_->setY(370);
-    bottomRigthBox_->setTopText("Forbrug");
-    bottomRigthBox_->setText5("Sidste Døgn");
-
-    bottomRigthBox_->setBottomText("Kr");
-
+    boxChart_ = std::make_shared<BoxChart>(this);
+    boxChart_->setSpacing(15);
+    boxChart_->setBoxWidth(15);
+    boxChart_->setX(125);
+    boxChart_->setY(400);
+    boxChart_->setHeight(250);
 
 }
 
@@ -65,14 +51,6 @@ void MainSlide::compose(const std::shared_ptr<ElPricesCollector>& collectorContr
     std::string usageRNString = std::format("{:.3f}",usageRN);
     topRigthBox_->setMiddleText(usageRNString);
 
-    double usageLastHour = getUsageInDKKFromInterval(3600,collectorController,usageController) / 10000;
-    std::string usageLastHourString = std::format("{:.2f}",usageLastHour);
-    bottomLeftBox_->setMiddleText(usageLastHourString);
-
-    double usageLastDay = getUsageInDKKFromInterval(86400,collectorController,usageController) / 10000;
-    std::string usageLastDayString = std::format("{:.2f}",usageLastDay);
-    bottomRigthBox_->setMiddleText(usageLastDayString);
-    timeBox_->compose();
 }
 
 

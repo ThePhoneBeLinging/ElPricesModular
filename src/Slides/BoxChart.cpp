@@ -1,0 +1,87 @@
+//
+// Created by Elias Aggergaard Larsen on 22/01/2025.
+//
+
+#include "BoxChart.h"
+
+#include <iostream>
+
+BoxChart::BoxChart(Slide* slide) : columns_(),x_(0),y_(0),spacing_(15), boxWidth_(15), height_(50), slide_(slide)
+{
+    for (int i = 0; i < 34; i++)
+    {
+        columns_.push_back(slide_->createElement<RectangleElement>());
+        columnClickHandler_.push_back(slide_->createElement<RectangleElement>());
+        columnClickHandler_[i]->setZ(-1000);
+        columnClickHandler_[i]->setOnClick([i,this] -> void {this->markColumn(i);});
+    }
+}
+
+void BoxChart::setPrices(std::vector<double>&& prices)
+{
+    recreateColumns();
+}
+
+void BoxChart::setX(int x)
+{
+    x_ = x;
+    recreateColumns();
+}
+
+void BoxChart::setY(int y)
+{
+    y_ = y;
+    recreateColumns();
+}
+
+void BoxChart::setBoxWidth(const int width)
+{
+    boxWidth_ = width;
+    recreateColumns();
+}
+
+void BoxChart::setSpacing(const int spacing)
+{
+    spacing_ = spacing;
+    recreateColumns();
+}
+
+void BoxChart::setHeight(const int height)
+{
+    height_ = height;
+    recreateColumns();
+}
+
+void BoxChart::recreateColumns()
+{
+    int localX = x_;
+    for (int i = 0; i < 34; i++)
+    {
+        columnClickHandler_[i]->setColor(0,0,0,0);
+        columnClickHandler_[i]->setWidth(boxWidth_ + spacing_);
+        columnClickHandler_[i]->setHeight(height_);
+        columnClickHandler_[i]->setX(localX - spacing_/2);
+        columnClickHandler_[i]->setY(y_);
+        columns_[i]->setColor(0,0,255);
+        columns_[i]->setWidth(boxWidth_);
+        columns_[i]->setHeight(height_);
+        columns_[i]->setX(localX);
+        columns_[i]->setY(y_);
+        localX += spacing_ + boxWidth_;
+    }
+}
+
+void BoxChart::markColumn(int column)
+{
+    for (int i = 0; i < 34; i++)
+    {
+        if (i == column)
+        {
+            columns_[i]->setColor(100,100,255);
+        }
+        else
+        {
+            columns_[i]->setColor(0,0,255);
+        }
+    }
+}
