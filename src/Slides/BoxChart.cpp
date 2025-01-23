@@ -27,6 +27,13 @@ BoxChart::BoxChart(Slide* slide) : firstHour_(0), x_(0), y_(0), spacing_(15), bo
     selectedPriceText_ = slide_->createElement<Text>();
     selectedPriceText_->setColor(0,0,0);
     selectedPriceText_->setFontSize(30);
+
+    // Init prices:
+    for (int i = 0; i < 34; i++)
+    {
+        prices_.push_back(i);
+    }
+
 }
 
 void BoxChart::setPrices(std::vector<double>& prices)
@@ -68,28 +75,42 @@ void BoxChart::setHeight(const int height)
 
 void BoxChart::recreateColumns()
 {
+    double max = prices_[0];
+    for (auto price : prices_)
+    {
+        if (price > max)
+        {
+            max = price;
+        }
+    }
+
     int localX = x_;
-    for (int i = 0; i < 34; i++)
+    for (int i = 0; i < prices_.size(); i++)
     {
         columnClickHandler_[i]->setColor(0,0,0,0);
         columnClickHandler_[i]->setWidth(boxWidth_ + spacing_);
         columnClickHandler_[i]->setHeight(height_);
         columnClickHandler_[i]->setX(localX - spacing_/2);
-        columnClickHandler_[i]->setY(y_);
+        columnClickHandler_[i]->setY(y_ - height_);
         columns_[i]->setColor(0,0,255);
         columns_[i]->setWidth(boxWidth_);
-        columns_[i]->setHeight(height_);
+        columns_[i]->setHeight(height_ * (prices_[i] / max));
         columns_[i]->setX(localX);
-        columns_[i]->setY(y_);
+        columns_[i]->setY(y_ - height_ * (prices_[i] / max));
 
         columnTimeTexts_[i]->setX(localX - spacing_/2);
         columnTimeTexts_[i]->setWidth(boxWidth_ + spacing_);
-        columnTimeTexts_[i]->setY(y_ + height_ + 5);
+        columnTimeTexts_[i]->setY(y_ + 10);
         columnTimeTexts_[i]->setText((firstHour_ + i) % 24);
         localX += spacing_ + boxWidth_;
     }
+    for (int i = prices_.size(); i < 34; i++)
+    {
+        columnClickHandler_[i]->setHeight(0);
+        columns_[i]->setHeight(0);
+    }
     selectedPriceText_->setX(localX - 80);
-    selectedPriceText_->setY(y_ - 40);
+    selectedPriceText_->setY(y_ - height_ - 50);
 }
 
 void BoxChart::markColumn(int column)

@@ -15,24 +15,7 @@ ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>()), el
 
 void ElPricesModular::launch()
 {
-    int screenWidth = 1280;
-    int screenHeight = 720;
-    int margin = 15;
-    bool keepRunning_ = true;
-    auto mainSlide = std::make_shared<MainSlide>();
+    auto mainSlide = std::make_shared<MainSlide>(elPricesCollector_,elPriceUsageController_);
     leGUILib_->addSlide(mainSlide);
-
-    auto update = [&keepRunning_, &mainSlide,this] () -> void
-    {
-        while (keepRunning_)
-        {
-            mainSlide->compose(elPricesCollector_,elPriceUsageController_);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
-    };
-    std::thread updateThread = std::thread(update);
-
     leGUILib_->launchGUI();
-    keepRunning_ = false;
-    updateThread.join();
 }
