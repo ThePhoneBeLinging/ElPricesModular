@@ -12,7 +12,7 @@
 class BoxChart
 {
 public:
-    BoxChart(Slide* slide);
+    explicit BoxChart(Slide* slide);
     void setPrices(std::vector<double>& prices);
     void setX(int x);
     void setY(int y);
