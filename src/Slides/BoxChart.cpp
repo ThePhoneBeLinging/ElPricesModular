@@ -31,6 +31,7 @@ BoxChart::BoxChart(Slide* slide) : firstHour_(0), x_(0), y_(0), spacing_(15), bo
     selectedPriceText_ = slide_->createElement<Text>();
     selectedPriceText_->setColor(0,0,0);
     selectedPriceText_->setFontSize(30);
+    selectedPriceText_->setAlignment(2);
 
     // Init prices:
     for (int i = 0; i < 34; i++)
@@ -113,7 +114,7 @@ void BoxChart::recreateColumns()
         columnClickHandler_[i]->setHeight(0);
         columns_[i]->setHeight(0);
     }
-    selectedPriceText_->setX(localX - 80);
+    selectedPriceText_->setX(prices_.size() * (spacing_ + boxWidth_) + x_);
     selectedPriceText_->setY(y_ - height_ - 50);
 
     for (const auto& rect : linesAroundBoxes_)
