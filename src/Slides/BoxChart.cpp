@@ -157,5 +157,8 @@ void BoxChart::markColumn(int column)
             columns_[i]->setColor(0,0,255);
         }
     }
-    selectedPriceText_->setText(std::format("{:.2f}",prices_[column]));
+    if (column != -1)
+    {
+        selectedPriceText_->setText(std::format("{:.2f}",prices_[column]));
+    }
 }
