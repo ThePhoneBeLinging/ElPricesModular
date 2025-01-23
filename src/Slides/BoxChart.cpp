@@ -46,6 +46,7 @@ void BoxChart::setPrices(std::vector<double>& prices)
     prices_ = prices;
     firstHour_ = TimeUtil::getCurrentTime().tm_hour;
     recreateColumns();
+    markColumn(-1);
 }
 
 void BoxChart::setX(int x)
