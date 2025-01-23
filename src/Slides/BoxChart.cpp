@@ -23,6 +23,10 @@ BoxChart::BoxChart(Slide* slide) : firstHour_(0), x_(0), y_(0), spacing_(15), bo
         columnTimeTexts_[i]->setFontSize(20);
         columnTimeTexts_[i]->setColor(0,0,0);
     }
+    for (int i = 0; i < 4; i++)
+    {
+        linesAroundBoxes_.push_back(slide_->createElement<RectangleElement>());
+    }
 
     selectedPriceText_ = slide_->createElement<Text>();
     selectedPriceText_->setColor(0,0,0);
@@ -111,6 +115,30 @@ void BoxChart::recreateColumns()
     }
     selectedPriceText_->setX(localX - 80);
     selectedPriceText_->setY(y_ - height_ - 50);
+
+    for (const auto& rect : linesAroundBoxes_)
+    {
+        rect->setColor(0,0,0);
+    }
+
+    int lineWidth = 2;
+    linesAroundBoxes_[0]->setX(x_ - 10);
+    linesAroundBoxes_[0]->setY(y_ - height_ - 5);
+    linesAroundBoxes_[0]->setWidth(lineWidth);
+    linesAroundBoxes_[0]->setHeight(height_ + 5);
+    linesAroundBoxes_[1]->setX(x_ - 10);
+    linesAroundBoxes_[1]->setY(y_ - 1);
+    linesAroundBoxes_[1]->setHeight(lineWidth);
+    linesAroundBoxes_[1]->setWidth(prices_.size() * (spacing_ + boxWidth_) + 11);
+    linesAroundBoxes_[2]->setX(x_ + prices_.size() * (spacing_ + boxWidth_));
+    linesAroundBoxes_[2]->setY(y_ - height_ - 5);
+    linesAroundBoxes_[2]->setWidth(lineWidth);
+    linesAroundBoxes_[2]->setHeight(height_ + 5);
+    linesAroundBoxes_[3]->setX(x_ - 10);
+    linesAroundBoxes_[3]->setY(y_ - height_ - 5);
+    linesAroundBoxes_[3]->setHeight(lineWidth);
+    linesAroundBoxes_[3]->setWidth(prices_.size() * (spacing_ + boxWidth_) + 11);
+
 }
 
 void BoxChart::markColumn(int column)

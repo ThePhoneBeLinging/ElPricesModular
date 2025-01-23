@@ -27,6 +27,7 @@ private:
     std::vector<std::shared_ptr<RectangleElement>> columns_;
     std::vector<std::shared_ptr<RectangleElement>> columnClickHandler_;
     std::vector<std::shared_ptr<Text>> columnTimeTexts_;
+    std::vector<std::shared_ptr<RectangleElement>> linesAroundBoxes_;
     std::shared_ptr<Text> selectedPriceText_;
     int x_;
     int y_;
