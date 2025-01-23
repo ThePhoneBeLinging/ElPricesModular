@@ -16,10 +16,7 @@ def clone_or_pull(repo_url, target_dir):
     else:
         # Otherwise, clone the repository
         print(f"Cloning repository {repo_name}")
-        if ("EngineBase" in repo_name):
-            subprocess.run(['git', 'clone', '-b', 'elPricesVersion' ,repo_url, repo_path], check=True)
-        else:
-            subprocess.run(['git', 'clone',repo_url, repo_path], check=True)
+        subprocess.run(['git', 'clone',repo_url, repo_path], check=True)
 
 def main():
 
