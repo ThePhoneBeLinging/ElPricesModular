@@ -23,7 +23,6 @@ private:
     void recreateColumns();
     void markColumn(int column);
     std::vector<double> prices_;
-    int firstHour_;
     std::vector<std::shared_ptr<RectangleElement>> columns_;
     std::vector<std::shared_ptr<RectangleElement>> columnClickHandler_;
     std::vector<std::shared_ptr<Text>> columnTimeTexts_;

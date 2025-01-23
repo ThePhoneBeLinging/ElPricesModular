@@ -8,7 +8,7 @@
 
 #include "Utility/TimeUtil.h"
 
-BoxChart::BoxChart(Slide* slide) : firstHour_(0), x_(0), y_(0), spacing_(15), boxWidth_(15), height_(50),
+BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), height_(50),
                                    slide_(slide)
 {
     for (int i = 0; i < 34; i++)
@@ -44,7 +44,6 @@ BoxChart::BoxChart(Slide* slide) : firstHour_(0), x_(0), y_(0), spacing_(15), bo
 void BoxChart::setPrices(std::vector<double>& prices)
 {
     prices_ = prices;
-    firstHour_ = TimeUtil::getCurrentTime().tm_hour;
     recreateColumns();
     markColumn(-1);
 }
@@ -107,13 +106,14 @@ void BoxChart::recreateColumns()
         columnTimeTexts_[i]->setX(localX - spacing_/2);
         columnTimeTexts_[i]->setWidth(boxWidth_ + spacing_);
         columnTimeTexts_[i]->setY(y_ + 10);
-        columnTimeTexts_[i]->setText((firstHour_ + i) % 24);
+        columnTimeTexts_[i]->setText((TimeUtil::getCurrentTime().tm_hour + i) % 24);
         localX += spacing_ + boxWidth_;
     }
     for (int i = prices_.size(); i < 34; i++)
     {
         columnClickHandler_[i]->setHeight(0);
         columns_[i]->setHeight(0);
+        columnTimeTexts_[i]->setText("");
     }
     selectedPriceText_->setX(prices_.size() * (spacing_ + boxWidth_) + x_);
     selectedPriceText_->setY(y_ - height_ - 50);

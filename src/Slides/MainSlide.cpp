@@ -17,14 +17,12 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     boxChart_->setX(125);
     boxChart_->setY(650);
     boxChart_->setHeight(250);
-    std::vector<double> tempPrices;
-    tempPrices.reserve(34);
-    for (int i = 0; i < 34; i++)
+    std::vector<double> values;
+    for (const auto& val : collectorController->getCurrentAndFuturePrices())
     {
-        tempPrices.push_back(i);
+        values.push_back(static_cast<double>(val->getTotalPrice()) / 10000);
     }
-    tempPrices[0] = static_cast<double>(collectorController->getCurrentPrice()->getTotalPrice()) / 10000;
-    boxChart_->setPrices(tempPrices);
+    boxChart_->setPrices(values);
 }
 
 MainSlide::~MainSlide()
