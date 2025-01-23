@@ -36,7 +36,38 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
+    auto clockTextUpdateFunction = [this] -> void
+    {
+        std::shared_ptr<Text> text = this->createElement<Text>();
+        text->setX(50);
+        text->setY(50);
+        text->setColor(0,0,0);
+        text->setFontSize(60);
+        text->setText("TEXT");
+        std::unique_lock lock(mutex_);
+        while (keepRunning_)
+        {
+            auto currentTime = TimeUtil::getCurrentTime();
+            std::string currentTimeString = "";
+            if (currentTime.tm_hour < 10)
+            {
+                currentTimeString.append("0");
+            }
+            currentTimeString.append(std::to_string(currentTime.tm_hour));
+            currentTimeString.append(":");
+            if (currentTime.tm_min < 10)
+            {
+                currentTimeString.append("0");
+            }
+            currentTimeString.append(std::to_string(currentTime.tm_min));
+            text->setText(currentTimeString);
+            int secondsToWait = 60 - currentTime.tm_sec;
+            condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
+        }
+    };
+
     threads_.emplace_back(updateBoxChartFunction);
+    threads_.emplace_back(clockTextUpdateFunction);
 }
 
 MainSlide::~MainSlide()
