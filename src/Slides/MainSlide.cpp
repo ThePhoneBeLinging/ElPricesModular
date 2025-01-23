@@ -17,16 +17,30 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     boxChart_->setX(125);
     boxChart_->setY(650);
     boxChart_->setHeight(250);
-    std::vector<double> values;
-    for (const auto& val : collectorController->getCurrentAndFuturePrices())
+    keepRunning_ = true;
+
+    auto updateBoxChartFunction = [this, collectorController] -> void
     {
-        values.push_back(static_cast<double>(val->getTotalPrice()) / 10000);
-    }
-    boxChart_->setPrices(values);
+        std::unique_lock lock(mutex_);
+        while (keepRunning_)
+        {
+            std::vector<double> values;
+            for (const auto& val : collectorController->getCurrentAndFuturePrices())
+            {
+                values.push_back(static_cast<double>(val->getTotalPrice()) / 10000);
+
+            }
+            boxChart_->setPrices(values);
+            condVar_.wait_for(lock,std::chrono::seconds(TimeUtil::secondsToNextHour()));
+        }
+    };
+
+    threads_.emplace_back(updateBoxChartFunction);
 }
 
 MainSlide::~MainSlide()
 {
+    keepRunning_ = false;
     condVar_.notify_all();
     for (auto& thread : threads_)
     {

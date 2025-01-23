@@ -29,6 +29,7 @@ BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), he
     }
 
     selectedPriceText_ = slide_->createElement<Text>();
+    selectedPriceText_->setText("");
     selectedPriceText_->setColor(0,0,0);
     selectedPriceText_->setFontSize(30);
     selectedPriceText_->setAlignment(2);

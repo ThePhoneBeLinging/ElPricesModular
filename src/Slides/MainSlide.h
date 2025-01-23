@@ -20,6 +20,7 @@ public:
 private:
     std::shared_ptr<BoxChart> boxChart_;
     std::vector<std::thread> threads_;
+    std::atomic_bool keepRunning_;
     std::condition_variable condVar_;
     std::mutex mutex_;
 
