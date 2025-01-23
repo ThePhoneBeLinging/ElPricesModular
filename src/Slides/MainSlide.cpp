@@ -31,7 +31,8 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
 
             }
             boxChart_->setPrices(values);
-            condVar_.wait_for(lock,std::chrono::seconds(TimeUtil::secondsToNextHour()));
+            int secondsToWait = TimeUtil::secondsToNextHour();
+            condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
         }
     };
 
