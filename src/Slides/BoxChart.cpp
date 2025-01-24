@@ -40,6 +40,26 @@ BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), he
     currentDayText_->setFontSize(30);
     currentDayText_->setAlignment(0);
 
+    highestPriceText_ = slide_->createElement<Text>();
+    highestPriceText_->setText("");
+    highestPriceText_->setColor(0,0,0);
+    highestPriceText_->setFontSize(30);
+    highestPriceText_->setAlignment(2);
+
+    middlePriceText_ = slide_->createElement<Text>();
+    middlePriceText_->setText("");
+    middlePriceText_->setColor(0,0,0);
+    middlePriceText_->setFontSize(30);
+    middlePriceText_->setAlignment(2);
+
+    lowestPriceText_ = slide_->createElement<Text>();
+    lowestPriceText_->setText("");
+    lowestPriceText_->setColor(0,0,0);
+    lowestPriceText_->setFontSize(30);
+    lowestPriceText_->setAlignment(2);
+
+    middlePriceLine_ = slide_->createElement<RectangleElement>();
+
     // Init prices:
     for (int i = 0; i < 34; i++)
     {
@@ -88,11 +108,16 @@ void BoxChart::setHeight(const int height)
 void BoxChart::recreateColumns()
 {
     double max = prices_[0];
+    double min = prices_[0];
     for (auto price : prices_)
     {
         if (price > max)
         {
             max = price;
+        }
+        if (price < min)
+        {
+            min = price;
         }
     }
 
@@ -129,12 +154,34 @@ void BoxChart::recreateColumns()
     currentDayText_->setY(y_ - height_ - 50);
     currentDayText_->setText(timeToString(TimeUtil::getCurrentTime()));
 
+    highestPriceText_->setX(x_ - 15);
+    highestPriceText_->setY(y_ - height_ - 15);
+    highestPriceText_->setText(std::format("{:.2f}",max));
+
+    middlePriceText_->setX(x_ - 15);
+    middlePriceText_->setY(y_ - height_/2 - 15);
+    middlePriceText_->setText(std::format("{:.2f}",max/2));
+
+    lowestPriceText_->setX(x_ - 15);
+    lowestPriceText_->setY( y_ - 15);
+    lowestPriceText_->setText(std::format("{:.2f}",min));
+
+
+
     for (const auto& rect : linesAroundBoxes_)
     {
         rect->setColor(0,0,0);
     }
 
     int lineWidth = 2;
+
+    middlePriceLine_->setX(x_);
+    middlePriceLine_->setY(y_ - height_/2);
+    middlePriceLine_->setHeight(2);
+    middlePriceLine_->setColor(0,0,0);
+    middlePriceLine_->setZ(-1);
+    middlePriceLine_->setWidth(prices_.size() * (spacing_ + boxWidth_));
+
     // Left line
     linesAroundBoxes_[0]->setX(x_ - 10);
     linesAroundBoxes_[0]->setY(y_ - height_ - 5);
