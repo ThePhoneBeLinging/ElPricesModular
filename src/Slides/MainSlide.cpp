@@ -84,9 +84,27 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
+    auto currentUsageWattFunction = [this, usageController] -> void
+    {
+        auto text = this->createElement<Text>();
+        text->setX(550);
+        text->setY(50);
+        text->setColor(0,0,0);
+        text->setFontSize(60);
+        std::unique_lock lock(mutex_);
+        while (keepRunning_)
+        {
+            double wattage = usageController->getWattage();
+            std::string string = std::format("{:.3f} Watt", wattage);
+            text->setText(string);
+            condVar_.wait_for(lock,std::chrono::seconds(1));
+        }
+    };
+
     threads_.emplace_back(updateBoxChartFunction);
     threads_.emplace_back(clockTextUpdateFunction);
     threads_.emplace_back(updateCurrentPrice);
+    threads_.emplace_back(currentUsageWattFunction);
 }
 
 MainSlide::~MainSlide()
