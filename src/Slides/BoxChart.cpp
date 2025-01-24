@@ -137,9 +137,9 @@ void BoxChart::recreateColumns()
         columnClickHandler_[i]->setY(y_ - height_);
         columns_[i]->setColor(0,0,255);
         columns_[i]->setWidth(boxWidth_);
-        columns_[i]->setHeight(height_ * (prices_[i] / max));
+        columns_[i]->setHeight(height_ * ((prices_[i] - min) / (max - min)));
         columns_[i]->setX(localX);
-        columns_[i]->setY(y_ - height_ * (prices_[i] / max));
+        columns_[i]->setY(y_ - height_ * ((prices_[i] - min) / (max - min)));
 
         columnTimeTexts_[i]->setX(localX - spacing_/2);
         columnTimeTexts_[i]->setWidth(boxWidth_ + spacing_);
