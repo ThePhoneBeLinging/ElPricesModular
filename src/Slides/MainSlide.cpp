@@ -19,7 +19,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     boxChart_->setHeight(250);
     keepRunning_ = true;
 
-    auto updateBoxChartFunction = [this, collectorController] -> void
+    auto updateBoxChartFunction = [this, collectorController] () -> void
     {
         std::unique_lock lock(mutex_);
         while (keepRunning_)
@@ -36,7 +36,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    auto clockTextUpdateFunction = [this] -> void
+    auto clockTextUpdateFunction = [this] () -> void
     {
         std::shared_ptr<Text> text = this->createElement<Text>();
         text->setX(50);
@@ -66,7 +66,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    auto updateCurrentPrice = [this, collectorController] -> void
+    auto updateCurrentPrice = [this, collectorController] () -> void
     {
         auto text = this->createElement<Text>();
         text->setX(300);
@@ -84,7 +84,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    auto currentUsageWattFunction = [this, usageController] -> void
+    auto currentUsageWattFunction = [this, usageController] () -> void
     {
         auto text = this->createElement<Text>();
         text->setX(550);
@@ -101,7 +101,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    auto currentKrUsage = [this, collectorController ,usageController] -> void
+    auto currentKrUsage = [this, collectorController ,usageController] () -> void
     {
         auto text = this->createElement<Text>();
         text->setX(550);
@@ -134,17 +134,4 @@ MainSlide::~MainSlide()
     {
         thread.join();
     }
-}
-
-void MainSlide::compose(const std::shared_ptr<ElPricesCollector>& collectorController,
-                        const std::shared_ptr<ElPricesUsageController>& usageController) const
-{
-    double priceRN = static_cast<double>(collectorController->getCurrentPrice()->getTotalPrice()) / 10000;
-    std::string priceRNString = std::format("{:.2f}",priceRN);
-
-    double usageRN = usageController->getWattage();
-    std::string usageRNString = std::format("{:.3f}",usageRN);
-
-    double currentUsagePriceOutlook = collectorController->getCurrentPrice()->getTotalPrice() * usageRN;
-    std::string currentUsagePriceOutlookString = std::format("{:.3f}",currentUsagePriceOutlook);
 }

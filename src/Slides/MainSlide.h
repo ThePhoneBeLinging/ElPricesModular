@@ -16,7 +16,6 @@ class MainSlide : public Slide
 public:
     MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController);
     ~MainSlide();
-    void compose(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController) const;
 private:
     std::shared_ptr<BoxChart> boxChart_;
     std::vector<std::thread> threads_;
