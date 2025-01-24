@@ -34,6 +34,12 @@ BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), he
     selectedPriceText_->setFontSize(30);
     selectedPriceText_->setAlignment(2);
 
+    currentDayText_ = slide_->createElement<Text>();
+    currentDayText_->setText("");
+    currentDayText_->setColor(0,0,0);
+    currentDayText_->setFontSize(30);
+    currentDayText_->setAlignment(0);
+
     // Init prices:
     for (int i = 0; i < 34; i++)
     {
@@ -119,6 +125,10 @@ void BoxChart::recreateColumns()
     selectedPriceText_->setX(prices_.size() * (spacing_ + boxWidth_) + x_);
     selectedPriceText_->setY(y_ - height_ - 50);
 
+    currentDayText_->setX(x_);
+    currentDayText_->setY(y_ - height_ - 50);
+    currentDayText_->setText(timeToString(TimeUtil::getCurrentTime()));
+
     for (const auto& rect : linesAroundBoxes_)
     {
         rect->setColor(0,0,0);
@@ -168,4 +178,12 @@ void BoxChart::markColumn(int column)
     {
         selectedPriceText_->setText(std::format("{:.2f}",prices_[column]));
     }
+}
+
+std::string BoxChart::timeToString(tm time)
+{
+    std::string string;
+    string.append(TimeUtil::intToWeekDayDanish(time.tm_wday));
+    string.append(" d. ").append(std::to_string(time.tm_mday));
+    return string;
 }

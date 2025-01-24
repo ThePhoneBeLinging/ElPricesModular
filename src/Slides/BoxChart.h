@@ -22,12 +22,14 @@ public:
 private:
     void recreateColumns();
     void markColumn(int column);
+    std::string timeToString(tm time);
     std::vector<double> prices_;
     std::vector<std::shared_ptr<RectangleElement>> columns_;
     std::vector<std::shared_ptr<RectangleElement>> columnClickHandler_;
     std::vector<std::shared_ptr<Text>> columnTimeTexts_;
     std::vector<std::shared_ptr<RectangleElement>> linesAroundBoxes_;
     std::shared_ptr<Text> selectedPriceText_;
+    std::shared_ptr<Text> currentDayText_;
     int x_;
     int y_;
     int spacing_;
