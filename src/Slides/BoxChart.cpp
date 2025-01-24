@@ -125,20 +125,27 @@ void BoxChart::recreateColumns()
     }
 
     int lineWidth = 2;
+    // Left line
     linesAroundBoxes_[0]->setX(x_ - 10);
     linesAroundBoxes_[0]->setY(y_ - height_ - 5);
     linesAroundBoxes_[0]->setWidth(lineWidth);
     linesAroundBoxes_[0]->setHeight(height_ + 5);
+
+    // Bottom line
     linesAroundBoxes_[1]->setX(x_ - 10);
     linesAroundBoxes_[1]->setY(y_ - 1);
     linesAroundBoxes_[1]->setHeight(lineWidth);
     linesAroundBoxes_[1]->setWidth(prices_.size() * (spacing_ + boxWidth_) + 11);
+
+    // Right line
     linesAroundBoxes_[2]->setX(x_ + prices_.size() * (spacing_ + boxWidth_));
     linesAroundBoxes_[2]->setY(y_ - height_ - 5);
     linesAroundBoxes_[2]->setWidth(lineWidth);
     linesAroundBoxes_[2]->setHeight(height_ + 5);
+
+    // Top line
     linesAroundBoxes_[3]->setX(x_ - 10);
-    linesAroundBoxes_[3]->setY(y_ - height_ - 5);
+    linesAroundBoxes_[3]->setY(y_ - height_);
     linesAroundBoxes_[3]->setHeight(lineWidth);
     linesAroundBoxes_[3]->setWidth(prices_.size() * (spacing_ + boxWidth_) + 11);
 
