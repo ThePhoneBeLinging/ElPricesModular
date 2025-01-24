@@ -40,6 +40,12 @@ BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), he
     currentDayText_->setFontSize(30);
     currentDayText_->setAlignment(0);
 
+    tmrwDayText_ = slide_->createElement<Text>();
+    tmrwDayText_->setText("");
+    tmrwDayText_->setColor(0,0,0);
+    tmrwDayText_->setFontSize(30);
+    tmrwDayText_->setAlignment(0);
+
     highestPriceText_ = slide_->createElement<Text>();
     highestPriceText_->setText("");
     highestPriceText_->setColor(0,0,0);
@@ -122,6 +128,7 @@ void BoxChart::recreateColumns()
     }
 
     int localX = x_;
+    bool firstDayComplete = false;
     for (int i = 0; i < prices_.size(); i++)
     {
         columnClickHandler_[i]->setColor(0,0,0,0);
@@ -139,6 +146,16 @@ void BoxChart::recreateColumns()
         columnTimeTexts_[i]->setWidth(boxWidth_ + spacing_);
         columnTimeTexts_[i]->setY(y_ + 10);
         columnTimeTexts_[i]->setText((TimeUtil::getCurrentTime().tm_hour + i) % 24);
+        if (firstDayComplete && (TimeUtil::getCurrentTime().tm_hour + i) % 24 == 0)
+        {
+            tmrwDayText_->setText(timeToString(TimeUtil::getTommorowTime()));
+            tmrwDayText_->setX(localX + 5);
+            tmrwDayText_->setY(y_ + 30);
+        }
+        if ((TimeUtil::getCurrentTime().tm_hour + i) % 24 == 0)
+        {
+            firstDayComplete = true;
+        }
         localX += spacing_ + boxWidth_;
     }
     for (int i = prices_.size(); i < 34; i++)

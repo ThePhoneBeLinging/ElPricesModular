@@ -30,6 +30,7 @@ private:
     std::vector<std::shared_ptr<RectangleElement>> linesAroundBoxes_;
     std::shared_ptr<Text> selectedPriceText_;
     std::shared_ptr<Text> currentDayText_;
+    std::shared_ptr<Text> tmrwDayText_;
     std::shared_ptr<Text> highestPriceText_;
     std::shared_ptr<Text> middlePriceText_;
     std::shared_ptr<Text> lowestPriceText_;
