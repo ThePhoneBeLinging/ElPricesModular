@@ -95,7 +95,25 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         while (keepRunning_)
         {
             double wattage = usageController->getWattage();
-            std::string string = std::format("{:.3f} Watt", wattage);
+            std::string string = std::format("{:.3f} Kw", wattage);
+            text->setText(string);
+            condVar_.wait_for(lock,std::chrono::seconds(1));
+        }
+    };
+
+    auto currentKrUsage = [this, collectorController ,usageController] -> void
+    {
+        auto text = this->createElement<Text>();
+        text->setX(550);
+        text->setY(100);
+        text->setColor(0,0,0);
+        text->setFontSize(60);
+        std::unique_lock lock(mutex_);
+        while (keepRunning_)
+        {
+            double wattage = usageController->getWattage();
+            double price = collectorController->getCurrentPrice()->getTotalPrice() / 10000;
+            std::string string = std::format("{:.2f} Kr/Time", wattage * price);
             text->setText(string);
             condVar_.wait_for(lock,std::chrono::seconds(1));
         }
@@ -105,6 +123,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     threads_.emplace_back(clockTextUpdateFunction);
     threads_.emplace_back(updateCurrentPrice);
     threads_.emplace_back(currentUsageWattFunction);
+    threads_.emplace_back(currentKrUsage);
 }
 
 MainSlide::~MainSlide()
