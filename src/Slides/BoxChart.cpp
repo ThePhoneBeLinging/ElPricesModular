@@ -160,7 +160,7 @@ void BoxChart::recreateColumns()
 
     middlePriceText_->setX(x_ - 15);
     middlePriceText_->setY(y_ - height_/2 - 15);
-    middlePriceText_->setText(std::format("{:.2f}",max/2));
+    middlePriceText_->setText(std::format("{:.2f}",max - (max - min)/2));
 
     lowestPriceText_->setX(x_ - 15);
     lowestPriceText_->setY( y_ - 15);
