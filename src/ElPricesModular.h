@@ -1,5 +1,5 @@
 //
-// Created by Elias Aggergaard Larsen on 25/12/2024.
+// Created by EAL on 25/12/2024.
 //
 
 #ifndef ELPRICESMODULAR_H
