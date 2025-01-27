@@ -15,7 +15,7 @@ BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), he
         columns_.push_back(slide_->createElement<RectangleElement>());
         columnClickHandler_.push_back(slide_->createElement<RectangleElement>());
         columnClickHandler_[i]->setZ(-1000);
-        columnClickHandler_[i]->setOnClick([i,this] -> void { this->markColumn(i); });
+        columnClickHandler_[i]->setOnClick([i,this] () -> void { this->markColumn(i); });
 
         columnTimeTexts_.push_back(slide_->createElement<Text>());
         columnTimeTexts_[i]->setAlignment(1);
