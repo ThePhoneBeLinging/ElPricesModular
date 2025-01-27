@@ -5,7 +5,7 @@
 #include "BoxChart.h"
 
 #include <iostream>
-
+#include <format>
 #include "Utility/TimeUtil.h"
 
 BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), height_(50),
