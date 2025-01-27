@@ -3,9 +3,8 @@
 //
 
 #include "BoxChart.h"
-
 #include <iostream>
-#include <format>
+#include <fmt/format.h>
 #include "Utility/TimeUtil.h"
 
 BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), height_(50),
@@ -168,15 +167,15 @@ void BoxChart::recreateColumns()
 
     highestPriceText_->setX(x_ - 15);
     highestPriceText_->setY(y_ - height_ - 15);
-    highestPriceText_->setText(std::format("{:.2f}",max));
+    highestPriceText_->setText(fmt::format("{:.2f}",max));
 
     middlePriceText_->setX(x_ - 15);
     middlePriceText_->setY(y_ - height_/2 - 15);
-    middlePriceText_->setText(std::format("{:.2f}",max - (max - min)/2));
+    middlePriceText_->setText(fmt::format("{:.2f}",max - (max - min)/2));
 
     lowestPriceText_->setX(x_ - 15);
     lowestPriceText_->setY( y_ - 15);
-    lowestPriceText_->setText(std::format("{:.2f}",min));
+    lowestPriceText_->setText(fmt::format("{:.2f}",min));
 
 
 
@@ -235,7 +234,7 @@ void BoxChart::markColumn(int column)
     }
     if (column != -1)
     {
-        selectedPriceText_->setText(std::format("{:.2f}",prices_[column]));
+        selectedPriceText_->setText(fmt::format("{:.2f}",prices_[column]));
     }
 }
 

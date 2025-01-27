@@ -3,8 +3,8 @@
 //
 
 #include "MainSlide.h"
-#include <format>
 #include <iostream>
+#include <fmt/format.h>
 #include <LeGUILib/GUIElements/Text.h>
 #include "Elements/BoxWith3Texts.h"
 #include "Utility/TimeUtil.h"
@@ -77,7 +77,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         while (keepRunning_)
         {
             double price = collectorController->getCurrentPrice()->getTotalPrice();
-            std::string string = std::format("{:.2f} Kr",price / 10000);
+            std::string string = fmt::format("{:.2f} Kr",price / 10000);
             text->setText(string);
             int secondsToWait = TimeUtil::secondsToNextHour();
             condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
@@ -95,7 +95,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         while (keepRunning_)
         {
             double wattage = usageController->getWattage();
-            std::string string = std::format("{:.3f} Kw", wattage);
+            std::string string = fmt::format("{:.3f} Kw", wattage);
             text->setText(string);
             condVar_.wait_for(lock,std::chrono::seconds(1));
         }
@@ -113,7 +113,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         {
             double wattage = usageController->getWattage();
             double price = collectorController->getCurrentPrice()->getTotalPrice() / 10000;
-            std::string string = std::format("{:.2f} Kr/Time", wattage * price);
+            std::string string = fmt::format("{:.2f} Kr/Time", wattage * price);
             text->setText(string);
             condVar_.wait_for(lock,std::chrono::seconds(1));
         }
