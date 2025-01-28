@@ -28,7 +28,6 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             for (const auto& val : collectorController->getCurrentAndFuturePrices())
             {
                 values.push_back(static_cast<double>(val->getTotalPrice()) / 10000);
-
             }
             boxChart_->setPrices(values);
             int secondsToWait = TimeUtil::secondsToNextHour();

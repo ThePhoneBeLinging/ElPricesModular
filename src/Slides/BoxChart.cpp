@@ -10,7 +10,7 @@
 BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), height_(50),
                                    slide_(slide)
 {
-    for (int i = 0; i < 34; i++)
+    for (int i = 0; i < 48; i++)
     {
         columns_.push_back(slide_->createElement<RectangleElement>());
         columnClickHandler_.push_back(slide_->createElement<RectangleElement>());
@@ -66,7 +66,7 @@ BoxChart::BoxChart(Slide* slide) : x_(0), y_(0), spacing_(15), boxWidth_(15), he
     middlePriceLine_ = slide_->createElement<RectangleElement>();
 
     // Init prices:
-    for (int i = 0; i < 34; i++)
+    for (int i = 0; i < 48; i++)
     {
         prices_.push_back(i);
     }
@@ -152,7 +152,7 @@ void BoxChart::recreateColumns()
         }
         localX += spacing_ + boxWidth_;
     }
-    for (int i = prices_.size(); i < 34; i++)
+    for (int i = prices_.size(); i < 48; i++)
     {
         columnClickHandler_[i]->setHeight(0);
         columns_[i]->setHeight(0);
