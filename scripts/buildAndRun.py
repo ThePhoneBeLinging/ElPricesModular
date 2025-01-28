@@ -3,10 +3,6 @@ import subprocess
 
 if not os.path.exists("build"):
         os.makedirs("build")
-
-
-os.system("cd build")
-os.system("cmake ..")
-os.system("make")
-os.system("cd src")
-os.system("./ElPricesModular")
+subprocess.run(['cmake',".."], cwd = "build", check=True)
+subprocess.run(['make'], cwd = "build", check=True)
+subprocess.run(['./ElPricesModular'], cwd = "build/src", check=True)
