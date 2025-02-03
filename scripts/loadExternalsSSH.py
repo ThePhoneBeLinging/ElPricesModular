@@ -30,6 +30,7 @@ def main():
         'git@github.com:ThePhoneBeLinging/ElPricesUsageController.git',
         'git@github.com:SRombauts/SQLiteCpp.git',
         'git@github.com:ThePhoneBeLinging/LeGUILib.git',
+        'git@github.com:ThePhoneBeLinging/TouchScreenSupport.git',
         # Add more repository URLs as needed
     ]
 
