@@ -30,7 +30,7 @@ def main():
         'https://github.com/ThePhoneBeLinging/ElPricesUsageController.git',
         'https://github.com/SRombauts/SQLiteCpp.git',
         'https://github.com/ThePhoneBeLinging/LeGUILib.git',
-        'https://github.com/ThePhoneBeLinging/TouchScreenSupport.git',
+        'https://github.com/ThePhoneBeLinging/TouchCore-CPP.git',
 
         # Add more repository URLs as needed
     ]
