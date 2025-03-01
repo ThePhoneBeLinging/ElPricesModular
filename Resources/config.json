@@ -1,5 +1,10 @@
 {
   "ElPricesCollectorUsualSecondsDelay": 3600,
   "ElPricesUsageControllerSecondsDumpDelay": 3600,
-  "ElPricesUsageControllerSecondsToKeepInMemory": 86400
+  "ElPricesUsageControllerSecondsToKeepInMemory": 86400,
+  "PercentageGapInGroups": 5,
+  "MinimumGapInGroupsCents": 1500,
+  "MaximumGapInGroupsCents": 5000,
+  "PercentageGapBetweenGroups": 5,
+  "MinimumGapBetweenGroups": 1500
 }
