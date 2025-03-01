@@ -1,0 +1,7 @@
+https://github.com/ThePhoneBeLinging/Utility.git
+https://github.com/ThePhoneBeLinging/ElPricesCollector.git
+https://github.com/ThePhoneBeLinging/ElPricesUsageController.git
+https://github.com/SRombauts/SQLiteCpp.git
+https://github.com/ThePhoneBeLinging/LeGUILib.git
+https://github.com/ThePhoneBeLinging/TouchCore-CPP.git
+https://github.com/ThePhoneBeLinging/PriceGrouper.git
