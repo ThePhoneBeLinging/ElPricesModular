@@ -6,5 +6,6 @@
   "MinimumGapInGroupsCents": 1500,
   "MaximumGapInGroupsCents": 5000,
   "PercentageGapBetweenGroups": 5,
-  "MinimumGapBetweenGroups": 1500
+  "MinimumGapBetweenGroups": 1500,
+  "RadiusToCeriusPriceDifference": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
 }
