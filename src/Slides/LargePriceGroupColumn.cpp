@@ -35,7 +35,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
     int backgroundWidth = 300;
     background_->setColor(200,200,200);
     background_->setWidth(backgroundWidth);
-    background_->setHeight(400);
+    background_->setHeight(500);
     background_->setRoundedEdge(0.2);
     background_->setX(x_);
     background_->setY(y_);

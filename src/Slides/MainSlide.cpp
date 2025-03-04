@@ -46,7 +46,30 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         prices.push_back(28000);
         prices.push_back(27500);
         prices.push_back(26700);
-
+        prices.push_back(24000);
+        prices.push_back(23500);
+        prices.push_back(23400);
+        prices.push_back(23200);
+        prices.push_back(23700);
+        prices.push_back(23700);
+        prices.push_back(28300);
+        prices.push_back(29600);
+        prices.push_back(30700);
+        prices.push_back(29200);
+        prices.push_back(27500);
+        prices.push_back(26400);
+        prices.push_back(25800);
+        prices.push_back(25700);
+        prices.push_back(26000);
+        prices.push_back(27300);
+        prices.push_back(28200);
+        prices.push_back(37300);
+        prices.push_back(38000);
+        prices.push_back(37800);
+        prices.push_back(36400);
+        prices.push_back(28000);
+        prices.push_back(27500);
+        prices.push_back(26700);
         std::unique_lock lock(mutex_);
         while (keepRunning_)
         {
