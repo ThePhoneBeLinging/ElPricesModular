@@ -7,33 +7,41 @@
 #include <fmt/format.h>
 #include <LeGUILib/GUIElements/Text.h>
 #include "Elements/BoxWith3Texts.h"
+#include "PriceGrouper/PriceSorter.h"
 #include "Utility/TimeUtil.h"
 
 MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController)
 {
-    boxChart_ = std::make_shared<BoxChart>(this);
-    boxChart_->setSpacing(15);
-    boxChart_->setBoxWidth(15);
-    boxChart_->setX(125);
-    boxChart_->setY(650);
-    boxChart_->setHeight(250);
-    keepRunning_ = true;
 
-    auto updateBoxChartFunction = [this, collectorController] () -> void
-    {
-        std::unique_lock lock(mutex_);
-        while (keepRunning_)
-        {
-            std::vector<double> values;
-            for (const auto& val : collectorController->getCurrentAndFuturePrices())
-            {
-                values.push_back(static_cast<double>(val->getTotalPrice()) / 10000);
-            }
-            boxChart_->setPrices(values);
-            int secondsToWait = TimeUtil::secondsToNextHour();
-            condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
-        }
-    };
+    std::vector<int> prices;
+    prices.push_back(24000);
+    prices.push_back(23500);
+    prices.push_back(23400);
+    prices.push_back(23200);
+    prices.push_back(23700);
+    prices.push_back(23700);
+    prices.push_back(28300);
+    prices.push_back(29600);
+    prices.push_back(30700);
+    prices.push_back(29200);
+    prices.push_back(27500);
+    prices.push_back(26400);
+    prices.push_back(25800);
+    prices.push_back(25700);
+    prices.push_back(26000);
+    prices.push_back(27300);
+    prices.push_back(28200);
+    prices.push_back(37300);
+    prices.push_back(38000);
+    prices.push_back(37800);
+    prices.push_back(36400);
+    prices.push_back(28000);
+    prices.push_back(27500);
+    prices.push_back(26700);
+    auto response = PriceSorter::findLargePriceGroups(prices);
+    largePriceGroupColumn_ = std::make_shared<LargePriceGroupColumn>(this);
+    largePriceGroupColumn_->update(response[0]);
+    keepRunning_ = true;
 
     auto clockTextUpdateFunction = [this] () -> void
     {
@@ -118,7 +126,6 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    threads_.emplace_back(updateBoxChartFunction);
     threads_.emplace_back(clockTextUpdateFunction);
     threads_.emplace_back(updateCurrentPrice);
     threads_.emplace_back(currentUsageWattFunction);

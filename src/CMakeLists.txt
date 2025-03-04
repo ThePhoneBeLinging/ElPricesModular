@@ -10,6 +10,8 @@ add_executable(ElPricesModular main.cpp
         Slides/MainSlide.h
         Slides/BoxChart.cpp
         Slides/BoxChart.h
+        Slides/LargePriceGroupColumn.cpp
+        Slides/LargePriceGroupColumn.h
 )
 
 
@@ -19,3 +21,4 @@ target_link_libraries(ElPricesModular PUBLIC Utility)
 target_link_libraries(ElPricesModular PUBLIC SQLiteCpp)
 target_link_libraries(ElPricesModular PUBLIC LeGUILib)
 target_link_libraries(ElPricesModular PUBLIC fmt::fmt)
+target_link_libraries(ElPricesModular PUBLIC PriceGrouper)
