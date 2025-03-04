@@ -18,7 +18,7 @@ public:
     MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController);
     ~MainSlide();
 private:
-    std::shared_ptr<LargePriceGroupColumn> largePriceGroupColumn_;
+    std::vector<std::shared_ptr<LargePriceGroupColumn>> largePriceGroupColumns_;
     std::vector<std::thread> threads_;
     std::atomic_bool keepRunning_;
     std::condition_variable condVar_;

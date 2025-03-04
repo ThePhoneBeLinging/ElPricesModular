@@ -12,35 +12,54 @@
 
 MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController)
 {
+    for (int i = 0; i < 4; i++)
+    {
+        largePriceGroupColumns_.push_back(std::make_shared<LargePriceGroupColumn>(this));
+        largePriceGroupColumns_[i]->setX(275*i + 50);
+        largePriceGroupColumns_[i]->setY(200);
+    }
 
-    std::vector<int> prices;
-    prices.push_back(24000);
-    prices.push_back(23500);
-    prices.push_back(23400);
-    prices.push_back(23200);
-    prices.push_back(23700);
-    prices.push_back(23700);
-    prices.push_back(28300);
-    prices.push_back(29600);
-    prices.push_back(30700);
-    prices.push_back(29200);
-    prices.push_back(27500);
-    prices.push_back(26400);
-    prices.push_back(25800);
-    prices.push_back(25700);
-    prices.push_back(26000);
-    prices.push_back(27300);
-    prices.push_back(28200);
-    prices.push_back(37300);
-    prices.push_back(38000);
-    prices.push_back(37800);
-    prices.push_back(36400);
-    prices.push_back(28000);
-    prices.push_back(27500);
-    prices.push_back(26700);
-    auto response = PriceSorter::findLargePriceGroups(prices);
-    largePriceGroupColumn_ = std::make_shared<LargePriceGroupColumn>(this);
-    largePriceGroupColumn_->update(response[0]);
+    auto largePriceColumnUpdateFunction = [this] () -> void
+    {
+        std::vector<int> prices;
+        prices.push_back(24000);
+        prices.push_back(23500);
+        prices.push_back(23400);
+        prices.push_back(23200);
+        prices.push_back(23700);
+        prices.push_back(23700);
+        prices.push_back(28300);
+        prices.push_back(29600);
+        prices.push_back(30700);
+        prices.push_back(29200);
+        prices.push_back(27500);
+        prices.push_back(26400);
+        prices.push_back(25800);
+        prices.push_back(25700);
+        prices.push_back(26000);
+        prices.push_back(27300);
+        prices.push_back(28200);
+        prices.push_back(37300);
+        prices.push_back(38000);
+        prices.push_back(37800);
+        prices.push_back(36400);
+        prices.push_back(28000);
+        prices.push_back(27500);
+        prices.push_back(26700);
+
+        std::unique_lock lock(mutex_);
+        while (keepRunning_)
+        {
+            auto response = PriceSorter::findLargePriceGroups(prices);
+            for (int i = 0; i < response.size(); i++)
+            {
+                largePriceGroupColumns_[i]->update(response[i]);
+            }
+            int delay = TimeUtil::secondsToNextHour();
+            condVar_.wait_for(lock,std::chrono::seconds(delay));
+        }
+    };
+
     keepRunning_ = true;
 
     auto clockTextUpdateFunction = [this] () -> void
@@ -125,7 +144,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             condVar_.wait_for(lock,std::chrono::seconds(1));
         }
     };
-
+    threads_.emplace_back(largePriceColumnUpdateFunction);
     threads_.emplace_back(clockTextUpdateFunction);
     threads_.emplace_back(updateCurrentPrice);
     threads_.emplace_back(currentUsageWattFunction);

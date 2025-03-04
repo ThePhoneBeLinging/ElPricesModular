@@ -14,6 +14,7 @@ LargePriceGroupColumn::LargePriceGroupColumn(Slide* slide)
     header_ = slide_->createElement<Text>();
     header_->setColor(255,0,0);
     header_->setAlignment(1);
+    header_->setZ(5);
 }
 
 void LargePriceGroupColumn::setX(const int x)
@@ -28,7 +29,7 @@ void LargePriceGroupColumn::setY(const int y)
 
 void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& largePriceGroup)
 {
-    int backgroundWidth = 400;
+    int backgroundWidth = 250;
     background_->setColor(0,0,0);
     background_->setWidth(backgroundWidth);
     background_->setHeight(400);
@@ -42,7 +43,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
     {
         auto text = slide_->createElement<Text>();
         text->setColor(255,0,0);
-        text->setWidth(400);
+        text->setWidth(backgroundWidth);
         text->setAlignment(1);
         std::string textString = std::to_string(smallPrice->getStartTime());
         textString.append(" -> ");
@@ -51,6 +52,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
         text->setFontSize(30);
         text->setX(x_);
         text->setY(y);
+        text->setZ(5);
         texts_.push_back(text);
         y+= 50;
         sum += smallPrice->calcAveragePrice();
