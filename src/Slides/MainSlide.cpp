@@ -15,7 +15,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     for (int i = 0; i < 4; i++)
     {
         largePriceGroupColumns_.push_back(std::make_shared<LargePriceGroupColumn>(this));
-        largePriceGroupColumns_[i]->setX(275*i + 50);
+        largePriceGroupColumns_[i]->setX(320*i + 10);
         largePriceGroupColumns_[i]->setY(200);
     }
 
