@@ -8,6 +8,7 @@ int main()
 {
     try
     {
+        DebugController::initDebug(50);
         ConfigController::loadConfig("../../Resources/config.json");
         auto elPricesModular = std::make_unique<ElPricesModular>();
         elPricesModular->launch();
