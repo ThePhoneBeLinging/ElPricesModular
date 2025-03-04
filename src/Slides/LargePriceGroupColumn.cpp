@@ -6,13 +6,15 @@
 
 #include <fmt/format.h>
 
+#include "Utility/TimeUtil.h"
+
 LargePriceGroupColumn::LargePriceGroupColumn(Slide* slide)
     : x_(0),y_(0) ,slide_(slide)
 {
     background_ = slide_->createElement<RectangleElement>();
 
     header_ = slide_->createElement<Text>();
-    header_->setColor(255,0,0);
+    header_->setColor(0,0,0);
     header_->setAlignment(1);
     header_->setZ(5);
 }
@@ -29,20 +31,21 @@ void LargePriceGroupColumn::setY(const int y)
 
 void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& largePriceGroup)
 {
-    int backgroundWidth = 250;
-    background_->setColor(0,0,0);
+    int currentHour = TimeUtil::getCurrentTime().tm_hour;
+    int backgroundWidth = 300;
+    background_->setColor(200,200,200);
     background_->setWidth(backgroundWidth);
     background_->setHeight(400);
     background_->setRoundedEdge(0.2);
     background_->setX(x_);
     background_->setY(y_);
-    int y = y_ + 50;
+    int y = y_ + 70;
     auto smallPriceGroups = largePriceGroup->getSmallPriceGroups();
     int sum = 0;
     for (const auto& smallPrice : smallPriceGroups)
     {
         auto text = slide_->createElement<Text>();
-        text->setColor(255,0,0);
+        text->setColor(0,0,0);
         text->setWidth(backgroundWidth);
         text->setAlignment(1);
         std::string textString = std::to_string(smallPrice->getStartTime());
@@ -56,13 +59,17 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
         texts_.push_back(text);
         y+= 50;
         sum += smallPrice->calcAveragePrice();
+        if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime())
+        {
+            text->setColor(0,200,0);
+        }
     }
     double result = (static_cast<double>(sum) / static_cast<double>(smallPriceGroups.size())) / 10000;
     std::string headerText = fmt::format("{:.2f}", result);
     header_->setText(headerText);
     header_->setX(x_);
-    header_->setY(y_);
-    header_->setFontSize(30);
+    header_->setY(y_ + 5);
+    header_->setFontSize(50);
     header_->setWidth(backgroundWidth);
 }
 
