@@ -1,5 +1,4 @@
 {
-  "ElPricesCollectorUsualSecondsDelay": 3600,
   "ElPricesUsageControllerSecondsDumpDelay": 3600,
   "ElPricesUsageControllerSecondsToKeepInMemory": 86400,
   "PercentageGapInGroups": 5,
