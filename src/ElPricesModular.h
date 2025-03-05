@@ -4,9 +4,9 @@
 
 #ifndef ELPRICESMODULAR_H
 #define ELPRICESMODULAR_H
-#include <ElPricesUsageController/ElPricesUsageController.h>
-#include <LeGUILib/LeGUILib.h>
 
+#include <LeGUILib/LeGUILib.h>
+#include <ElPricesUsageController/ElPricesUsageController.h>
 #include "ElPricesCollector/ElPricesCollector.h"
 
 
@@ -14,8 +14,10 @@ class ElPricesModular
 {
 public:
     ElPricesModular();
-    void launch();
+
 private:
+    void launch();
+    std::thread elPricesModularThread_;
     std::unique_ptr<LeGUILib> leGUILib_;
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
     std::shared_ptr<ElPricesUsageController> elPriceUsageController_;
