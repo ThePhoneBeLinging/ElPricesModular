@@ -6,10 +6,7 @@
 #define MAINSLIDE_H
 #include <ElPricesCollector/ElPricesCollector.h>
 #include <ElPricesUsageController/ElPricesUsageController.h>
-
-#include "BoxChart.h"
 #include "LargePriceGroupColumn.h"
-#include "Elements/BoxWith3Texts.h"
 
 
 class MainSlide : public Slide

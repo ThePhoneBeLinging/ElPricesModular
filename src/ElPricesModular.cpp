@@ -19,6 +19,6 @@ void ElPricesModular::launch()
 {
     elPricesCollector_ = std::make_shared<ElPricesCollector>();
     elPriceUsageController_ = std::make_shared<ElPricesUsageController>();
-    auto mainSlide = std::make_shared<MainSlide>(elPricesCollector_,elPriceUsageController_);
-    leGUILib_->navigateTo(mainSlide);
+    mainSlide_ = std::make_shared<MainSlide>(elPricesCollector_,elPriceUsageController_);
+    leGUILib_->navigateTo(mainSlide_);
 }

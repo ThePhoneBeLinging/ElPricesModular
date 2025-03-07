@@ -6,19 +6,18 @@
 #include <iostream>
 #include <fmt/format.h>
 #include <LeGUILib/GUIElements/Text.h>
-#include "Elements/BoxWith3Texts.h"
 #include "PriceGrouper/PriceSorter.h"
 #include "Utility/TimeUtil.h"
 
-MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController)
+MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController) : largePriceGroupColumns_()
 {
     for (int i = 0; i < 4; i++)
     {
         largePriceGroupColumns_.push_back(std::make_shared<LargePriceGroupColumn>(this));
-        largePriceGroupColumns_[i]->setX(320*i + 10);
-        largePriceGroupColumns_[i]->setY(200);
+        largePriceGroupColumns_.back()->setX(320*i + 10);
+        largePriceGroupColumns_.back()->setY(200);
     }
-
+    keepRunning_ = true;
     auto largePriceColumnUpdateFunction = [this] () -> void
     {
         std::vector<int> prices;
@@ -83,7 +82,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    keepRunning_ = true;
+
 
     auto clockTextUpdateFunction = [this] () -> void
     {
