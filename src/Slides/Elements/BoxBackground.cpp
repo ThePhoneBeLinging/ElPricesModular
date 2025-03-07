@@ -4,9 +4,9 @@
 
 #include "BoxBackground.h"
 
-BoxBackground* BoxBackground::clone() const
+std::shared_ptr<GUIElement> BoxBackground::clone() const
 {
-    return new BoxBackground(*this);
+    return std::make_shared<BoxBackground>(*this);
 }
 
 void BoxBackground::compose()
