@@ -43,8 +43,13 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
     auto smallPriceGroups = largePriceGroup->getSmallPriceGroups();
     int sum = 0;
     int size = 0;
+    bool dummyIsLast = smallPriceGroups.back()->getStartTime() == -1;
     for (const auto& smallPrice : smallPriceGroups)
     {
+        if (dummyIsLast && smallPrice->getStartTime() == -1)
+        {
+            break;
+        }
         auto text = slide_->createElement<Text>();
         text->setColor(0,0,0);
         text->setWidth(backgroundWidth);
