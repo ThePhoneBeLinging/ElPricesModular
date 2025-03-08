@@ -4,10 +4,6 @@ FROM ubuntu:latest
 # Set the maintainer label
 LABEL maintainer="EAL"
 
-# Set environment variables to avoid interactive prompts
-ENV DEBIAN_FRONTEND=noninteractive
-ENV DISPLAY=:0
-
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
