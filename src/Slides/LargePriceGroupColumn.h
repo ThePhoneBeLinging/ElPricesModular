@@ -15,8 +15,8 @@ public:
     explicit LargePriceGroupColumn(Slide* slide);
     void setX(int x);
     void setY(int y);
-    void update(const std::shared_ptr<LargePriceGroup>& largePriceGroup);
-private:
+    virtual void update(const std::shared_ptr<LargePriceGroup>& largePriceGroup);
+protected:
     int x_;
     int y_;
     Slide* slide_;

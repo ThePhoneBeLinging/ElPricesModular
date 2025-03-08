@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fmt/format.h>
 #include <LeGUILib/GUIElements/Text.h>
+
+#include "LastLargePriceGroupColumn.h"
 #include "PriceGrouper/PriceSorter.h"
 #include "Utility/TimeUtil.h"
 
@@ -13,7 +15,14 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
 {
     for (int i = 0; i < 4; i++)
     {
-        largePriceGroupColumns_.push_back(std::make_shared<LargePriceGroupColumn>(this));
+        if (i == 3)
+        {
+            largePriceGroupColumns_.push_back(std::make_shared<LastLargePriceGroupColumn>(this));
+        }
+        else
+        {
+            largePriceGroupColumns_.push_back(std::make_shared<LargePriceGroupColumn>(this));
+        }
         largePriceGroupColumns_.back()->setX(320*i + 10);
         largePriceGroupColumns_.back()->setY(200);
     }
