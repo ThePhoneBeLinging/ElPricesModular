@@ -5,3 +5,4 @@ https://github.com/SRombauts/SQLiteCpp.git
 https://github.com/ThePhoneBeLinging/LeGUILib.git
 https://github.com/ThePhoneBeLinging/TouchCore-CPP.git
 https://github.com/ThePhoneBeLinging/PriceGrouper.git
+https://github.com/ThePhoneBeLinging/DatabaseAccessController.git
