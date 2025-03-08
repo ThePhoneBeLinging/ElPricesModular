@@ -74,7 +74,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
             text->setFontSize(30);
             sum += smallPrice->calcAveragePrice();
             size++;
-            if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime())
+            if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime() && not isNextDay)
             {
                 text->setColor(0,200,0);
             }
