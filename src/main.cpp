@@ -16,6 +16,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-    DebugController::dumpDebug("../../debug.txt");
+    DebugController::dumpDebug("");
     return 0;
 }
