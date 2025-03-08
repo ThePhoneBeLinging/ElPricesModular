@@ -14,6 +14,8 @@ add_executable(ElPricesModular main.cpp
         Slides/LargePriceGroupColumn.h
         Slides/LastLargePriceGroupColumn.cpp
         Slides/LastLargePriceGroupColumn.h
+        Slides/LoadingSlide.cpp
+        Slides/LoadingSlide.h
 )
 
 
