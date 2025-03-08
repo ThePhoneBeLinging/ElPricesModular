@@ -96,7 +96,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         while (keepRunning_)
         {
             auto currentTime = TimeUtil::getCurrentTime();
-            std::string currentTimeString = "";
+            std::string currentTimeString;
             if (currentTime.tm_hour < 10)
             {
                 currentTimeString.append("0");
