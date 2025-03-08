@@ -16,7 +16,7 @@ void LastLargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& l
     header_->setText("Rester");
     for (int i = 0; i < texts_.size(); i++)
     {
-        if (largePriceGroup->getSmallPriceGroups()[i]->getEndTime() == -1)
+        if (largePriceGroup->getSmallPriceGroups()[i]->getStartTime() == -1)
         {
             continue;
         }
