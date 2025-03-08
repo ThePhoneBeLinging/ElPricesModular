@@ -6,26 +6,76 @@
 
 #include <fmt/format.h>
 
+#include "Utility/TimeUtil.h"
+
 LastLargePriceGroupColumn::LastLargePriceGroupColumn(Slide* slide) : LargePriceGroupColumn(slide)
 {
 }
 
 void LastLargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& largePriceGroup)
 {
-    LargePriceGroupColumn::update(largePriceGroup);
-    header_->setText("Rester");
-    for (int i = 0; i < texts_.size(); i++)
+    texts_.clear();
+    int currentHour = TimeUtil::getCurrentTime().tm_hour;
+    int backgroundWidth = 300;
+    background_->setColor(200,200,200);
+    background_->setWidth(backgroundWidth);
+    background_->setHeight(500);
+    background_->setRoundedEdge(0.2);
+    background_->setX(x_);
+    background_->setY(y_);
+    int y = y_ + 70;
+    auto smallPriceGroups = largePriceGroup->getSmallPriceGroups();
+    int sum = 0;
+    int size = 0;
+    bool dummyIsLast = smallPriceGroups.back()->getStartTime() == -1;
+    bool isNextDay = false;
+    for (const auto& smallPrice : smallPriceGroups)
     {
-        if (largePriceGroup->getSmallPriceGroups()[i]->getStartTime() == -1)
+        if (not isNextDay && smallPrice->getEndTime() <= currentHour && smallPrice->getStartTime() != -1)
         {
             continue;
         }
-        std::string text = texts_[i]->getText();
-        texts_[i]->setAlignment(1);
-        text.append(" : ");
-        double result = static_cast<double>(largePriceGroup->getSmallPriceGroups()[i]->calcAveragePrice()) / 10000.0;
-        std::string formattedText = fmt::format("{:.2f}", result);
-        text.append(formattedText);
-        texts_[i]->setText(text);
+        if (dummyIsLast && smallPrice->getStartTime() == -1)
+        {
+            break;
+        }
+        auto text = slide_->createElement<Text>();
+        text->setColor(0,0,0);
+        text->setWidth(backgroundWidth);
+        text->setAlignment(1);
+        if (smallPrice->getStartTime() == -1)
+        {
+            text->setText(TimeUtil::intToWeekDayDanish((TimeUtil::getCurrentTime().tm_wday + 1) % 7));
+            text->setFontSize(50);
+            isNextDay = true;
+        }
+        else
+        {
+            std::string textString = std::to_string(smallPrice->getStartTime());
+            textString.append(" -> ");
+            textString.append(std::to_string(smallPrice->getEndTime()));
+            textString.append(" : ");
+
+            text->setText(textString);
+            text->setFontSize(30);
+            sum += smallPrice->calcAveragePrice();
+            size++;
+            if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime() && not isNextDay)
+            {
+                text->setColor(0,200,0);
+            }
+        }
+        text->setX(x_);
+        text->setY(y);
+        text->setZ(5);
+        texts_.push_back(text);
+        y+= 50;
     }
+    double result = (static_cast<double>(sum) / static_cast<double>(size)) / 10000;
+    std::string headerText = fmt::format("{:.2f}", result);
+    header_->setText(headerText);
+    header_->setX(x_);
+    header_->setY(y_ + 5);
+    header_->setFontSize(50);
+    header_->setWidth(backgroundWidth);
 }

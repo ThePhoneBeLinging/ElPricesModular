@@ -31,6 +31,7 @@ void LargePriceGroupColumn::setY(const int y)
 
 void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& largePriceGroup)
 {
+    texts_.clear();
     int currentHour = TimeUtil::getCurrentTime().tm_hour;
     int backgroundWidth = 300;
     background_->setColor(200,200,200);
