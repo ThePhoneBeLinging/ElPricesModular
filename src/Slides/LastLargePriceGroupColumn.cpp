@@ -55,7 +55,9 @@ void LastLargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& l
             textString.append(" -> ");
             textString.append(std::to_string(smallPrice->getEndTime()));
             textString.append(" : ");
-
+            double result = (static_cast<double>(smallPrice->calcAveragePrice()) / 10000.0);
+            std::string price = fmt::format("{:.2f}", result);
+            textString.append(price);
             text->setText(textString);
             text->setFontSize(30);
             sum += smallPrice->calcAveragePrice();
@@ -71,9 +73,8 @@ void LastLargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& l
         texts_.push_back(text);
         y+= 50;
     }
-    double result = (static_cast<double>(sum) / static_cast<double>(size)) / 10000;
-    std::string headerText = fmt::format("{:.2f}", result);
-    header_->setText(headerText);
+
+    header_->setText("Rester");
     header_->setX(x_);
     header_->setY(y_ + 5);
     header_->setFontSize(50);
