@@ -5,7 +5,7 @@
   "MinimumGapInGroupsCents": 1500,
   "MaximumGapInGroupsCents": 5000,
   "PercentageGapBetweenGroups": 5,
-  "MinimumGapBetweenGroups": 1500,
+  "MinimumGapBetweenGroups": 2500,
   "SmallGroupsUseFirstValueInsteadOfAvg": false,
   "RadiusToCerius_Hour:0": 0,
   "RadiusToCerius_Hour:1": 0,
