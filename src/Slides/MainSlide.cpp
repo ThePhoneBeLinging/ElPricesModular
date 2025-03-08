@@ -20,18 +20,20 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     keepRunning_ = true;
     auto largePriceColumnUpdateFunction = [this, collectorController] () -> void
     {
-        std::vector<int> prices;
-        auto vector = collectorController->getCurrentAndFuturePrices();
-        for (const auto& price : vector)
-        {
-            if (price != nullptr)
-            {
-                prices.push_back(price->getTotalPrice());
-            }
-        }
+
         std::unique_lock lock(mutex_);
+        std::vector<int> prices;
         while (keepRunning_)
         {
+            prices.clear();
+            auto vector = collectorController->getCurrentAndFuturePrices();
+            for (const auto& price : vector)
+            {
+                if (price != nullptr)
+                {
+                    prices.push_back(price->getTotalPrice());
+                }
+            }
             auto response = PriceSorter::findLargePriceGroups(prices);
             for (int i = 0; i < response.size(); i++)
             {
