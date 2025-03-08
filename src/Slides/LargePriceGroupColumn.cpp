@@ -47,7 +47,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
     bool isNextDay = false;
     for (const auto& smallPrice : smallPriceGroups)
     {
-        if (not isNextDay && smallPrice->getEndTime() <= currentHour)
+        if (not isNextDay && smallPrice->getEndTime() <= currentHour && not smallPrice->getStartTime() == -1)
         {
             continue;
         }
