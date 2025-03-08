@@ -42,29 +42,39 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
     int y = y_ + 70;
     auto smallPriceGroups = largePriceGroup->getSmallPriceGroups();
     int sum = 0;
+    int size = 0;
     for (const auto& smallPrice : smallPriceGroups)
     {
         auto text = slide_->createElement<Text>();
         text->setColor(0,0,0);
         text->setWidth(backgroundWidth);
         text->setAlignment(1);
-        std::string textString = std::to_string(smallPrice->getStartTime());
-        textString.append(" -> ");
-        textString.append(std::to_string(smallPrice->getEndTime()));
-        text->setText(textString);
-        text->setFontSize(30);
+        if (smallPrice->getStartTime() == -1)
+        {
+            text->setText(TimeUtil::intToWeekDayDanish((TimeUtil::getCurrentTime().tm_wday + 1) % 7));
+            text->setFontSize(50);
+        }
+        else
+        {
+            std::string textString = std::to_string(smallPrice->getStartTime());
+            textString.append(" -> ");
+            textString.append(std::to_string(smallPrice->getEndTime()));
+            text->setText(textString);
+            text->setFontSize(30);
+            sum += smallPrice->calcAveragePrice();
+            size++;
+            if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime())
+            {
+                text->setColor(0,200,0);
+            }
+        }
         text->setX(x_);
         text->setY(y);
         text->setZ(5);
         texts_.push_back(text);
         y+= 50;
-        sum += smallPrice->calcAveragePrice();
-        if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime())
-        {
-            text->setColor(0,200,0);
-        }
     }
-    double result = (static_cast<double>(sum) / static_cast<double>(smallPriceGroups.size())) / 10000;
+    double result = (static_cast<double>(sum) / static_cast<double>(size)) / 10000;
     std::string headerText = fmt::format("{:.2f}", result);
     header_->setText(headerText);
     header_->setX(x_);
