@@ -109,7 +109,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             }
             currentTimeString.append(std::to_string(currentTime.tm_min));
             text->setText(currentTimeString);
-            int secondsToWait = 60 - currentTime.tm_sec;
+            int secondsToWait = TimeUtil::secondsToNextHour();
             condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
         }
     };
