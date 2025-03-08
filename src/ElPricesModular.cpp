@@ -13,6 +13,7 @@ ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>())
     leGUILib_->navigateTo(std::make_shared<Slide>());
     elPricesModularThread_ = std::thread(&ElPricesModular::launch, this);
     leGUILib_->launchGUI();
+    elPricesModularThread_.join();
 }
 
 void ElPricesModular::launch()
