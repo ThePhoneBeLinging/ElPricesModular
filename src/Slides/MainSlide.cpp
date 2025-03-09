@@ -113,8 +113,9 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         std::unique_lock lock(mutex_);
         while (keepRunning_)
         {
-            double wattage = usageController->getWattage();
-            std::string string = fmt::format("{:.3f} Kw", wattage);
+            int pulsesLastHour = usageController->getPulsesLastHour();
+            double kwhUsed = static_cast<double>(pulsesLastHour) / 1000;
+            std::string string = fmt::format("{:.3f} KwH, Denne Time", kwhUsed);
             text->setText(string);
             condVar_.wait_for(lock,std::chrono::seconds(1));
         }
