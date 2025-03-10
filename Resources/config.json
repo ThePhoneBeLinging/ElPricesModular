@@ -32,5 +32,11 @@
   "RadiusToCerius_Hour:21": 0,
   "RadiusToCerius_Hour:22": 0,
   "RadiusToCerius_Hour:23": 0,
-  "UseRadiusToCeriusPriceDifference": true
+  "UseRadiusToCeriusPriceDifference": true,
+  "ChipName": "gpiochip4",
+  "OutputPinForTest": 17,
+  "InputPin": 27,
+  "SleepTimeForPulseLoopInMS": 20,
+  "RunningOnPI": false,
+  "MockPulseLengthInMS": 10
 }
