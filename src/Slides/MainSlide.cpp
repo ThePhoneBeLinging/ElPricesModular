@@ -107,7 +107,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     {
         auto text = this->createElement<Text>();
         text->setX(550);
-        text->setY(50);
+        text->setY(70);
         text->setColor(0,0,0);
         text->setFontSize(60);
         std::unique_lock lock(mutex_);
@@ -125,7 +125,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     {
         auto text = this->createElement<Text>();
         text->setX(550);
-        text->setY(100);
+        text->setY(120);
         text->setColor(0,0,0);
         text->setFontSize(60);
         std::unique_lock lock(mutex_);
