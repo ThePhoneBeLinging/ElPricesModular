@@ -3,7 +3,7 @@
 Dependencies:
 
 ``` bash
-sudo apt install libssl-dev libsqlite3-dev libfmt-dev xorg-dev
+sudo apt install libssl-dev libsqlite3-dev libfmt-dev xorg-dev gpiod libgpiod-dev
 ```
 
 GLX: Failed to create context: GLXBadFBConfig
