@@ -46,7 +46,7 @@ void LastLargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& l
         if (smallPrice->getStartTime() == -1)
         {
             text->setText(TimeUtil::intToWeekDayDanish((TimeUtil::getCurrentTime().tm_wday + 1) % 7));
-            text->setFontSize(50);
+            text->setFontSize(40);
             isNextDay = true;
         }
         else
@@ -59,7 +59,7 @@ void LastLargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& l
             std::string price = fmt::format("{:.2f}", result);
             textString.append(price);
             text->setText(textString);
-            text->setFontSize(30);
+            text->setFontSize(40);
             sum += smallPrice->calcAveragePrice();
             size++;
             if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime() && not isNextDay)
