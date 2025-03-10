@@ -59,7 +59,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     {
         std::shared_ptr<Text> text = this->createElement<Text>();
         text->setX(50);
-        text->setY(50);
+        text->setY(10);
         text->setColor(0,0,0);
         text->setFontSize(60);
         text->setText("TEXT");
@@ -89,7 +89,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     {
         auto text = this->createElement<Text>();
         text->setX(300);
-        text->setY(50);
+        text->setY(10);
         text->setColor(0,0,0);
         text->setFontSize(60);
         std::unique_lock lock(mutex_);
@@ -103,7 +103,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    auto currentUsageWattFunction = [this, usageController] () -> void
+    auto thisHourWattageFunction = [this, usageController] () -> void
     {
         auto text = this->createElement<Text>();
         text->setX(550);
@@ -121,7 +121,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    auto currentKrUsage = [this, collectorController ,usageController] () -> void
+    auto thisHourKrUsageFunction = [this, collectorController ,usageController] () -> void
     {
         auto text = this->createElement<Text>();
         text->setX(550);
@@ -139,9 +139,48 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             condVar_.wait_for(lock,std::chrono::seconds(1));
         }
     };
+
+    auto currentUsageWattFunction = [this, usageController] () -> void
+    {
+        auto text = this->createElement<Text>();
+        text->setX(50);
+        text->setY(70);
+        text->setColor(0,0,0);
+        text->setFontSize(60);
+        std::unique_lock lock(mutex_);
+        while (keepRunning_)
+        {
+            double wattage = usageController->getWattage();
+            std::string string = fmt::format("{:.3f} Kw", wattage);
+
+            text->setText(string);
+            condVar_.wait_for(lock,std::chrono::seconds(1));
+        }
+    };
+    auto currentKrUsage = [this, collectorController ,usageController] () -> void
+    {
+        auto text = this->createElement<Text>();
+        text->setX(50);
+        text->setY(120);
+        text->setColor(0,0,0);
+        text->setFontSize(60);
+        std::unique_lock lock(mutex_);
+        while (keepRunning_)
+        {
+            double wattage = usageController->getWattage();
+
+            double price = collectorController->getCurrentPrice()->getTotalPrice() / 10000;
+            std::string string = fmt::format("{:.2f} Kr/Time", wattage * price);
+            text->setText(string);
+            condVar_.wait_for(lock,std::chrono::seconds(1));
+        }
+    };
+
     threads_.emplace_back(largePriceColumnUpdateFunction);
     threads_.emplace_back(clockTextUpdateFunction);
     threads_.emplace_back(updateCurrentPrice);
+    threads_.emplace_back(thisHourWattageFunction);
+    threads_.emplace_back(thisHourKrUsageFunction);
     threads_.emplace_back(currentUsageWattFunction);
     threads_.emplace_back(currentKrUsage);
 }
