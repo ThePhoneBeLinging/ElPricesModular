@@ -37,6 +37,6 @@
   "OutputPinForTest": 17,
   "InputPin": 27,
   "SleepTimeForPulseLoopInMS": 20,
-  "RunningOnPI": false,
+  "RunningOnPI": true,
   "MockPulseLengthInMS": 10
 }
