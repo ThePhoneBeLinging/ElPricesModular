@@ -36,7 +36,7 @@
   "ChipName": "gpiochip0",
   "OutputPinForTest": 23,
   "InputPin": 24,
-  "SleepTimeForPulseLoopInMS": 10,
   "RunningOnPI": true,
+  "TargetKWHForMockPulse": 1000,
   "MockPulseLengthInMS": 10
 }
