@@ -38,5 +38,6 @@
   "InputPin": 24,
   "RunningOnPI": true,
   "TargetKWHForMockPulse": 1000,
-  "MockPulseLengthInMS": 10
+  "MockPulseLengthInMS": 10,
+  "SleepTimeForPulseLoopInMS": 5
 }
