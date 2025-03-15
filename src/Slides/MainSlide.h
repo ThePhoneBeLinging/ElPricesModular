@@ -12,9 +12,15 @@
 class MainSlide : public Slide
 {
 public:
-    MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, const std::shared_ptr<ElPricesUsageController>& usageController);
+    MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController);
     ~MainSlide();
 private:
+    std::unique_ptr<ElPricesUsageController> usageController_;
+    std::function<void(int,double)> currentHourFunction_;
+    std::shared_ptr<Text> hourUsageText_;
+    std::shared_ptr<Text> hourKRUsage_;
+    std::shared_ptr<Text> currentUsageWattageText_;
+    std::shared_ptr<Text> currentKRUsage_;
     std::vector<std::shared_ptr<LargePriceGroupColumn>> largePriceGroupColumns_;
     std::vector<std::thread> threads_;
     std::atomic_bool keepRunning_;
