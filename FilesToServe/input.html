@@ -5,29 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Date API Fetch</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            max-width: 400px;
-            margin: auto;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        input, button {
-            font-size: 1.2em;
-            padding: 8px;
-        }
-
-        #response {
-            margin-top: 20px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+        form { display: flex; flex-direction: column; gap: 10px; }
+        input, button { font-size: 1.2em; padding: 8px; }
+        #response { margin-top: 20px; white-space: pre-wrap; word-wrap: break-word; }
     </style>
 </head>
 <body>
@@ -48,7 +29,7 @@
 <div id="response"></div>
 
 <script>
-    document.getElementById('dateForm').addEventListener('submit', async function (event) {
+    document.getElementById('dateForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const date1 = document.getElementById('date1').value;
@@ -58,15 +39,40 @@
         const responseDiv = document.getElementById('response');
 
         if (!date1 || !hour1 || !date2 || !hour2) {
-            responseDiv.textContent = "Please select both dates and hours.";
+            responseDiv.textContent = "Please select all date and time fields.";
             return;
         }
+        console.log("Button pressed")
+        try
+        {
+            const date1Obj = new Date(date1);
+            const date2Obj = new Date(date2);
 
-        try {
-            const request = `http://localhost:18080/getDataBetweenDates?date1=${date1}&hour1=${hour1}&date2=${date2}&hour2=${hour2}`;
-            const response = await fetch(request);
+            const year1 = date1Obj.getFullYear();
+            const month1 = date1Obj.getMonth() + 1;
+            const day1 = date1Obj.getDate();
+
+            const year2 = date2Obj.getFullYear();
+            const month2 = date2Obj.getMonth() + 1;
+            const day2 = date2Obj.getDate();
+            const response = await fetch(`http://localhost:18080/getDataBetweenDates?year1=${year1}&month1=${month1}&day1=${day1}&hour1=${hour1}&year2=${year2}&month2=${month2}&day2=${day2}&hour2=${hour2}`);
             const data = await response.json();
-            responseDiv.textContent = JSON.stringify(data, null, 2);
+
+            let tableHtml = `<table><tr><th>Year</th><th>Month</th><th>Day</th><th>Hour</th><th>Price</th><th>Pulses</th><th>Usage DKK</th></tr>`;
+            data.forEach(entry => {
+                tableHtml += `<tr>
+                        <td>${entry.Year}</td>
+                        <td>${entry.Month}</td>
+                        <td>${entry.Day}</td>
+                        <td>${entry.Hour}</td>
+                        <td>${entry.Price}</td>
+                        <td>${entry.Pulses}</td>
+                        <td>${entry.UsageDKK}</td>
+                    </tr>`;
+            });
+            tableHtml += `</table><p><strong>Total Price:</strong> ${data.TotalPrice}</p><p><strong>Total WH:</strong> ${data.TotalWH}</p>`;
+
+            responseDiv.innerHTML = tableHtml;
         } catch (error) {
             responseDiv.textContent = "Error fetching data. Please try again.";
             console.error('Error:', error);
