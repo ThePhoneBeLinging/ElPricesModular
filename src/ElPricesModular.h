@@ -8,6 +8,7 @@
 #include <LeGUILib/LeGUILib.h>
 #include <ElPricesUsageController/ElPricesUsageController.h>
 #include "ElPricesCollector/ElPricesCollector.h"
+#include "ElPricesWebServer/ElPricesWebServerController.h"
 #include "Slides/MainSlide.h"
 
 
@@ -23,6 +24,7 @@ private:
     std::shared_ptr<MainSlide> mainSlide_;
     std::shared_ptr<ElPricesCollector> elPricesCollector_;
     std::shared_ptr<ElPricesUsageController> elPriceUsageController_;
+    std::unique_ptr<ElPricesWebServerController> elPricesWebServerController_;
 };
 
 

@@ -9,8 +9,9 @@
 #include "Slides/MainSlide.h"
 #include "Utility/TimeUtil.h"
 
-ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>())
+ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>()), elPricesWebServerController_(std::make_unique<ElPricesWebServerController>())
 {
+    elPricesWebServerController_->startServer();
     leGUILib_->navigateTo(std::make_shared<LoadingSlide>());
     elPricesModularThread_ = std::thread(&ElPricesModular::launch, this);
     leGUILib_->launchGUI();
