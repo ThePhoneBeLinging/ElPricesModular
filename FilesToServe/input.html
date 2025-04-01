@@ -58,8 +58,13 @@
             const response = await fetch(`http://localhost:18080/getDataBetweenDates?year1=${year1}&month1=${month1}&day1=${day1}&hour1=${hour1}&year2=${year2}&month2=${month2}&day2=${day2}&hour2=${hour2}`);
             const data = await response.json();
 
+            if (!data || !data.historicPrices || !Array.isArray(data.historicPrices)) {
+                responseDiv.textContent = "No data available for the selected range.";
+                return;
+            }
+
             let tableHtml = `<table><tr><th>Year</th><th>Month</th><th>Day</th><th>Hour</th><th>Price</th><th>Pulses</th><th>Usage DKK</th></tr>`;
-            data.forEach(entry => {
+            data.historicPrices.forEach(entry => {
                 tableHtml += `<tr>
                         <td>${entry.Year}</td>
                         <td>${entry.Month}</td>
