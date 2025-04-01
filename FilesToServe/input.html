@@ -12,6 +12,7 @@
     </style>
 </head>
 <body>
+<a href="/">Parameter site</a>
 <h2>Enter Two Dates</h2>
 <form id="dateForm">
     <label for="date1">Date 1:</label>
@@ -55,7 +56,7 @@
             const year2 = date2Obj.getFullYear();
             const month2 = date2Obj.getMonth() + 1;
             const day2 = date2Obj.getDate();
-            const response = await fetch(`http://localhost:18080/getDataBetweenDates?year1=${year1}&month1=${month1}&day1=${day1}&hour1=${hour1}&year2=${year2}&month2=${month2}&day2=${day2}&hour2=${hour2}`);
+            const response = await fetch(`/getDataBetweenDates?year1=${year1}&month1=${month1}&day1=${day1}&hour1=${hour1}&year2=${year2}&month2=${month2}&day2=${day2}&hour2=${hour2}`);
             const data = await response.json();
 
             if (!data || !data.historicPrices || !Array.isArray(data.historicPrices)) {
