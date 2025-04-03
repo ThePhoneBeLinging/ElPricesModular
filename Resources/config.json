@@ -16,6 +16,7 @@
   "MockPulseLengthInMS": 10,
   "SleepTimeForPulseLoopInMS": 5,
   "UseRadiusToCeriusPriceDifference": true,
+  "WebServerPort": 80,
   "RadiusToCerius_Hour:0": 0,
   "RadiusToCerius_Hour:1": 0,
   "RadiusToCerius_Hour:2": 0,
