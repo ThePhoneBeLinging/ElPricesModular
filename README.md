@@ -30,3 +30,5 @@ sudo ./ElPricesModular
 
 Security experts might say that it would be better to run on a port above 1024, and simply make your device redirect.
 (And they are likely correct, but the application should only need root access the first time, the python script for building and running should then work)
+
+To prevent having to specify a port, a port of 80 is recommended (default http ;)
