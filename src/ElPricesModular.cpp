@@ -21,6 +21,6 @@ ElPricesModular::ElPricesModular() : leGUILib_(std::make_unique<LeGUILib>()), el
 void ElPricesModular::launch()
 {
     elPricesCollector_ = std::make_shared<ElPricesCollector>();
-    mainSlide_ = std::make_shared<MainSlide>(elPricesCollector_);
+    mainSlide_ = std::make_shared<MainSlide>(elPricesCollector_,leGUILib_.get());
     leGUILib_->navigateTo(mainSlide_);
 }

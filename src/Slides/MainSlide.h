@@ -12,9 +12,10 @@
 class MainSlide : public Slide
 {
 public:
-    MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController);
+    MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, LeGUILib* guiLib);
     ~MainSlide();
 private:
+    std::shared_ptr<RectangleElement> closeAppButton_;
     std::unique_ptr<ElPricesUsageController> usageController_;
     std::function<void(int,double)> currentHourFunction_;
     std::shared_ptr<Text> hourUsageText_;

@@ -11,8 +11,20 @@
 #include "PriceGrouper/PriceSorter.h"
 #include "Utility/TimeUtil.h"
 
-MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController) : largePriceGroupColumns_()
+MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, LeGUILib* guiLib) : largePriceGroupColumns_()
 {
+
+    closeAppButton_ = this->createElement<RectangleElement>();
+    closeAppButton_->setX(0);
+    closeAppButton_->setY(0);
+    closeAppButton_->setWidth(20);
+    closeAppButton_->setHeight(20);
+    closeAppButton_->setColor(255,0,0);
+    closeAppButton_->setZ(50);
+    closeAppButton_->setOnClick([guiLib]() -> void
+    {
+        guiLib->closeGUI();
+    });
 
     hourUsageText_ = this->createElement<Text>();
     hourUsageText_->setX(550);
