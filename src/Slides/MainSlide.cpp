@@ -9,6 +9,7 @@
 
 #include "LastLargePriceGroupColumn.h"
 #include "PriceGrouper/PriceSorter.h"
+#include "Utility/ConfigController.h"
 #include "Utility/TimeUtil.h"
 
 MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, LeGUILib* guiLib) : largePriceGroupColumns_()
@@ -24,6 +25,18 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     closeAppButton_->setOnClick([guiLib]() -> void
     {
         guiLib->closeGUI();
+    });
+
+    reloadConfigButton_ = this->createElement<RectangleElement>();
+    reloadConfigButton_->setX(1230);
+    reloadConfigButton_->setY(0);
+    reloadConfigButton_->setWidth(20);
+    reloadConfigButton_->setHeight(20);
+    reloadConfigButton_->setColor(0,0,255);
+    reloadConfigButton_->setZ(50);
+    reloadConfigButton_->setOnClick([]() -> void
+    {
+        ConfigController::loadConfig("../../Resources/config.json");
     });
 
     hourUsageText_ = this->createElement<Text>();

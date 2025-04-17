@@ -16,6 +16,7 @@ public:
     ~MainSlide();
 private:
     std::shared_ptr<RectangleElement> closeAppButton_;
+    std::shared_ptr<RectangleElement> reloadConfigButton_;
     std::unique_ptr<ElPricesUsageController> usageController_;
     std::function<void(int,double)> currentHourFunction_;
     std::shared_ptr<Text> hourUsageText_;
