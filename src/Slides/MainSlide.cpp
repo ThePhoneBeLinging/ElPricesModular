@@ -28,7 +28,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     });
 
     reloadConfigButton_ = this->createElement<RectangleElement>();
-    reloadConfigButton_->setX(1230);
+    reloadConfigButton_->setX(1260);
     reloadConfigButton_->setY(0);
     reloadConfigButton_->setWidth(20);
     reloadConfigButton_->setHeight(20);
