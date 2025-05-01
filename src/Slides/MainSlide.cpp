@@ -65,7 +65,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
 
     currentHourFunction_ = [this, collectorController] (int pulsesLastHour, double currentWattage) -> void
     {
-        double price = collectorController->getCurrentPrice()->getTotalPrice() / 10000;
+        double price = static_cast<double>(collectorController->getCurrentPrice()->getTotalPrice()) / 10000.0;
 
         double kwhUsed = static_cast<double>(pulsesLastHour) / 1000;
         std::string hourUsageString = fmt::format("{:.3f} KwH, Denne Time", kwhUsed);
