@@ -150,6 +150,8 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
                 currentTimeString.append("0");
             }
             currentTimeString.append(std::to_string(currentTime.tm_min));
+            currentTimeString.append(" ");
+            currentTimeString.append(TimeUtil::intToWeekDayDanish(currentTime.tm_wday));
             text->setText(currentTimeString);
             int secondsToWait = TimeUtil::secondsToNextMinute();
             condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
@@ -159,7 +161,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     auto updateCurrentPrice = [this, collectorController, headlineFontSize] () -> void
     {
         auto text = this->createElement<Text>();
-        text->setX(300);
+        text->setX(450);
         text->setY(10);
         text->setColor(0,0,0);
         text->setFontSize(headlineFontSize);
