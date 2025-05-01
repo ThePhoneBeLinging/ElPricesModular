@@ -14,7 +14,7 @@
 
 MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, LeGUILib* guiLib) : largePriceGroupColumns_()
 {
-
+    int headlineFontSize = 45;
     closeAppButton_ = this->createElement<RectangleElement>();
     closeAppButton_->setX(0);
     closeAppButton_->setY(0);
@@ -43,25 +43,25 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     hourUsageText_->setX(550);
     hourUsageText_->setY(70);
     hourUsageText_->setColor(0,0,0);
-    hourUsageText_->setFontSize(60);
+    hourUsageText_->setFontSize(headlineFontSize);
 
     hourKRUsage_ = this->createElement<Text>();
     hourKRUsage_->setX(550);
     hourKRUsage_->setY(120);
     hourKRUsage_->setColor(0,0,0);
-    hourKRUsage_->setFontSize(60);
+    hourKRUsage_->setFontSize(headlineFontSize);
 
     currentUsageWattageText_ = this->createElement<Text>();
     currentUsageWattageText_->setX(50);
     currentUsageWattageText_->setY(70);
     currentUsageWattageText_->setColor(0,0,0);
-    currentUsageWattageText_->setFontSize(60);
+    currentUsageWattageText_->setFontSize(headlineFontSize);
 
     currentKRUsage_ = this->createElement<Text>();
     currentKRUsage_->setX(50);
     currentKRUsage_->setY(120);
     currentKRUsage_->setColor(0,0,0);
-    currentKRUsage_->setFontSize(60);
+    currentKRUsage_->setFontSize(headlineFontSize);
 
     currentHourFunction_ = [this, collectorController] (int pulsesLastHour, double currentWattage) -> void
     {
@@ -126,13 +126,13 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
 
 
 
-    auto clockTextUpdateFunction = [this] () -> void
+    auto clockTextUpdateFunction = [this, headlineFontSize] () -> void
     {
         std::shared_ptr<Text> text = this->createElement<Text>();
         text->setX(50);
         text->setY(10);
         text->setColor(0,0,0);
-        text->setFontSize(60);
+        text->setFontSize(headlineFontSize);
         text->setText("TEXT");
         std::unique_lock lock(mutex_);
         while (keepRunning_)
@@ -156,13 +156,13 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         }
     };
 
-    auto updateCurrentPrice = [this, collectorController] () -> void
+    auto updateCurrentPrice = [this, collectorController, headlineFontSize] () -> void
     {
         auto text = this->createElement<Text>();
         text->setX(300);
         text->setY(10);
         text->setColor(0,0,0);
-        text->setFontSize(60);
+        text->setFontSize(headlineFontSize);
         std::unique_lock lock(mutex_);
         while (keepRunning_)
         {
