@@ -188,6 +188,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             text->setText(string);
             nlohmann::json json = DataController::getPriceJSONObject();
             json["CurrentPrice"] = string;
+            DataController::setPriceJSONObject(json);
             int secondsToWait = TimeUtil::secondsToNextHour();
             condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
         }

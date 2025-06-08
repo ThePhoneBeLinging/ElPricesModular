@@ -84,26 +84,20 @@
 <script>
     async function loadDashboard() {
         const clockRes = await fetch('/api/time');
-        //const powerRes = await fetch('/api/power');
         const pricesRes = await fetch('/api/prices');
 
         const pricesData = await pricesRes.json();
         const clockData = await clockRes.json();
-        //const powerData = await powerRes.json();
 
         document.getElementById('clock').textContent = `${clockData.TimeString}`;
-
-        //document.getElementById('power').textContent = `${powerData.kw} Kw`;
-        //document.getElementById('costRate').textContent = `${powerData.krPerHour} Kr/Time`;
-
         document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice}`;
-        //document.getElementById('thisHourEnergy').textContent = `${powerData.thisHourKwh} kWh, Denne Time`;
-        //document.getElementById('thisHourCost').textContent = `${powerData.thisHourKr} Kr, Denne Time`;
 
-        pricesData.forEach((boxData, index) => {
+        const boxes = ['Box0', 'Box1', 'Box2', 'Box3'];
+        boxes.forEach((boxKey, index) => {
             const box = document.getElementById(`box${index}`);
-            if (!box) return;
+            if (!box || !pricesData[boxKey]) return;
 
+            const boxData = pricesData[boxKey];
             const header = box.querySelector('.header');
             header.textContent = boxData[0] || '--';
 
@@ -141,10 +135,12 @@
             const pricesRes = await fetch('/api/prices');
             const pricesData = await pricesRes.json();
 
-            pricesData.forEach((boxData, index) => {
+            const boxes = ['Box1', 'Box2', 'Box3', 'Box4'];
+            boxes.forEach((boxKey, index) => {
                 const box = document.getElementById(`box${index}`);
-                if (!box) return;
+                if (!box || !pricesData[boxKey]) return;
 
+                const boxData = pricesData[boxKey];
                 const header = box.querySelector('.header');
                 header.textContent = boxData[0] || '--';
 
