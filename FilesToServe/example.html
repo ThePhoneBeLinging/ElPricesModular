@@ -106,6 +106,9 @@
             console.log('close', e)
             document.getElementById('status').textContent = "Disconnected"
             document.getElementById('status').classList.add("disconnectedColor")
+            setTimeout(function(){
+                window.location.reload(1);
+            }, 5000);
         }
         sock.onmessage = (e)=>{
             const response = JSON.parse(e.data);
