@@ -16,6 +16,7 @@ public:
     void setX(int x);
     void setY(int y);
     virtual void update(const std::shared_ptr<LargePriceGroup>& largePriceGroup);
+    std::vector<std::string> getTexts();
 protected:
     int x_;
     int y_;

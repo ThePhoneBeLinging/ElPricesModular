@@ -84,21 +84,25 @@
 <script>
     async function loadDashboard() {
         const clockRes = await fetch('/api/time');
-        const powerRes = await fetch('/api/power');
+        //const powerRes = await fetch('/api/power');
         const pricesRes = await fetch('/api/prices');
 
-        const clockData = await clockRes.json();
-        const powerData = await powerRes.json();
+        console.log(clockRes.json())
+        console.log(pricesRes.json())
+
         const pricesData = await pricesRes.json();
+        const clockData = await clockRes.json();
+        //const powerData = await powerRes.json();
 
         document.getElementById('clock').textContent = `${clockData.time} ${clockData.day}`;
+        /*
         document.getElementById('power').textContent = `${powerData.kw} Kw`;
         document.getElementById('costRate').textContent = `${powerData.krPerHour} Kr/Time`;
 
         document.getElementById('totalCost').textContent = `${powerData.totalKr} Kr`;
         document.getElementById('thisHourEnergy').textContent = `${powerData.thisHourKwh} kWh, Denne Time`;
         document.getElementById('thisHourCost').textContent = `${powerData.thisHourKr} Kr, Denne Time`;
-
+*/
         pricesData.forEach((boxData, index) => {
             const box = document.getElementById(`box${index}`);
             if (!box) return;

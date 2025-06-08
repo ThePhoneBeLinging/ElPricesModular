@@ -16,8 +16,12 @@ add_executable(ElPricesModular main.cpp
         Slides/LastLargePriceGroupColumn.h
         Slides/LoadingSlide.cpp
         Slides/LoadingSlide.h
+        DataController.cpp
+        DataController.h
 )
-
+include(FetchContent)
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_MakeAvailable(json)
 
 target_link_libraries(ElPricesModular PUBLIC ElPricesCollector)
 target_link_libraries(ElPricesModular PUBLIC ElPricesUsageController)
@@ -27,3 +31,4 @@ target_link_libraries(ElPricesModular PUBLIC LeGUILib)
 target_link_libraries(ElPricesModular PUBLIC fmt::fmt)
 target_link_libraries(ElPricesModular PUBLIC PriceGrouper)
 target_link_libraries(ElPricesModular PUBLIC ElPricesWebServer)
+target_link_libraries(ElPricesModular PUBLIC nlohmann_json)

@@ -95,4 +95,15 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
     header_->setWidth(backgroundWidth);
 }
 
+std::vector<std::string> LargePriceGroupColumn::getTexts()
+{
+    std::vector<std::string> texts;
+    texts.push_back(header_->getText());
+    for (const auto& text : texts_)
+    {
+        texts.push_back(text->getText());
+    }
+    return texts;
+}
+
 
