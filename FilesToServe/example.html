@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+    const ip = "185.140.2.242"
+    const port = "18080"
+</script>
 <head>
     <meta charset="UTF-8">
     <title>Energy Dashboard</title>
@@ -86,7 +90,7 @@
 
 <script>
     async function loadDashboard() {
-        var sock = new WebSocket("ws://localhost:18080/ws");
+        var sock = new WebSocket("ws://"+ip+":"+port+"/ws");
         sock.onopen = ()=>{
             console.log('open')
         }
