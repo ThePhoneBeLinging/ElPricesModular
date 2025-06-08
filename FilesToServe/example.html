@@ -135,8 +135,43 @@
         }, msUntilNextMinute);
     }
 
+    function startPricePolling() {
+        async function pollPrices() {
+            const pricesRes = await fetch('/api/prices');
+            const pricesData = await pricesRes.json();
+
+            pricesData.forEach((boxData, index) => {
+                const box = document.getElementById(`box${index}`);
+                if (!box) return;
+
+                const header = box.querySelector('.header');
+                header.textContent = boxData[0] || '--';
+
+                Array.from(box.children).forEach((child, i) => { if (i > 0) box.removeChild(child); });
+
+                for (let i = 1; i < boxData.length; i++) {
+                    const line = document.createElement('div');
+                    line.textContent = boxData[i];
+                    if (/\d+\s*->\s*\d+/.test(boxData[i])) {
+                        line.classList.add('green');
+                    }
+                    box.appendChild(line);
+                }
+            });
+        }
+
+        const now = new Date();
+        const msUntilNextHour = (60 - now.getMinutes()) * 60 * 1000 - now.getSeconds() * 1000 - now.getMilliseconds();
+
+        setTimeout(() => {
+            pollPrices();
+            setInterval(pollPrices, 3600000);
+        }, msUntilNextHour);
+    }
+
     loadDashboard();
     startClockPolling();
+    startPricePolling();
 </script>
 
 </body>
