@@ -83,7 +83,6 @@
 
 <script>
     async function loadDashboard() {
-        // Replace with real API endpoints
         const clockRes = await fetch('/api/time');
         const powerRes = await fetch('/api/power');
         const pricesRes = await fetch('/api/prices');
@@ -92,7 +91,6 @@
         const powerData = await powerRes.json();
         const pricesData = await pricesRes.json();
 
-        // Header
         document.getElementById('clock').textContent = `${clockData.time} ${clockData.day}`;
         document.getElementById('power').textContent = `${powerData.kw} Kw`;
         document.getElementById('costRate').textContent = `${powerData.krPerHour} Kr/Time`;
@@ -108,7 +106,6 @@
             const header = box.querySelector('.header');
             header.textContent = boxData[0] || '--';
 
-            // Remove existing content
             Array.from(box.children).forEach((child, i) => { if (i > 0) box.removeChild(child); });
 
             for (let i = 1; i < boxData.length; i++) {
@@ -122,7 +119,24 @@
         });
     }
 
+    function startClockPolling() {
+        async function pollClock() {
+            const clockRes = await fetch('/api/time');
+            const clockData = await clockRes.json();
+            document.getElementById('clock').textContent = `${clockData.time} ${clockData.day}`;
+        }
+
+        const now = new Date();
+        const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+
+        setTimeout(() => {
+            pollClock();
+            setInterval(pollClock, 60000);
+        }, msUntilNextMinute);
+    }
+
     loadDashboard();
+    startClockPolling();
 </script>
 
 </body>
