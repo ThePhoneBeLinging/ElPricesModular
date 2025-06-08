@@ -87,9 +87,9 @@
 <script>
     async function loadDashboard() {
         var sock = new WebSocket(`ws://${window.location.host}/ws`);
-        sock.send("load");
         sock.onopen = ()=>{
             console.log('open')
+            sock.send("load");
         }
         sock.onerror = (e)=>{
             console.log('error',e)
