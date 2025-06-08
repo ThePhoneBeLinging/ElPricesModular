@@ -20,6 +20,7 @@ public:
 protected:
     int x_;
     int y_;
+    int idOfCurrentPrice_;
     Slide* slide_;
     std::shared_ptr<RectangleElement> background_;
     std::shared_ptr<Text> header_;

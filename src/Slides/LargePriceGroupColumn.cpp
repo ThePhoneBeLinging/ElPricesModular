@@ -78,6 +78,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
             if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime() && not isNextDay)
             {
                 text->setColor(0,200,0);
+                idOfCurrentPrice_ = text->getID();
             }
         }
         text->setX(x_);
@@ -101,7 +102,14 @@ std::vector<std::string> LargePriceGroupColumn::getTexts()
     texts.push_back(header_->getText());
     for (const auto& text : texts_)
     {
-        texts.push_back(text->getText());
+        if (idOfCurrentPrice_ == text->getID())
+        {
+            texts.push_back(text->getText() + "C");
+        }
+        else
+        {
+            texts.push_back(text->getText());
+        }
     }
     return texts;
 }
