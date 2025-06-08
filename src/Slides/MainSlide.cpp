@@ -90,7 +90,6 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         json["currentKRUsage"] = currentUsageDKKstring;
 
         DataController::setPowerJSONObject(json);
-        DataController::notifyPower();
     };
 
     usageController_ = std::make_unique<ElPricesUsageController>(currentHourFunction_);
