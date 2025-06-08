@@ -8,7 +8,7 @@
 #include <LeGUILib/GUIElements/Text.h>
 
 #include "LastLargePriceGroupColumn.h"
-#include "../DataController.h"
+#include "ElPricesWebServer/DataController.h"
 #include "nlohmann/json.hpp"
 #include "nlohmann/json_fwd.hpp"
 #include "nlohmann/detail/meta/std_fs.hpp"
