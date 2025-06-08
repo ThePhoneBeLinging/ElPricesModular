@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Energy Dashboard</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        .header div {
+            margin: 0 10px;
+        }
+        .box-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .box {
+            background: #ccc;
+            border-radius: 15px;
+            padding: 20px;
+            width: 160px;
+            height: 160px;
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .box .header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+        .box div:not(.header) {
+            flex-shrink: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div id="timeBlock">
+        <div id="clock">--:-- Søndag</div>
+        <div id="power">-- Kw</div>
+        <div id="costRate">-- Kr/Time</div>
+    </div>
+    <div id="summaryBlock">
+        <div id="totalCost">-- Kr</div>
+        <div id="thisHourEnergy">-- kWh, Denne Time</div>
+        <div id="thisHourCost">-- Kr, Denne Time</div>
+    </div>
+</div>
+
+<div class="box-container">
+    <div class="box" id="box0">
+        <div class="header">--</div>
+    </div>
+    <div class="box" id="box1">
+        <div class="header">--</div>
+    </div>
+    <div class="box" id="box2">
+        <div class="header">--</div>
+    </div>
+    <div class="box" id="box3">
+        <div class="header">--</div>
+    </div>
+</div>
+
+<script>
+    async function loadDashboard() {
+        // Replace with real API endpoints
+        const clockRes = await fetch('/api/time');
+        const powerRes = await fetch('/api/power');
+        const pricesRes = await fetch('/api/prices');
+
+        const clockData = await clockRes.json();
+        const powerData = await powerRes.json();
+        const pricesData = await pricesRes.json();
+
+        // Header
+        document.getElementById('clock').textContent = `${clockData.time} ${clockData.day}`;
+        document.getElementById('power').textContent = `${powerData.kw} Kw`;
+        document.getElementById('costRate').textContent = `${powerData.krPerHour} Kr/Time`;
+
+        document.getElementById('totalCost').textContent = `${powerData.totalKr} Kr`;
+        document.getElementById('thisHourEnergy').textContent = `${powerData.thisHourKwh} kWh, Denne Time`;
+        document.getElementById('thisHourCost').textContent = `${powerData.thisHourKr} Kr, Denne Time`;
+
+        pricesData.forEach((boxData, index) => {
+            const box = document.getElementById(`box${index}`);
+            if (!box) return;
+
+            const header = box.querySelector('.header');
+            header.textContent = boxData[0] || '--';
+
+            // Remove existing content
+            Array.from(box.children).forEach((child, i) => { if (i > 0) box.removeChild(child); });
+
+            for (let i = 1; i < boxData.length; i++) {
+                const line = document.createElement('div');
+                line.textContent = boxData[i];
+                if (/\d+\s*->\s*\d+/.test(boxData[i])) {
+                    line.classList.add('green');
+                }
+                box.appendChild(line);
+            }
+        });
+    }
+
+    loadDashboard();
+</script>
+
+</body>
+</html>
