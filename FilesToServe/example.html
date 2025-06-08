@@ -52,6 +52,10 @@
         .activeColor {
             color: red;
         }
+        .disconnectedColor
+        {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +70,9 @@
         <div id="totalCost">-- Kr</div>
         <div id="thisHourEnergy">-- kWh, Denne Time</div>
         <div id="thisHourCost">-- Kr, Denne Time</div>
+    </div>
+    <div id="statusouter">
+        <div id="status">initializing</div>
     </div>
 </div>
 
@@ -89,12 +96,16 @@
         var sock = new WebSocket(`ws://${window.location.host}/ws`);
         sock.onopen = ()=>{
             console.log('open')
+            document.getElementById('status').textContent = "Connected"
         }
         sock.onerror = (e)=>{
             console.log('error',e)
+            document.getElementById('status').textContent = "Error"
         }
         sock.onclose = (e)=>{
             console.log('close', e)
+            document.getElementById('status').textContent = "Disconnected"
+            document.getElementById('status').classList.add("disconnectedColor")
         }
         sock.onmessage = (e)=>{
             const response = JSON.parse(e.data);
