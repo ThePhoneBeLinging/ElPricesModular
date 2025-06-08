@@ -92,6 +92,20 @@
 </div>
 
 <script>
+
+    async function tryReconnect() {
+        fetch("/", { cache: "no-cache", mode: "no-cors" }) // `no-cors` avoids CORS issues in fallback cases
+            .then(response => {
+                // Even in no-cors mode, you can't inspect the response, so assume success if it doesn't throw
+                console.log("Received response, assuming server is back.");
+                window.location.reload(true); // Force reload from network
+            })
+            .catch(error => {
+                console.warn("Fetch failed (server probably still down):", error.message);
+                status.textContent = "Server offline. Retrying in 5 seconds...";
+                setTimeout(tryReconnect, 5000);
+            });
+    }
     async function loadDashboard() {
         var sock = new WebSocket(`ws://${window.location.host}/ws`);
         sock.onopen = ()=>{
@@ -107,8 +121,8 @@
             document.getElementById('status').textContent = "Disconnected"
             document.getElementById('status').classList.add("disconnectedColor")
             setTimeout(function(){
-                window.location.reload(1);
-            }, 5000);
+                tryReconnect()
+            }, 5);
         }
         sock.onmessage = (e)=>{
             const response = JSON.parse(e.data);
