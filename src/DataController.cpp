@@ -39,3 +39,30 @@ void DataController::setPowerJSONObject(const nlohmann::json& powerJSONObject)
   std::lock_guard lock(mutex_);
   powerJSONObject_ = powerJSONObject;
 }
+
+void DataController::addSubscriber(crow::websocket::connection* res)
+{
+  std::lock_guard lock(mutex_);
+  subscribers_.insert(res);
+}
+
+void DataController::removeSubscriber(crow::websocket::connection* res)
+{
+  subscribers_.erase(res);
+}
+
+void DataController::notifyPower()
+{
+  std::lock_guard lock(mutex_);
+  for (auto res : subscribers_) {
+    try {
+      nlohmann::json combined;
+      combined["Price"] = priceJSONObject_;
+      combined["Power"] = powerJSONObject_;
+      combined["Time"] = timeJSONObject_;
+      res->send_text(combined.dump());
+    } catch (...) {
+      // Optional: log the error
+    }
+  }
+}

@@ -86,66 +86,29 @@
 
 <script>
     async function loadDashboard() {
-        const clockRes = await fetch('/api/time');
-        const pricesRes = await fetch('/api/prices');
-        const powerRes = await fetch('/api/power');
-
-        const pricesData = await pricesRes.json();
-        const clockData = await clockRes.json();
-        const powerData = await powerRes.json();
-
-        document.getElementById('clock').textContent = `${clockData.TimeString}`;
-        document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice}`;
-        document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
-        document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
-        document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
-        document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
-
-        const boxes = ['Box1', 'Box2', 'Box3', 'Box4'];
-        boxes.forEach((boxKey, index) => {
-            const box = document.getElementById(`box${index}`);
-            if (!box || !pricesData[boxKey]) return;
-
-            const boxData = pricesData[boxKey];
-            const header = box.querySelector('.header');
-            header.textContent = boxData[0] || '--';
-
-            Array.from(box.children).forEach((child, i) => { if (i > 0) box.removeChild(child); });
-
-            for (let i = 1; i < boxData.length; i++) {
-                const rawText = boxData[i];
-                const line = document.createElement('div');
-                const isGreen = rawText.endsWith('C');
-                const displayText = isGreen ? rawText.slice(0, -1) : rawText;
-                line.textContent = displayText;
-                if (isGreen) {
-                    line.classList.add('activeColor');
-                }
-                box.appendChild(line);
-            }
-        });
-    }
-
-    function startClockPolling() {
-        async function pollClock() {
-            const clockRes = await fetch('/api/time');
-            const clockData = await clockRes.json();
-            document.getElementById('clock').textContent = `${clockData.TimeString}`;
+        var sock = new WebSocket("ws://localhost:18080/ws");
+        sock.onopen = ()=>{
+            console.log('open')
         }
+        sock.onerror = (e)=>{
+            console.log('error',e)
+        }
+        sock.onclose = (e)=>{
+            console.log('close', e)
+        }
+        sock.onmessage = (e)=>{
+            const response = JSON.parse(e.data);
+            const pricesData = response.Price;
+            const clockData = response.Time;
+            const powerData = response.Power;
+            console.log("update recieved")
 
-        const now = new Date();
-        const msUntilNextMinute = (60 - now.getSeconds()) * 1000 + 250;
-
-        setTimeout(() => {
-            pollClock();
-            setInterval(pollClock, 60000);
-        }, msUntilNextMinute);
-    }
-
-    function startPricePolling() {
-        async function pollPrices() {
-            const pricesRes = await fetch('/api/prices');
-            const pricesData = await pricesRes.json();
+            document.getElementById('clock').textContent = `${clockData.TimeString}`;
+            document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice}`;
+            document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
+            document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
+            document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
+            document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
 
             const boxes = ['Box1', 'Box2', 'Box3', 'Box4'];
             boxes.forEach((boxKey, index) => {
@@ -171,33 +134,9 @@
                 }
             });
         }
-
-        const now = new Date();
-        const msUntilNextHour = (60 - now.getMinutes()) * 60 * 1000 - now.getSeconds() * 1000 - now.getMilliseconds();
-
-        setTimeout(() => {
-            pollPrices();
-            setInterval(pollPrices, 3600000);
-        }, msUntilNextHour);
     }
-
-    function setupPowerPolling() {
-        const evtSource = new EventSource('/api/power/subscribe');
-        evtSource.onmessage = async function () {
-            const powerRes = await fetch('/api/power');
-            const powerData = await powerRes.json();
-
-            document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
-            document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
-            document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
-            document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
-        };
-    }
-
     loadDashboard();
-    startClockPolling();
-    startPricePolling();
-    setupPowerPolling();
+
 </script>
 
 </body>

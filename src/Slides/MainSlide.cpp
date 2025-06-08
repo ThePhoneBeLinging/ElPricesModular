@@ -69,20 +69,28 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
 
     currentHourFunction_ = [this, collectorController] (int pulsesLastHour, double currentWattage) -> void
     {
+        nlohmann::json json;
         double price = static_cast<double>(collectorController->getCurrentPrice()->getTotalPrice()) / 10000.0;
 
         double kwhUsed = static_cast<double>(pulsesLastHour) / 1000;
         std::string hourUsageString = fmt::format("{:.3f} KwH, Denne Time", kwhUsed);
         this->hourUsageText_->setText(hourUsageString);
+        json["hourUsageText"] = hourUsageString;
 
         std::string hourPriceString = fmt::format("{:.2f} Kr, Denne Time", kwhUsed * price);
         this->hourKRUsage_->setText(hourPriceString);
+        json["hourKRUsage"] = hourPriceString;
 
         std::string currentUsageString = fmt::format("{:.3f} Kw", currentWattage);
         this->currentUsageWattageText_->setText(currentUsageString);
+        json["currentUsageWattageText"] = currentUsageString;
 
         std::string currentUsageDKKstring = fmt::format("{:.2f} Kr/Time", currentWattage * price);
         this->currentKRUsage_->setText(currentUsageDKKstring);
+        json["currentKRUsage"] = currentUsageDKKstring;
+
+        DataController::setPowerJSONObject(json);
+        DataController::notifyPower();
     };
 
     usageController_ = std::make_unique<ElPricesUsageController>(currentHourFunction_);
