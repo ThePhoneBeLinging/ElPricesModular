@@ -88,12 +88,18 @@
     async function loadDashboard() {
         const clockRes = await fetch('/api/time');
         const pricesRes = await fetch('/api/prices');
+        const powerRes = await fetch('/api/power');
 
         const pricesData = await pricesRes.json();
         const clockData = await clockRes.json();
+        const powerData = await powerRes.json();
 
         document.getElementById('clock').textContent = `${clockData.TimeString}`;
         document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice}`;
+        document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
+        document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
+        document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
+        document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
 
         const boxes = ['Box1', 'Box2', 'Box3', 'Box4'];
         boxes.forEach((boxKey, index) => {
@@ -124,11 +130,11 @@
         async function pollClock() {
             const clockRes = await fetch('/api/time');
             const clockData = await clockRes.json();
-            document.getElementById('clock').textContent = `${clockData.time} ${clockData.day}`;
+            document.getElementById('clock').textContent = `${clockData.TimeString}`;
         }
 
         const now = new Date();
-        const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+        const msUntilNextMinute = (60 - now.getSeconds()) * 1000 + 250;
 
         setTimeout(() => {
             pollClock();
@@ -175,9 +181,23 @@
         }, msUntilNextHour);
     }
 
+    function setupPowerPolling() {
+        const evtSource = new EventSource('/api/power/subscribe');
+        evtSource.onmessage = async function () {
+            const powerRes = await fetch('/api/power');
+            const powerData = await powerRes.json();
+
+            document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
+            document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
+            document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
+            document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
+        };
+    }
+
     loadDashboard();
     startClockPolling();
     startPricePolling();
+    setupPowerPolling();
 </script>
 
 </body>
