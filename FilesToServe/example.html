@@ -13,7 +13,7 @@
             display: flex;
             justify-content: flex-start;
             margin-bottom: 20px;
-            font-size: 1.2em;
+            font-size: 2em;
         }
         .header div {
             margin: 0 10px;
@@ -27,27 +27,34 @@
             background: #ccc;
             border-radius: 15px;
             padding: 20px;
-            width: 160px;
-            height: 160px;
+            width: 200px;
+            height: 300px;
             box-sizing: border-box;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
         .box .header {
-            font-size: 1.5em;
+            font-size: 2em;
             font-weight: bold;
             margin-bottom: 10px;
             flex-shrink: 0;
         }
         .box div:not(.header) {
             flex-shrink: 1;
-            overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            font-size: 1.5em;
         }
-        .green {
-            color: green;
+        #box3 {
+            width: 250px;
+        }
+        .activeColor {
+            color: red;
+        }
+        .disconnectedColor
+        {
+            color: red;
         }
     </style>
 </head>
@@ -63,6 +70,9 @@
         <div id="totalCost">-- Kr</div>
         <div id="thisHourEnergy">-- kWh, Denne Time</div>
         <div id="thisHourCost">-- Kr, Denne Time</div>
+    </div>
+    <div id="statusouter">
+        <div id="status">initializing</div>
     </div>
 </div>
 
@@ -82,47 +92,79 @@
 </div>
 
 <script>
-    async function loadDashboard() {
-        // Replace with real API endpoints
-        const clockRes = await fetch('/api/time');
-        const powerRes = await fetch('/api/power');
-        const pricesRes = await fetch('/api/prices');
 
-        const clockData = await clockRes.json();
-        const powerData = await powerRes.json();
-        const pricesData = await pricesRes.json();
-
-        // Header
-        document.getElementById('clock').textContent = `${clockData.time} ${clockData.day}`;
-        document.getElementById('power').textContent = `${powerData.kw} Kw`;
-        document.getElementById('costRate').textContent = `${powerData.krPerHour} Kr/Time`;
-
-        document.getElementById('totalCost').textContent = `${powerData.totalKr} Kr`;
-        document.getElementById('thisHourEnergy').textContent = `${powerData.thisHourKwh} kWh, Denne Time`;
-        document.getElementById('thisHourCost').textContent = `${powerData.thisHourKr} Kr, Denne Time`;
-
-        pricesData.forEach((boxData, index) => {
-            const box = document.getElementById(`box${index}`);
-            if (!box) return;
-
-            const header = box.querySelector('.header');
-            header.textContent = boxData[0] || '--';
-
-            // Remove existing content
-            Array.from(box.children).forEach((child, i) => { if (i > 0) box.removeChild(child); });
-
-            for (let i = 1; i < boxData.length; i++) {
-                const line = document.createElement('div');
-                line.textContent = boxData[i];
-                if (/\d+\s*->\s*\d+/.test(boxData[i])) {
-                    line.classList.add('green');
-                }
-                box.appendChild(line);
-            }
-        });
+    async function tryReconnect() {
+        fetch("/", { cache: "no-cache", mode: "no-cors" }) // `no-cors` avoids CORS issues in fallback cases
+            .then(response => {
+                // Even in no-cors mode, you can't inspect the response, so assume success if it doesn't throw
+                console.log("Received response, assuming server is back.");
+                window.location.reload(true); // Force reload from network
+            })
+            .catch(error => {
+                console.warn("Fetch failed (server probably still down):", error.message);
+                status.textContent = "Server offline. Retrying in 5 seconds...";
+                setTimeout(tryReconnect, 5000);
+            });
     }
+    async function loadDashboard() {
+        var sock = new WebSocket(`ws://${window.location.host}/ws`);
+        sock.onopen = ()=>{
+            console.log('open')
+            document.getElementById('status').textContent = "Connected"
+        }
+        sock.onerror = (e)=>{
+            console.log('error',e)
+            document.getElementById('status').textContent = "Error"
+        }
+        sock.onclose = (e)=>{
+            console.log('close', e)
+            document.getElementById('status').textContent = "Disconnected"
+            document.getElementById('status').classList.add("disconnectedColor")
+            setTimeout(function(){
+                tryReconnect()
+            }, 5);
+        }
+        sock.onmessage = (e)=>{
+            const response = JSON.parse(e.data);
+            const pricesData = response.Price;
+            const clockData = response.Time;
+            const powerData = response.Power;
+            console.log("update recieved")
 
+            document.getElementById('clock').textContent = `${clockData.TimeString}`;
+            document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice}`;
+            document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
+            document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
+            document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
+            document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
+
+            const boxes = ['Box1', 'Box2', 'Box3', 'Box4'];
+            boxes.forEach((boxKey, index) => {
+                const box = document.getElementById(`box${index}`);
+                if (!box || !pricesData[boxKey]) return;
+
+                const boxData = pricesData[boxKey];
+                const header = box.querySelector('.header');
+                header.textContent = boxData[0] || '--';
+
+                Array.from(box.children).forEach((child, i) => { if (i > 0) box.removeChild(child); });
+
+                for (let i = 1; i < boxData.length; i++) {
+                    const rawText = boxData[i];
+                    const line = document.createElement('div');
+                    const isGreen = rawText.endsWith('C');
+                    const displayText = isGreen ? rawText.slice(0, -1) : rawText;
+                    line.textContent = displayText;
+                    if (isGreen) {
+                        line.classList.add('activeColor');
+                    }
+                    box.appendChild(line);
+                }
+            });
+        }
+    }
     loadDashboard();
+
 </script>
 
 </body>

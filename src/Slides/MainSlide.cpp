@@ -8,6 +8,10 @@
 #include <LeGUILib/GUIElements/Text.h>
 
 #include "LastLargePriceGroupColumn.h"
+#include "ElPricesWebServer/DataController.h"
+#include "nlohmann/json.hpp"
+#include "nlohmann/json_fwd.hpp"
+#include "nlohmann/detail/meta/std_fs.hpp"
 #include "PriceGrouper/PriceSorter.h"
 #include "Utility/ConfigController.h"
 #include "Utility/TimeUtil.h"
@@ -65,20 +69,27 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
 
     currentHourFunction_ = [this, collectorController] (int pulsesLastHour, double currentWattage) -> void
     {
+        nlohmann::json json;
         double price = static_cast<double>(collectorController->getCurrentPrice()->getTotalPrice()) / 10000.0;
 
         double kwhUsed = static_cast<double>(pulsesLastHour) / 1000;
         std::string hourUsageString = fmt::format("{:.3f} KwH, Denne Time", kwhUsed);
         this->hourUsageText_->setText(hourUsageString);
+        json["hourUsageText"] = hourUsageString;
 
         std::string hourPriceString = fmt::format("{:.2f} Kr, Denne Time", kwhUsed * price);
         this->hourKRUsage_->setText(hourPriceString);
+        json["hourKRUsage"] = hourPriceString;
 
         std::string currentUsageString = fmt::format("{:.3f} Kw", currentWattage);
         this->currentUsageWattageText_->setText(currentUsageString);
+        json["currentUsageWattageText"] = currentUsageString;
 
         std::string currentUsageDKKstring = fmt::format("{:.2f} Kr/Time", currentWattage * price);
         this->currentKRUsage_->setText(currentUsageDKKstring);
+        json["currentKRUsage"] = currentUsageDKKstring;
+
+        DataController::setPowerJSONObject(json);
     };
 
     usageController_ = std::make_unique<ElPricesUsageController>(currentHourFunction_);
@@ -119,6 +130,12 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             {
                 largePriceGroupColumns_[i]->update(response[i]);
             }
+            nlohmann::json json;
+            json["Box1"] = largePriceGroupColumns_[0]->getTexts();
+            json["Box2"] = largePriceGroupColumns_[1]->getTexts();
+            json["Box3"] = largePriceGroupColumns_[2]->getTexts();
+            json["Box4"] = largePriceGroupColumns_[3]->getTexts();
+            DataController::setPriceJSONObject(json);
             int delay = TimeUtil::secondsToNextHour();
             condVar_.wait_for(lock,std::chrono::seconds(delay));
         }
@@ -153,6 +170,11 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             currentTimeString.append(" ");
             currentTimeString.append(TimeUtil::intToWeekDayDanish(currentTime.tm_wday));
             text->setText(currentTimeString);
+
+            nlohmann::json json;
+            json["TimeString"] = currentTimeString;
+            DataController::setTimeJSONObject(json);
+
             int secondsToWait = TimeUtil::secondsToNextMinute();
             condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
         }
@@ -171,6 +193,9 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             double price = collectorController->getCurrentPrice()->getTotalPrice();
             std::string string = fmt::format("{:.2f} Kr",price / 10000);
             text->setText(string);
+            nlohmann::json json = DataController::getPriceJSONObject();
+            json["CurrentPrice"] = string;
+            DataController::setPriceJSONObject(json);
             int secondsToWait = TimeUtil::secondsToNextHour();
             condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
         }

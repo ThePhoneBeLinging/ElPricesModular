@@ -65,6 +65,7 @@ void LastLargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& l
             if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime() && not isNextDay)
             {
                 text->setColor(0,200,0);
+                idOfCurrentPrice_ = text->getID();
             }
         }
         text->setX(x_);

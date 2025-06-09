@@ -16,9 +16,11 @@ public:
     void setX(int x);
     void setY(int y);
     virtual void update(const std::shared_ptr<LargePriceGroup>& largePriceGroup);
+    std::vector<std::string> getTexts();
 protected:
     int x_;
     int y_;
+    int idOfCurrentPrice_;
     Slide* slide_;
     std::shared_ptr<RectangleElement> background_;
     std::shared_ptr<Text> header_;
