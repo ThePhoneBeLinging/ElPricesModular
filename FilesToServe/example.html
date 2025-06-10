@@ -158,13 +158,9 @@
                     const isGreen = rawText.endsWith('C');
                     const displayText = isGreen ? rawText.slice(0, -1) : rawText;
                     line.textContent = displayText;
+                    line.className = '';
                     if (isGreen) {
                         line.classList.add('activeColor');
-                    }
-                    else
-                    {
-                        line.classList.remove('activeColor');
-                        line.classList.add('inactiveColor')
                     }
                     box.appendChild(line);
                 }
