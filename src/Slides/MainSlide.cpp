@@ -135,7 +135,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             json["Box2"] = largePriceGroupColumns_[1]->getTexts();
             json["Box3"] = largePriceGroupColumns_[2]->getTexts();
             json["Box4"] = largePriceGroupColumns_[3]->getTexts();
-
+            double price = collectorController->getCurrentPrice()->getTotalPrice();
             std::string string = fmt::format("{:.2f} Kr",price / 10000);
             json["CurrentPrice"] = string;
 
