@@ -52,6 +52,9 @@
         .activeColor {
             color: red;
         }
+        .inactiveColor {
+            color: black;
+        }
         .disconnectedColor
         {
             color: red;
@@ -161,6 +164,7 @@
                     else
                     {
                         line.classList.remove('activeColor');
+                        line.classList.add('inactiveColor')
                     }
                     box.appendChild(line);
                 }
