@@ -98,7 +98,7 @@
             .then(response => {
                 // Even in no-cors mode, you can't inspect the response, so assume success if it doesn't throw
                 console.log("Received response, assuming server is back.");
-                window.location.reload(true); // Force reload from network
+                loadDashboard()
             })
             .catch(error => {
                 console.warn("Fetch failed (server probably still down):", error.message);
@@ -157,6 +157,10 @@
                     line.textContent = displayText;
                     if (isGreen) {
                         line.classList.add('activeColor');
+                    }
+                    else
+                    {
+                        line.classList.remove('activeColor');
                     }
                     box.appendChild(line);
                 }
