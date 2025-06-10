@@ -9,20 +9,24 @@
             background-color: #ffffff;
             padding: 20px;
         }
+
         .header {
             display: flex;
             justify-content: flex-start;
             margin-bottom: 20px;
             font-size: 2em;
         }
+
         .header div {
             margin: 0 10px;
         }
+
         .box-container {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
+
         .box {
             background: #ccc;
             border-radius: 15px;
@@ -34,29 +38,34 @@
             display: flex;
             flex-direction: column;
         }
+
         .box .header {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 10px;
             flex-shrink: 0;
         }
+
         .box div:not(.header) {
             flex-shrink: 1;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 1.5em;
         }
+
         #box3 {
             width: 250px;
         }
+
         .activeColor {
             color: red;
         }
+
         .inactiveColor {
             color: black;
         }
-        .disconnectedColor
-        {
+
+        .disconnectedColor {
             color: red;
         }
     </style>
@@ -97,7 +106,7 @@
 <script>
 
     async function tryReconnect() {
-        fetch("/", { cache: "no-cache", mode: "no-cors" }) // `no-cors` avoids CORS issues in fallback cases
+        fetch("/", {cache: "no-cache", mode: "no-cors"}) // `no-cors` avoids CORS issues in fallback cases
             .then(response => {
                 // Even in no-cors mode, you can't inspect the response, so assume success if it doesn't throw
                 console.log("Received response, assuming server is back.");
@@ -109,66 +118,77 @@
                 setTimeout(tryReconnect, 5000);
             });
     }
+
     async function loadDashboard() {
         var sock = new WebSocket(`ws://${window.location.host}/ws`);
-        sock.onopen = ()=>{
+        sock.onopen = () => {
             console.log('open')
             document.getElementById('status').textContent = "Connected"
             document.getElementById('status').classList.remove("disconnectedColor")
             document.getElementById('status').classList.add("inactiveColor")
         }
-        sock.onerror = (e)=>{
-            console.log('error',e)
+        sock.onerror = (e) => {
+            console.log('error', e)
             document.getElementById('status').textContent = "Error"
         }
-        sock.onclose = (e)=>{
+        sock.onclose = (e) => {
             console.log('close', e)
             document.getElementById('status').textContent = "Disconnected"
             document.getElementById('status').classList.add("disconnectedColor")
-            setTimeout(function(){
+            setTimeout(function () {
                 tryReconnect()
             }, 5);
         }
-        sock.onmessage = (e)=>{
+        sock.onmessage = (e) => {
             const response = JSON.parse(e.data);
-            const pricesData = response.Price;
-            const clockData = response.Time;
-            const powerData = response.Power;
+            const pricesData = response?.Price ?? null;
+            const clockData = response?.Time ?? null;
+            const powerData = response?.Power ?? null;
             console.log("update recieved")
 
-            document.getElementById('clock').textContent = `${clockData.TimeString}`;
-            document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice}`;
-            document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
-            document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
-            document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
-            document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
+            if (pricesData) {
+                document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice}`;
+                const boxes = ['Box1', 'Box2', 'Box3', 'Box4'];
+                boxes.forEach((boxKey, index) => {
+                    const box = document.getElementById(`box${index}`);
+                    if (!box || !pricesData[boxKey]) return;
 
-            const boxes = ['Box1', 'Box2', 'Box3', 'Box4'];
-            boxes.forEach((boxKey, index) => {
-                const box = document.getElementById(`box${index}`);
-                if (!box || !pricesData[boxKey]) return;
+                    const boxData = pricesData[boxKey];
+                    const header = box.querySelector('.header');
+                    header.textContent = boxData[0] || '--';
 
-                const boxData = pricesData[boxKey];
-                const header = box.querySelector('.header');
-                header.textContent = boxData[0] || '--';
+                    Array.from(box.children).forEach((child, i) => {
+                        if (i > 0) box.removeChild(child);
+                    });
 
-                Array.from(box.children).forEach((child, i) => { if (i > 0) box.removeChild(child); });
-
-                for (let i = 1; i < boxData.length; i++) {
-                    const rawText = boxData[i];
-                    const line = document.createElement('div');
-                    const isGreen = rawText.endsWith('C');
-                    const displayText = isGreen ? rawText.slice(0, -1) : rawText;
-                    line.textContent = displayText;
-                    line.className = '';
-                    if (isGreen) {
-                        line.classList.add('activeColor');
+                    for (let i = 1; i < boxData.length; i++) {
+                        const rawText = boxData[i];
+                        const line = document.createElement('div');
+                        const isGreen = rawText.endsWith('C');
+                        const displayText = isGreen ? rawText.slice(0, -1) : rawText;
+                        line.textContent = displayText;
+                        line.className = '';
+                        if (isGreen) {
+                            line.classList.add('activeColor');
+                        }
+                        box.appendChild(line);
                     }
-                    box.appendChild(line);
-                }
-            });
+                });
+            }
+            if (clockData) {
+                document.getElementById('clock').textContent = `${clockData.TimeString}`;
+            }
+            if (powerData) {
+                document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
+                document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
+                document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
+                document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
+            }
+
+
         }
     }
+
     loadDashboard();
 
 </script>
