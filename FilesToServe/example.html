@@ -123,6 +123,7 @@
         var sock = new WebSocket(`ws://${window.location.host}/ws`);
         sock.onopen = () => {
             console.log('open')
+            sock.send("INIT");
             document.getElementById('status').textContent = "Connected"
             document.getElementById('status').classList.remove("disconnectedColor")
             document.getElementById('status').classList.add("inactiveColor")
@@ -187,6 +188,8 @@
 
 
         }
+
+
     }
 
     loadDashboard();
