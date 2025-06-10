@@ -170,7 +170,12 @@
                         line.textContent = displayText;
                         line.className = '';
                         if (isGreen) {
+                            console.log(rawText)
                             line.classList.add('activeColor');
+                            line.classList.remove("inactiveColor");
+                        } else {
+                            line.classList.remove("activeColor");
+                            line.classList.add("inactiveColor");
                         }
                         box.appendChild(line);
                     }
