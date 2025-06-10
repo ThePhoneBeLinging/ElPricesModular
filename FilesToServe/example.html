@@ -114,6 +114,8 @@
         sock.onopen = ()=>{
             console.log('open')
             document.getElementById('status').textContent = "Connected"
+            document.getElementById('status').classList.remove("disconnectedColor")
+            document.getElementById('status').classList.add("inactiveColor")
         }
         sock.onerror = (e)=>{
             console.log('error',e)
