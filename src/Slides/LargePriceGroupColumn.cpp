@@ -9,12 +9,12 @@
 #include "Utility/TimeUtil.h"
 
 LargePriceGroupColumn::LargePriceGroupColumn(Slide* slide)
-    : x_(0),y_(0) ,slide_(slide)
+    : x_(0), y_(0), slide_(slide), idOfCurrentPrice_(-1)
 {
     background_ = slide_->createElement<RectangleElement>();
 
     header_ = slide_->createElement<Text>();
-    header_->setColor(0,0,0);
+    header_->setColor(0, 0, 0);
     header_->setAlignment(1);
     header_->setZ(5);
 }
@@ -31,10 +31,11 @@ void LargePriceGroupColumn::setY(const int y)
 
 void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& largePriceGroup)
 {
+    idOfCurrentPrice_ = -1;
     texts_.clear();
     int currentHour = TimeUtil::getCurrentTime().tm_hour;
     int backgroundWidth = 300;
-    background_->setColor(200,200,200);
+    background_->setColor(200, 200, 200);
     background_->setWidth(backgroundWidth);
     background_->setHeight(500);
     background_->setRoundedEdge(0.2);
@@ -57,7 +58,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
             break;
         }
         auto text = slide_->createElement<Text>();
-        text->setColor(0,0,0);
+        text->setColor(0, 0, 0);
         text->setWidth(backgroundWidth);
         text->setAlignment(1);
         if (smallPrice->getStartTime() == -1)
@@ -77,7 +78,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
             size++;
             if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime() && not isNextDay)
             {
-                text->setColor(255,0,0);
+                text->setColor(255, 0, 0);
                 idOfCurrentPrice_ = text->getID();
             }
         }
@@ -85,7 +86,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
         text->setY(y);
         text->setZ(5);
         texts_.push_back(text);
-        y+= 50;
+        y += 50;
     }
     double result = (static_cast<double>(sum) / static_cast<double>(size)) / 10000;
     std::string headerText = fmt::format("{:.2f}", result);
