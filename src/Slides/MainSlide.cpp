@@ -16,7 +16,8 @@
 #include "Utility/ConfigController.h"
 #include "Utility/TimeUtil.h"
 
-MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, LeGUILib* guiLib) : largePriceGroupColumns_()
+MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController,
+                     LeGUILib* guiLib) : largePriceGroupColumns_()
 {
     int headlineFontSize = 45;
     closeAppButton_ = this->createElement<RectangleElement>();
@@ -24,7 +25,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     closeAppButton_->setY(0);
     closeAppButton_->setWidth(20);
     closeAppButton_->setHeight(20);
-    closeAppButton_->setColor(255,0,0);
+    closeAppButton_->setColor(255, 0, 0);
     closeAppButton_->setZ(50);
     closeAppButton_->setOnClick([guiLib]() -> void
     {
@@ -36,7 +37,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     reloadConfigButton_->setY(0);
     reloadConfigButton_->setWidth(20);
     reloadConfigButton_->setHeight(20);
-    reloadConfigButton_->setColor(0,0,255);
+    reloadConfigButton_->setColor(0, 0, 255);
     reloadConfigButton_->setZ(50);
     reloadConfigButton_->setOnClick([]() -> void
     {
@@ -46,28 +47,28 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     hourUsageText_ = this->createElement<Text>();
     hourUsageText_->setX(550);
     hourUsageText_->setY(70);
-    hourUsageText_->setColor(0,0,0);
+    hourUsageText_->setColor(0, 0, 0);
     hourUsageText_->setFontSize(headlineFontSize);
 
     hourKRUsage_ = this->createElement<Text>();
     hourKRUsage_->setX(550);
     hourKRUsage_->setY(120);
-    hourKRUsage_->setColor(0,0,0);
+    hourKRUsage_->setColor(0, 0, 0);
     hourKRUsage_->setFontSize(headlineFontSize);
 
     currentUsageWattageText_ = this->createElement<Text>();
     currentUsageWattageText_->setX(50);
     currentUsageWattageText_->setY(70);
-    currentUsageWattageText_->setColor(0,0,0);
+    currentUsageWattageText_->setColor(0, 0, 0);
     currentUsageWattageText_->setFontSize(headlineFontSize);
 
     currentKRUsage_ = this->createElement<Text>();
     currentKRUsage_->setX(50);
     currentKRUsage_->setY(120);
-    currentKRUsage_->setColor(0,0,0);
+    currentKRUsage_->setColor(0, 0, 0);
     currentKRUsage_->setFontSize(headlineFontSize);
 
-    currentHourFunction_ = [this, collectorController] (int pulsesLastHour, double currentWattage) -> void
+    currentHourFunction_ = [this, collectorController](int pulsesLastHour, double currentWattage) -> void
     {
         nlohmann::json json;
         double price = static_cast<double>(collectorController->getCurrentPrice()->getTotalPrice()) / 10000.0;
@@ -105,29 +106,41 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         {
             largePriceGroupColumns_.push_back(std::make_shared<LargePriceGroupColumn>(this));
         }
-        largePriceGroupColumns_.back()->setX(320*i + 10);
+        largePriceGroupColumns_.back()->setX(320 * i + 10);
         largePriceGroupColumns_.back()->setY(200);
     }
     keepRunning_ = true;
-    auto largePriceColumnUpdateFunction = [this, collectorController] () -> void
+    auto largePriceColumnUpdateFunction = [this, collectorController]() -> void
     {
-
         std::unique_lock lock(mutex_);
-        std::vector<int> prices;
+        std::vector<int> firstDayPrices;
+        std::vector<int> secondDayPrices;
         while (keepRunning_)
         {
-            prices.clear();
+            firstDayPrices.clear();
             auto vector = collectorController->getCurrentAndFuturePrices();
+            int index = 0;
             for (const auto& price : vector)
             {
+                if (index++ >= 24)
+                {
+                    secondDayPrices.push_back(price->getTotalPrice());
+                    continue;
+                }
                 if (price != nullptr)
                 {
-                    prices.push_back(price->getTotalPrice());
+                    firstDayPrices.push_back(price->getTotalPrice());
                 }
             }
-            auto response = PriceSorter::findLargePriceGroups(prices);
+            auto response = PriceSorter::findLargePriceGroups(firstDayPrices);
+            auto secondResponse = PriceSorter::findLargePriceGroups(secondDayPrices);
             for (int i = 0; i < response.size(); i++)
             {
+                if (secondResponse.size() > i)
+                {
+                    auto smallGroups = secondResponse[i]->getSmallPriceGroups();
+                    response[i]->setSmallPriceGroup(smallGroups);
+                }
                 largePriceGroupColumns_[i]->update(response[i]);
             }
             nlohmann::json json;
@@ -136,23 +149,22 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             json["Box3"] = largePriceGroupColumns_[2]->getTexts();
             json["Box4"] = largePriceGroupColumns_[3]->getTexts();
             double price = collectorController->getCurrentPrice()->getTotalPrice();
-            std::string string = fmt::format("{:.2f} Kr",price / 10000);
+            std::string string = fmt::format("{:.2f} Kr", price / 10000);
             json["CurrentPrice"] = string;
 
             DataController::setPriceJSONObject(json);
             int delay = TimeUtil::secondsToNextHour();
-            condVar_.wait_for(lock,std::chrono::seconds(delay));
+            condVar_.wait_for(lock, std::chrono::seconds(delay));
         }
     };
 
 
-
-    auto clockTextUpdateFunction = [this, headlineFontSize] () -> void
+    auto clockTextUpdateFunction = [this, headlineFontSize]() -> void
     {
         std::shared_ptr<Text> text = this->createElement<Text>();
         text->setX(50);
         text->setY(10);
-        text->setColor(0,0,0);
+        text->setColor(0, 0, 0);
         text->setFontSize(headlineFontSize);
         text->setText("TEXT");
         std::unique_lock lock(mutex_);
@@ -180,25 +192,25 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             DataController::setTimeJSONObject(json);
 
             int secondsToWait = TimeUtil::secondsToNextMinute();
-            condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
+            condVar_.wait_for(lock, std::chrono::seconds(secondsToWait));
         }
     };
 
-    auto updateCurrentPrice = [this, collectorController, headlineFontSize] () -> void
+    auto updateCurrentPrice = [this, collectorController, headlineFontSize]() -> void
     {
         auto text = this->createElement<Text>();
         text->setX(450);
         text->setY(10);
-        text->setColor(0,0,0);
+        text->setColor(0, 0, 0);
         text->setFontSize(headlineFontSize);
         std::unique_lock lock(mutex_);
         while (keepRunning_)
         {
             double price = collectorController->getCurrentPrice()->getTotalPrice();
-            std::string string = fmt::format("{:.2f} Kr",price / 10000);
+            std::string string = fmt::format("{:.2f} Kr", price / 10000);
             text->setText(string);
             int secondsToWait = TimeUtil::secondsToNextHour();
-            condVar_.wait_for(lock,std::chrono::seconds(secondsToWait));
+            condVar_.wait_for(lock, std::chrono::seconds(secondsToWait));
         }
     };
 
