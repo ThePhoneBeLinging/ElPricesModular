@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=ElPricesModular
+Exec=/usr/bin/python3 /home/user/ElPricesModular/scripts/buildAndRun.py
+Path=/home/user/ElPricesModular
+X-GNOME-Autostart-enabled=true
+Terminal=false
