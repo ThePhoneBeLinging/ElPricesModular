@@ -1,0 +1,15 @@
+[Unit]
+Description=Run ElPricesModular Python Script Once at Boot
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/user/ElPricesModular
+ExecStart=/usr/bin/python3 /home/user/ElPricesModular/scripts/buildAndRun.py
+User=user
+Environment=PYTHONUNBUFFERED=1
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+
