@@ -14,6 +14,7 @@ LastLargePriceGroupColumn::LastLargePriceGroupColumn(Slide* slide) : LargePriceG
 
 void LastLargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& largePriceGroup)
 {
+    idOfCurrentPrice_ = -1;
     texts_.clear();
     int currentHour = TimeUtil::getCurrentTime().tm_hour;
     int backgroundWidth = 300;
