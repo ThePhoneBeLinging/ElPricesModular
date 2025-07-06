@@ -117,6 +117,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         while (keepRunning_)
         {
             prices.clear();
+            collectorController->update();
             auto vector = collectorController->getCurrentAndFuturePrices();
             for (const auto& price : vector)
             {
@@ -141,6 +142,11 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
 
             DataController::setPriceJSONObject(json);
             int delay = TimeUtil::secondsToNextHour();
+            auto currentTime = TimeUtil::getCurrentTime();
+            if (currentTime.tm_hour == 14)
+            {
+                delay = 5 * 60;
+            }
             condVar_.wait_for(lock,std::chrono::seconds(delay));
         }
     };
