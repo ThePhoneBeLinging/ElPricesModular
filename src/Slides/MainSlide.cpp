@@ -24,18 +24,18 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     closeAppButton_->setY(0);
     closeAppButton_->setWidth(50);
     closeAppButton_->setHeight(50);
-    closeAppButton_->setColor(255,0,0);
+    closeAppButton_->setColor(0,0,255);
     closeAppButton_->setZ(50);
     closeAppButton_->setOnClick([guiLib]() -> void
     {
-        guiLib->closeGUI();
+        guiLib->toggleFullScreen();
     });
 
     reloadConfigButton_ = this->createElement<RectangleElement>();
     reloadConfigButton_->setX(0);
     reloadConfigButton_->setY(670);
-    reloadConfigButton_->setWidth(50);
-    reloadConfigButton_->setHeight(50);
+    reloadConfigButton_->setWidth(0);
+    reloadConfigButton_->setHeight(0);
     reloadConfigButton_->setColor(0,0,255);
     reloadConfigButton_->setZ(50);
     reloadConfigButton_->setOnClick([guiLib]() -> void
