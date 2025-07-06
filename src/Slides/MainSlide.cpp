@@ -143,7 +143,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             DataController::setPriceJSONObject(json);
             int delay = TimeUtil::secondsToNextHour();
             auto currentTime = TimeUtil::getCurrentTime();
-            if (currentTime.tm_hour == 14)
+            if (currentTime.tm_hour == 13 || currentTime.tm_hour == 14)
             {
                 delay = 5 * 60;
             }
