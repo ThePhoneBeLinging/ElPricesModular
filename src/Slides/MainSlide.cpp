@@ -22,8 +22,8 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     closeAppButton_ = this->createElement<RectangleElement>();
     closeAppButton_->setX(0);
     closeAppButton_->setY(0);
-    closeAppButton_->setWidth(20);
-    closeAppButton_->setHeight(20);
+    closeAppButton_->setWidth(50);
+    closeAppButton_->setHeight(50);
     closeAppButton_->setColor(255,0,0);
     closeAppButton_->setZ(50);
     closeAppButton_->setOnClick([guiLib]() -> void
@@ -32,15 +32,15 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     });
 
     reloadConfigButton_ = this->createElement<RectangleElement>();
-    reloadConfigButton_->setX(1260);
-    reloadConfigButton_->setY(0);
-    reloadConfigButton_->setWidth(20);
-    reloadConfigButton_->setHeight(20);
+    reloadConfigButton_->setX(0);
+    reloadConfigButton_->setY(670);
+    reloadConfigButton_->setWidth(50);
+    reloadConfigButton_->setHeight(50);
     reloadConfigButton_->setColor(0,0,255);
     reloadConfigButton_->setZ(50);
-    reloadConfigButton_->setOnClick([]() -> void
+    reloadConfigButton_->setOnClick([guiLib]() -> void
     {
-        ConfigController::loadConfig("../../Resources/config.json");
+        guiLib->toggleFullScreen();
     });
 
     hourUsageText_ = this->createElement<Text>();

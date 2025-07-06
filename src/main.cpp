@@ -17,5 +17,5 @@ int main()
         std::cout << e.what() << std::endl;
     }
     DebugController::dumpDebug("");
-    return 0;
+    return 200;
 }
