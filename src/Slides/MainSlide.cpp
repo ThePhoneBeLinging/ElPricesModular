@@ -59,10 +59,10 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     currentHourFunction_ = [this, collectorController](int pulsesCurrentHour, int pulsesLastHour,
                                                        double currentWattage) -> void
     {
+        pulsesLastHour = std::max(pulsesLastHour, 0);
         nlohmann::json json;
         double price = static_cast<double>(collectorController->getCurrentPrice()->getTotalPrice()) / 10000.0;
         double lastPrice = static_cast<double>(collectorController->getLastPrice()->getTotalPrice()) / 10000.0;
-        auto usageDays = usageController_->getUsageDays();
 
         double kwhUsed = static_cast<double>(pulsesCurrentHour) / 1000;
         double kwhUsedLastHour = static_cast<double>(pulsesLastHour) / 1000;
