@@ -14,11 +14,11 @@ class MainSlide : public Slide
 public:
     MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, LeGUILib* guiLib);
     ~MainSlide();
+
 private:
-    std::shared_ptr<RectangleElement> closeAppButton_;
-    std::shared_ptr<RectangleElement> reloadConfigButton_;
+    std::shared_ptr<RectangleElement> toggleFullScreenButton_;
     std::unique_ptr<ElPricesUsageController> usageController_;
-    std::function<void(int,double)> currentHourFunction_;
+    std::function<void(int, int, double)> currentHourFunction_;
     std::shared_ptr<Text> hourUsageText_;
     std::shared_ptr<Text> hourKRUsage_;
     std::shared_ptr<Text> currentUsageWattageText_;
@@ -28,9 +28,7 @@ private:
     std::atomic_bool keepRunning_;
     std::condition_variable condVar_;
     std::mutex mutex_;
-
 };
-
 
 
 #endif //MAINSLIDE_H
