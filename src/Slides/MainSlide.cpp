@@ -91,14 +91,7 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
 
     for (int i = 0; i < 4; i++)
     {
-        if (i == 3)
-        {
-            largePriceGroupColumns_.push_back(std::make_shared<LastLargePriceGroupColumn>(this));
-        }
-        else
-        {
-            largePriceGroupColumns_.push_back(std::make_shared<LargePriceGroupColumn>(this));
-        }
+        largePriceGroupColumns_.push_back(std::make_shared<LargePriceGroupColumn>(this));
         largePriceGroupColumns_.back()->setX(320 * i + 10);
         largePriceGroupColumns_.back()->setY(200);
     }
@@ -106,23 +99,61 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
     auto largePriceColumnUpdateFunction = [this, collectorController]() -> void
     {
         std::unique_lock lock(mutex_);
-        std::vector<int> prices;
+        std::vector<int> todayPrices;
+        std::vector<int> tomorrowPrices;
         while (keepRunning_)
         {
-            prices.clear();
+            todayPrices.clear();
+            tomorrowPrices.clear();
             collectorController->update();
             auto vector = collectorController->getCurrentAndFuturePrices();
+            int index = 0;
             for (const auto& price : vector)
             {
                 if (price != nullptr)
                 {
-                    prices.push_back(price->getTotalPrice());
+                    if (index++ < 24)
+                    {
+                        todayPrices.push_back(price->getTotalPrice());
+                    }
+                    else
+                    {
+                        tomorrowPrices.push_back(price->getTotalPrice());
+                    }
                 }
             }
-            auto response = PriceSorter::findLargePriceGroups(prices);
-            for (int i = 0; i < response.size(); i++)
+            std::vector<std::shared_ptr<LargePriceGroup>> priceGroups;
+            for (int i = 0; i < 4; i++)
             {
-                largePriceGroupColumns_[i]->update(response[i]);
+                priceGroups.push_back(std::make_shared<LargePriceGroup>());
+            }
+            auto todayResponse = PriceSorter::findLargePriceGroups(todayPrices);
+            auto tomorrowResponse = PriceSorter::findLargePriceGroups(tomorrowPrices);
+            for (int i = 0; i < 4; i++)
+            {
+                if (i < todayResponse.size())
+                {
+                    for (const auto& smallPriceGroup : todayResponse[i]->getSmallPriceGroups())
+                    {
+                        priceGroups[i]->addSmallPriceGroup(smallPriceGroup, true);
+                    }
+                }
+                if (i < tomorrowResponse.size())
+                {
+                    for (const auto& smallPriceGroup : tomorrowResponse[i]->getSmallPriceGroups())
+                    {
+                        if (smallPriceGroup->getStartTime() == -1)
+                        {
+                            continue;
+                        }
+                        priceGroups[i]->addSmallPriceGroup(smallPriceGroup, true);
+                    }
+                }
+            }
+
+            for (int i = 0; i < priceGroups.size(); i++)
+            {
+                largePriceGroupColumns_[i]->update(priceGroups[i]);
             }
             nlohmann::json json;
             json["Box1"] = largePriceGroupColumns_[0]->getTexts();

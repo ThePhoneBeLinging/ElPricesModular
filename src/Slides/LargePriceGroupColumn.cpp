@@ -5,7 +5,7 @@
 #include "LargePriceGroupColumn.h"
 
 #include <fmt/format.h>
-
+#include <algorithm>
 #include "Utility/TimeUtil.h"
 
 LargePriceGroupColumn::LargePriceGroupColumn(Slide* slide)
@@ -43,8 +43,10 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
     background_->setY(y_);
     int y = y_ + 70;
     auto smallPriceGroups = largePriceGroup->getSmallPriceGroups();
-    int sum = 0;
-    int size = 0;
+    int todaySum = 0;
+    int todaySize = 0;
+    int tomorrowSum = 0;
+    int tomorrowSize = 0;
     bool dummyIsLast = smallPriceGroups.back()->getStartTime() == -1;
     bool isNextDay = false;
     for (const auto& smallPrice : smallPriceGroups)
@@ -63,7 +65,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
         text->setAlignment(1);
         if (smallPrice->getStartTime() == -1)
         {
-            text->setText(TimeUtil::intToWeekDayDanish((TimeUtil::getCurrentTime().tm_wday + 1) % 7));
+            text->setText("Tomorrow");
             text->setFontSize(40);
             isNextDay = true;
         }
@@ -74,8 +76,16 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
             textString.append(std::to_string(smallPrice->getEndTime()));
             text->setText(textString);
             text->setFontSize(40);
-            sum += smallPrice->calcAveragePrice();
-            size++;
+            if (isNextDay)
+            {
+                tomorrowSum += smallPrice->calcAveragePrice();
+                tomorrowSize++;
+            }
+            else
+            {
+                todaySum += smallPrice->calcAveragePrice();
+                todaySize++;
+            }
             if (smallPrice->getStartTime() <= currentHour && currentHour < smallPrice->getEndTime() && not isNextDay)
             {
                 text->setColor(255, 0, 0);
@@ -88,13 +98,35 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup>& large
         texts_.push_back(text);
         y += 50;
     }
-    double result = (static_cast<double>(sum) / static_cast<double>(size)) / 10000;
+    double result = static_cast<double>(todaySum) / static_cast<double>(todaySize) / 10000;
     std::string headerText = fmt::format("{:.2f}", result);
-    header_->setText(headerText);
+    std::string currentDay = TimeUtil::intToWeekDayDanish(TimeUtil::getCurrentTime().tm_wday % 7);
+    header_->setText(currentDay + " " + headerText);
     header_->setX(x_);
     header_->setY(y_ + 5);
     header_->setFontSize(50);
     header_->setWidth(backgroundWidth);
+    double tomorrowResult = static_cast<double>(tomorrowSum) / static_cast<double>(tomorrowSize) / 10000;
+    if (todaySize == 0)
+    {
+        headerText = fmt::format("{:.2f}", tomorrowResult);
+        std::string tomorrowDay = TimeUtil::intToWeekDayDanish((TimeUtil::getCurrentTime().tm_wday + 1) % 7);
+        header_->setText(tomorrowDay + " " + headerText);
+        std::erase_if(texts_, [](const std::shared_ptr<Text>& text)
+        {
+            return text->getText() == "Tomorrow";
+        });
+    }
+
+    for (auto& text : texts_)
+    {
+        if (text->getText() == "Tomorrow")
+        {
+            std::string tomorrow = TimeUtil::intToWeekDayDanish((TimeUtil::getCurrentTime().tm_wday + 1) % 7);
+            text->setText(tomorrow + " " + fmt::format("{:.2f}", tomorrowResult));
+            break;
+        }
+    }
 }
 
 std::vector<std::string> LargePriceGroupColumn::getTexts()
