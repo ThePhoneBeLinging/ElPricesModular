@@ -67,19 +67,19 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         double kwhUsed = static_cast<double>(pulsesCurrentHour) / 1000;
         double kwhUsedLastHour = static_cast<double>(pulsesLastHour) / 1000;
 
-        std::string hourUsageString = fmt::format("{:.3f} | {:.3f} kWh", kwhUsedLastHour, kwhUsed);
+        std::string hourUsageString = fmt::format("{:.3f} | {:.3f}", kwhUsedLastHour, kwhUsed);
         this->hourUsageText_->setText(hourUsageString);
         json["hourUsageText"] = hourUsageString;
 
-        std::string hourPriceString = fmt::format("{:.2f} | {:.2f} Kr", kwhUsedLastHour * lastPrice, kwhUsed * price);
+        std::string hourPriceString = fmt::format("{:.2f} |  {:.2f}", kwhUsedLastHour * lastPrice, kwhUsed * price);
         this->hourKRUsage_->setText(hourPriceString);
         json["hourKRUsage"] = hourPriceString;
 
-        std::string currentUsageString = fmt::format("{:.3f} Kw", currentWattage);
+        std::string currentUsageString = fmt::format("{:.3f}", currentWattage);
         this->currentUsageWattageText_->setText(currentUsageString);
         json["currentUsageWattageText"] = currentUsageString;
 
-        std::string currentUsageDKKstring = fmt::format("{:.2f} Kr/Time", currentWattage * price);
+        std::string currentUsageDKKstring = fmt::format("{:.2f}", currentWattage * price);
         this->currentKRUsage_->setText(currentUsageDKKstring);
         json["currentKRUsage"] = currentUsageDKKstring;
 
@@ -161,8 +161,9 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
             json["Box3"] = largePriceGroupColumns_[2]->getTexts();
             json["Box4"] = largePriceGroupColumns_[3]->getTexts();
             double price = collectorController->getCurrentPrice()->getTotalPrice();
-            std::string string = fmt::format("{:.2f} Kr", price / 10000);
-            json["CurrentPrice"] = string;
+            double lastPrice = collectorController->getLastPrice()->getTotalPrice();
+            std::string priceString = fmt::format("{:.2f}  | {:.2f}", lastPrice / 10000, price / 10000);
+            json["CurrentPrice"] = priceString;
 
             DataController::setPriceJSONObject(json);
             int delay = TimeUtil::secondsToNextHour();
@@ -229,7 +230,8 @@ MainSlide::MainSlide(const std::shared_ptr<ElPricesCollector>& collectorControll
         while (keepRunning_)
         {
             double price = collectorController->getCurrentPrice()->getTotalPrice();
-            std::string string = fmt::format("{:.2f} Kr", price / 10000);
+            double lastPrice = collectorController->getLastPrice()->getTotalPrice();
+            std::string string = fmt::format("{:.2f} | {:.2f}", lastPrice / 10000, price / 10000);
             text->setText(string);
             int secondsToWait = TimeUtil::secondsToNextHour();
             condVar_.wait_for(lock, std::chrono::seconds(secondsToWait));
