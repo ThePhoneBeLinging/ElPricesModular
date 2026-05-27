@@ -12,22 +12,22 @@
 class MainSlide : public Slide
 {
 public:
-    MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, LeGUILib* guiLib);
-    ~MainSlide();
+  MainSlide(const std::shared_ptr<ElPricesCollector>& collectorController, LeGUILib* guiLib);
+  ~MainSlide();
 
 private:
-    std::shared_ptr<RectangleElement> toggleFullScreenButton_;
-    std::unique_ptr<ElPricesUsageController> usageController_;
-    std::function<void(int, int, double)> currentHourFunction_;
-    std::shared_ptr<Text> hourUsageText_;
-    std::shared_ptr<Text> hourKRUsage_;
-    std::shared_ptr<Text> currentUsageWattageText_;
-    std::shared_ptr<Text> currentKRUsage_;
-    std::vector<std::shared_ptr<LargePriceGroupColumn>> largePriceGroupColumns_;
-    std::vector<std::thread> threads_;
-    std::atomic_bool keepRunning_;
-    std::condition_variable condVar_;
-    std::mutex mutex_;
+  std::shared_ptr<RectangleElement> toggleFullScreenButton_;
+  std::unique_ptr<ElPricesUsageController> usageController_;
+  std::function<void(int, int, double)> currentHourFunction_;
+  std::shared_ptr<Text> hourUsageText_;
+  std::shared_ptr<Text> hourKRUsage_;
+  std::shared_ptr<Text> currentUsageWattageText_;
+  std::shared_ptr<Text> currentKRUsage_;
+  std::vector<std::shared_ptr<LargePriceGroupColumn>> largePriceGroupColumns_;
+  std::vector<std::thread> threads_;
+  std::atomic_bool keepRunning_;
+  std::condition_variable condVar_;
+  std::mutex mutex_;
 };
 
 
