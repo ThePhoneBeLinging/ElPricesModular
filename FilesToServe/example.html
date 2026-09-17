@@ -73,6 +73,10 @@
             color: black;
         }
 
+        .nextDayColor {
+            color: green;
+        }
+
         .disconnectedColor {
             color: red;
         }
@@ -173,16 +177,20 @@
                     for (let i = 1; i < boxData.length; i++) {
                         const rawText = boxData[i];
                         const line = document.createElement('div');
-                        const isGreen = rawText.endsWith('C');
-                        const displayText = isGreen ? rawText.slice(0, -1) : rawText;
+                        const isActive = rawText.endsWith('C');
+                        const isNextDay = rawText.endsWith('G');
+                        const displayText = (isActive || isNextDay) ? rawText.slice(0, -1) : rawText;
                         const trimmedText = displayText.trimStart();
                         const isTitleLine = /^[A-Za-z]{3}/.test(trimmedText);
                         line.textContent = displayText;
                         if (isTitleLine) {
                             line.classList.add('titleLine');
                         }
-                        if (isGreen) {
+                        if (isActive) {
                             line.classList.add('activeColor');
+                        }
+                        if (isNextDay) {
+                            line.classList.add('nextDayColor');
                         }
                         box.appendChild(line);
                     }
