@@ -88,7 +88,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup> &large
     double result = static_cast<double>(todaySum) / static_cast<double>(todaySize) / 10000;
     std::string headerText = fmt::format("{:.2f}", result);
     std::string currentDay = TimeUtil::intToWeekDayDanish(TimeUtil::getCurrentTime().tm_wday % 7);
-    header_->setText(currentDay + " " + headerText);
+    header_->setText(currentDay + " " + headerText + "H");
     header_->setX(x_);
     header_->setY(y_ + 5);
     header_->setFontSize(50);
