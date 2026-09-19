@@ -165,7 +165,7 @@
                     const boxData = pricesData[boxKey];
 
                     Array.from(box.children).forEach((child, i) => {
-                        if (i > 0) box.removeChild(child);
+                        box.removeChild(child);
                     });
 
                     for (let i = 0; i < boxData.length; i++) {
