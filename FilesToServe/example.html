@@ -160,7 +160,7 @@
             console.log("update recieved")
 
             if (pricesData) {
-                document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice}`;
+                document.getElementById('totalCost').textContent = `${pricesData.CurrentPrice} Kr`;
                 const boxes = ['Box1', 'Box2', 'Box3', 'Box4'];
                 boxes.forEach((boxKey, index) => {
                     const box = document.getElementById(`box${index}`);
@@ -201,9 +201,9 @@
             }
             if (powerData) {
                 document.getElementById('power').textContent = `${powerData.currentUsageWattageText}`;
-                document.getElementById('costRate').textContent = `${powerData.currentKRUsage}`;
-                document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText}`;
-                document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage}`;
+                document.getElementById('costRate').textContent = `${powerData.currentKRUsage} `;
+                document.getElementById('thisHourEnergy').textContent = `${powerData.hourUsageText} kWh`;
+                document.getElementById('thisHourCost').textContent = `${powerData.hourKRUsage} Kr`;
             }
 
 
