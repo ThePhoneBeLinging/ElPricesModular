@@ -23,7 +23,7 @@
 
         .box-container {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
@@ -56,7 +56,7 @@
         .box .titleLine {
             font-weight: bold;
             font-size: 1.5em;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         #box3 {
@@ -175,11 +175,11 @@
                         const isActive = rawText.endsWith('C');
                         const isNextDay = rawText.endsWith('G');
                         const isHeader = rawText.endsWith('H');
-                        const displayText = (isActive || isNextDay || isHeader) ? rawText.slice(0, -1) : rawText;
+                        const displayText = (isActive || isNextDay || isHeader || isFirstDayHeader) ? rawText.slice(0, -1) : rawText;
                         const trimmedText = displayText.trimStart();
                         const isTitleLine = /^[A-Za-z]{3}/.test(trimmedText);
                         line.textContent = displayText;
-                        if (isTitleLine || isHeader) {
+                        if (isTitleLine || isHeader || isFirstDayHeader) {
                             line.classList.add('titleLine');
                         }
                         if (isActive) {
