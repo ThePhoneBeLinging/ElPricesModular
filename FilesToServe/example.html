@@ -187,10 +187,10 @@
                         if (isTitleLine || isHeader) {
                             line.classList.add('titleLine');
                         }
-                        if (isActive || isHeader) {
+                        if (isActive) {
                             line.classList.add('activeColor');
                         }
-                        if (isNextDay) {
+                        if (isNextDay || isHeader) {
                             line.classList.add('nextDayColor');
                         }
                         box.appendChild(line);
