@@ -97,7 +97,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup> &large
     if (todaySize == 0) {
         headerText = fmt::format("{:.2f}", tomorrowResult);
         std::string tomorrowDay = TimeUtil::intToWeekDayDanish((TimeUtil::getCurrentTime().tm_wday + 1) % 7);
-        header_->setText(tomorrowDay + " " + headerText + "G");
+        header_->setText(tomorrowDay + " " + headerText + "H");
         std::erase_if(texts_, [](const std::shared_ptr<Text> &text) {
             return text->getText() == "Tomorrow";
         });

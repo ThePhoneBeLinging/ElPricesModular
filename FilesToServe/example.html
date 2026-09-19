@@ -167,12 +167,6 @@
                     if (!box || !pricesData[boxKey]) return;
 
                     const boxData = pricesData[boxKey];
-                    const header = box.querySelector('.header');
-                    header.textContent = boxData[0] || '--';
-
-                    Array.from(box.children).forEach((child, i) => {
-                        if (i > 0) box.removeChild(child);
-                    });
 
                     for (let i = 0; i < boxData.length; i++) {
                         const rawText = boxData[i];
