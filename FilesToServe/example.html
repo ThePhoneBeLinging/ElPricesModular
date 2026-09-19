@@ -171,6 +171,7 @@
                     for (let i = 0; i < boxData.length; i++) {
                         const rawText = boxData[i];
                         const line = document.createElement('div');
+                        const isFirstDayHeader = rawText.endsWith('F');
                         const isActive = rawText.endsWith('C');
                         const isNextDay = rawText.endsWith('G');
                         const isHeader = rawText.endsWith('H');
