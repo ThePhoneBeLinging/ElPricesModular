@@ -106,7 +106,7 @@ void LargePriceGroupColumn::update(const std::shared_ptr<LargePriceGroup> &large
     for (auto &text: texts_) {
         if (text->getText() == "Tomorrow") {
             std::string tomorrow = TimeUtil::intToWeekDayDanish((TimeUtil::getCurrentTime().tm_wday + 1) % 7);
-            text->setText(tomorrow + " " + fmt::format("{:.2f}", tomorrowResult + "G"));
+            text->setText(tomorrow + " " + fmt::format("{:.2f}", tomorrowResult) + "G");
             break;
         }
     }
